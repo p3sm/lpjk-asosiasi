@@ -5,10 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
-use App\Models\User;
-use App\Models\Role;
-use App\Models\Permission;
-use App\Models\RolePermission;
+use App\User;
+use App\Role;
+use App\Permission;
+use App\RolePermission;
 
 class UserRoleController extends Controller
 {

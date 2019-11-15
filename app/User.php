@@ -51,6 +51,6 @@ class User extends Authenticatable
     
     public function asosiasi()
     {
-      return $this->hasOne('App\UserAsosiasi');
+      return $this->hasOne('App\UserAsosiasi', 'user_id');
     }
 }

@@ -14,16 +14,60 @@
 Auth::routes();
 
 Route::group(['middleware' => 'auth'], function(){
+  Route::get('/clear-cache', function() {
+    Artisan::call('cache:clear');
+    Artisan::call('route:clear');
+    Artisan::call('config:clear');
+    Artisan::call('view:clear');
+  });
+
+  Route::get('api/users', 'UserController@apiList');
+  Route::get('api/user/me', 'UserController@apiMe');
+  Route::get('api/negara', 'NegaraController@apiGetList');
+  Route::get('api/provinsi', 'ProvinsiController@apiGetList');
+  Route::get('api/kabupaten/{provinsi_id}', 'KabupatenController@apiGetList');
+  Route::get('api/kualifikasi', 'KualifikasiController@apiGetList');
+  Route::get('api/bidang/{tipe_profesi}', 'BidangController@apiGetList');
+  Route::get('api/subbidang/{bidang_id}', 'SubBidangController@apiGetList');
+  Route::get('api/ustk/{provinsi_id}', 'UstkController@apiGetList');
+
+  Route::get('api/pendidikan', 'PendidikanController@apiGetList');
+  Route::post('api/biodata', 'PersonalController@apiGetBiodata');
+  Route::post('api/biodata/create', 'PersonalController@apiCreateBiodata');
+  Route::post('api/biodata/{id}', 'PersonalController@apiUpdateBiodata');
+  Route::get('api/pendidikan/{id_personal}', 'PersonalController@apiGetPendidikan');
+  Route::post('api/pendidikan', 'PersonalController@apiCreatePendidikan');
+  Route::post('api/kursus', 'PersonalController@apiGetKursus');
+  Route::post('api/kursus/create', 'PersonalController@apiCreateKursus');
+  Route::post('api/organisasi', 'PersonalController@apiGetOrganisasi');
+  Route::post('api/organisasi/create', 'PersonalController@apiCreateOrganisasi');
+  Route::post('api/proyek', 'PersonalController@apiGetProyek');
+  Route::post('api/proyek/create', 'PersonalController@apiCreateProyek');
+  Route::post('api/kualifikasi_ta', 'PersonalController@apiGetKualifikasiTA');
+  Route::post('api/kualifikasi_ta/create', 'PersonalController@apiCreateKualifikasiTA');
+  Route::post('api/kualifikasi_tt', 'PersonalController@apiGetKualifikasiTT');
+  Route::post('api/kualifikasi_tt/create', 'PersonalController@apiCreateKualifikasiTT');
 
   Route::get('/', 'HomeController@index')->name('home');
 
   Route::resources([
       'users' => 'UserController',
   ]);
-  Route::get('api/users', 'UserController@apiList');
 
   Route::resources([
     'user_role' => 'UserRoleController',
+  ]);
+
+  Route::resources([
+      'personal' => 'PersonalController',
+  ]);
+
+  Route::resources([
+      'permohonan_ska' => 'PermohonanSKAController',
+  ]);
+
+  Route::resources([
+      'permohonan_skt' => 'PermohonanSKTController',
   ]);
   
 });

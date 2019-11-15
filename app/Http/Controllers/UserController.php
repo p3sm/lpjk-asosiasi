@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\UserAsosiasi;
 use App\Role;
@@ -16,7 +17,8 @@ class UserController extends Controller
 	}
 
     public function index(){
-    	return view('user/index');
+        $data["user"] = User::where("is_active", ">=", 0)->get();
+    	return view('user/index')->with($data);
     }
 
     public function create(){
@@ -94,7 +96,15 @@ class UserController extends Controller
     }
 
     public function apiList(){
-      $user = User::where("is_active", ">=", 0)->get();
+      $user = User::where("is_active", ">=", 0)->with("role")->get();
+      
+    	return response()->json($user, 200);
+    }
+
+    public function apiMe(){
+        $user = User::where("id", Auth::user()->id)->with(["asosiasi" => function ($query) {
+            $query->with('provinsi')->with('detail');
+        }])->first();
       
     	return response()->json($user, 200);
     }

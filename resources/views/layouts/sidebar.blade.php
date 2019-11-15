@@ -2,8 +2,18 @@
   <nav class="sidebar-nav">
       <ul class="nav">
           <li class="nav-item">
-              <a class="nav-link active" href="/dashboard">
+              <a class="nav-link" href="/">
                   <i class="nav-icon icon-speedometer"></i> Dashboard
+              </a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" href="/permohonan_ska">
+                  <i class="nav-icon icon-user"></i> Permohonan SKA
+              </a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" href="/permohonan_skt">
+                  <i class="nav-icon icon-user"></i> Permohonan SKT
               </a>
           </li>
           <li class="nav-title">Settings</li>

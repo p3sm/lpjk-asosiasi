@@ -14,37 +14,91 @@
             <div class="row justify-content-center">
                 <div class="col-md-12">
                     <div class="card">
-                        <div class="card-body">
-                            <h1 class="docs-title" id="content">Users Management</h1>
-                          
-                            @if(session()->get('success'))
-                            <div class="alert alert-success">
-                              {{ session()->get('success') }}  
-                            </div><br />
-                            @endif
+											<div class="card-body">
+<!-- Content Header (Page header) -->
 
-                            <!-- modal konfirmasi -->
-                  
-                            <div class="modal fade" id="modal-konfirmasi" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-sm">
-                                    <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                                        <h4 class="modal-title" id="myModalLabel">Konfirmasi</h4>
-                                    </div>
-                                    <div class="modal-body" id="konfirmasi-body">
-                                        test
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                        <button type="button" class="btn btn-primary" data-id="" id="btn-hapus">Yes</button>
-                                    </div>
-                                    </div>
-                                </div>
-                                </div>
-                            <!-- end of modal konfirmais -->
-                          </div>
-                        <div id="user"></div>
+    <!-- Main content -->
+    <section class="content">
+
+      <!-- Default box -->
+      <div class="box">
+        <div class="box-body">
+            @if(session()->get('success'))
+            <div class="alert alert-success">
+              {{ session()->get('success') }}  
+            </div><br />
+            @endif
+            {{--  sub menu  --}}
+            <div style="margin-bottom: 20px">
+                 <a href="{{url('users/create')}}" class="btn btn-primary"><span>Input</span></a>
+            </div>
+            {{--  end of sub menu  --}}
+
+            {{--  table data of user  --}}
+            <div>
+                <table id="table-user" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>Nama</th>
+                            <th>User Name</th>
+                            <th>Jabatan</th>
+                            <th>Tgl Input</th>
+                            <th>Aktif</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($user as $k => $d)
+                        <tr>
+                            <td>{{$k + 1}}</td>
+                            <td>{{$d->name}}</td>
+                            <td>{{$d->username}}</td>
+                            <td>{{$d->role->name}}</td>
+                            <td>{{$d->created_at}}</td>
+                            <td><div class="label label-{{$d->is_active ? "success" : "danger"}}">{{$d->is_active ? "Active" : "Inactive"}}</div></td>
+                            <td>
+                                <a href="{{url('users/' . $d->id . '/edit')}}" class="btn btn-warning btn-xs"><span class='glyphicon glyphicon-pencil'></span></a>
+                                <button class='btn btn-xs btn-danger delete' data-id="{{$d->id}}" data-name="{{$d->name}}"><span class='glyphicon glyphicon-trash'></span></button></td>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+            {{--  end of user data  --}}
+            
+
+            <!-- modal konfirmasi -->
+   
+            <div class="modal fade" id="modal-konfirmasi" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Konfirmasi</h4>
+                    </div>
+                    <div class="modal-body" id="konfirmasi-body">
+                        test
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" data-id="" id="btn-hapus">Yes</button>
+                    </div>
+                    </div>
+                </div>
+                </div>
+            <!-- end of modal konfirmais -->
+        </div>
+        <!-- /.box-body -->
+        <div class="box-footer"></div>
+        <!-- /.box-footer-->
+      </div>
+      <!-- /.box -->
+
+    </section>
+    <!-- /.content -->
+											</div>
                     </div>
                 </div>
             </div>
