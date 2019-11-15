@@ -234,22 +234,22 @@ export default class Personal extends Component {
               {this.state.biodata != null && (
                 <Tabs defaultActiveKey="biodata" id="">
                   <Tab eventKey="biodata" title="Biodata">
-                    <InputBiodata tipe_profesi={2} data={this.state.biodata} />
+                    <InputBiodata tipe_profesi={2} data={this.state.biodata} refreshData={() => this.getBiodata()}/>
                   </Tab>
                   <Tab eventKey="pendidikan" title="Pendidikan">
-                    <InputPendidikan id_personal={this.state.id_personal} data={this.state.pendidikan} />
+                    <InputPendidikan id_personal={this.state.id_personal} data={this.state.pendidikan} refreshData={() => this.getPendidikan()}/>
                   </Tab>
                   <Tab eventKey="kursus" title="Kursus">
-                    <InputKursus id_personal={this.state.id_personal} data={this.state.kursus}/>
+                    <InputKursus id_personal={this.state.id_personal} data={this.state.kursus} refreshData={() => this.getKursus()}/>
                   </Tab>
                   <Tab eventKey="organisasi" title="Pengalaman Organisasi">
-                    <InputOrganisasi id_personal={this.state.id_personal} data={this.state.organisasi}/>
+                    <InputOrganisasi id_personal={this.state.id_personal} data={this.state.organisasi} refreshData={() => this.getOrganisasi()}/>
                   </Tab>
                   <Tab eventKey="proyek" title="Pengalaman Proyek">
-                    <InputProyek id_personal={this.state.id_personal} data={this.state.proyek}/>
+                    <InputProyek id_personal={this.state.id_personal} data={this.state.proyek} refreshData={() => this.getProyek()}/>
                   </Tab>
                   <Tab eventKey="kualifikasi" title="Klasifikasi Kualifikasi">
-                    <InputKualifikasi tipe_profesi={2} id_personal={this.state.id_personal} data={this.state.kualifikasi_ta}/>
+                    <InputKualifikasi tipe_profesi={2} id_personal={this.state.id_personal} data={this.state.kualifikasi_ta} refreshData={() => this.getKualifikasi()}/>
                   </Tab>
                 </Tabs>
               )}

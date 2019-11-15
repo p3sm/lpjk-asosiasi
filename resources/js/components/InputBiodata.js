@@ -101,7 +101,8 @@ export default class InputBiodata extends Component {
     }).then(response => {
       console.log(response)
       
-      this.setState({submiting: false})
+      this.setState({submiting: false, showFormEdit: false})
+      this.props.refreshData()
       Alert.success(response.data.message);
       
     }).catch(err => {
@@ -263,7 +264,7 @@ export default class InputBiodata extends Component {
               {this.state.submiting ? 'Updating...' : 'Update'}
             </Button>
           </Modal.Footer>
-          <Alert stack={{limit: 3}} position="top-right" offset="50" effect="slide" timeout="none" />
+          <Alert stack={{limit: 3}} position="top-right" offset="40" effect="slide" timeout="none" />
         </Modal>
       </div>
     );

@@ -60,7 +60,10 @@ export default class components extends Component {
     }).then(response => {
       console.log(response)
       
-      this.setState({submiting: false})
+      this.setState({submiting: false, showFormAdd: false})
+      this.resetState()
+      this.props.refreshData()
+
       Alert.success(response.data.message);
       
     }).catch(err => {
@@ -68,6 +71,21 @@ export default class components extends Component {
 
       this.setState({submiting: false})
       Alert.error(err.response.data.message);
+    })
+  }
+
+  resetState = () => {
+    this.setState({
+      id_personal: "",
+      nama_bu: "",
+      nrbu: "",
+      alamat: "",
+      jenis_bu: "",
+      jabatan: "",
+      tgl_mulai: "",
+      tgl_selesai: "",
+      role_pekerjaan: "",
+      file_pengalaman: ""
     })
   }
 
@@ -157,7 +175,7 @@ export default class components extends Component {
               {this.state.submiting ? 'Submiting...' : 'Submit'}
             </Button>
           </Modal.Footer>
-          <Alert stack={{limit: 3}} position="top-right" offset="50" effect="slide" timeout="none" />
+          <Alert stack={{limit: 3}} position="top-right" offset="40" effect="slide" timeout="none" />
         </Modal>
       </div>
     )
