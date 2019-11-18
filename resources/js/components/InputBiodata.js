@@ -149,6 +149,16 @@ export default class InputBiodata extends Component {
               <th>Negara</th>
               <td>{this.props.data.ID_Negara}</td>
             </tr>
+            <tr>
+              <th>Provinsi</th>
+              <td>{this.props.data.ID_Propinsi}</td>
+              <th>Kabupaten</th>
+              <td>{this.props.data.ID_Kabupaten_Alamat}</td>
+            </tr>
+            <tr>
+              <th>Alamat</th>
+              <td colSpan="3">{this.props.data.Alamat1}</td>
+            </tr>
           </tbody>
         </Table>
         <Modal

@@ -41,12 +41,11 @@ export default class Personal extends Component {
 
       if(!this.state.loading){
         if(this.state.id_personal == ""){
-          Alert.error('ID Personal / KTP tidak boleh kosong', {
-            position: 'top-right',
-            offset: 50,
-            effect: 'slide',
-            timeout: 'none'
-          });
+          Alert.error('ID Personal / KTP tidak boleh kosong');
+
+          return
+        } else if(this.state.id_personal.length < 16){
+          Alert.error('ID Personal / KTP harus 16 karakter')
 
           return
         }
@@ -266,7 +265,7 @@ export default class Personal extends Component {
                 </Tabs>
               )}
             </Form>
-            <Alert stack={{limit: 3}} />
+            <Alert stack={{limit: 3}} position='top-right' offset={50} effect='slide' timeout='none'/>
           </div>
         );
     }

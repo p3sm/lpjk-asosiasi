@@ -139,9 +139,11 @@ export default class components extends Component {
               <th>Kualifikasi</th>
               <th>Sub Bidang</th>
               <th>Unit Sertifikasi</th>
+              <th>Jenis Permohonan</th>
               <th>Asosiasi</th>
               <th>Provinsi</th>
               <th>Tanggal</th>
+              <th>Status Terbaru</th>
             </tr>
             {this.props.data.map((d) => (
               <tr>
@@ -149,9 +151,11 @@ export default class components extends Component {
                 <td>{d.ID_Kualifikasi}</td>
                 <td>{d.ID_Sub_Bidang}</td>
                 <td>{d.id_unit_sertifikasi}</td>
+                <td>{d.id_permohonan}</td>
                 <td>{d.ID_Asosiasi_Profesi}</td>
                 <td>{d.ID_Propinsi_reg}</td>
                 <td>{d.Tgl_Registrasi}</td>
+                <td>{d.status_terbaru}</td>
               </tr>
             ))}
           </tbody>

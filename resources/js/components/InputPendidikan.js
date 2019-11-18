@@ -122,10 +122,11 @@ export default class components extends Component {
           <tbody>
             <tr>
               <th>Nama Sekolah</th>
-              <th>Jurusan</th>
+              <th>Program Studi</th>
               <th>No Ijazah</th>
               <th>Tahun</th>
               <th>Provinsi</th>
+              <th>Alamat</th>
             </tr>
             {this.props.data.map((d) => (
               <tr>
@@ -134,6 +135,7 @@ export default class components extends Component {
                 <td>{d.No_Ijazah}</td>
                 <td>{d.Tahun}</td>
                 <td>{d.ID_Propinsi}</td>
+                <td>{d.Alamat1}</td>
               </tr>
             ))}
           </tbody>
