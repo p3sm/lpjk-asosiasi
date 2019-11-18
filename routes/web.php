@@ -45,8 +45,10 @@ Route::group(['middleware' => 'auth'], function(){
   Route::post('api/proyek/create', 'PersonalController@apiCreateProyek');
   Route::post('api/kualifikasi_ta', 'PersonalController@apiGetKualifikasiTA');
   Route::post('api/kualifikasi_ta/create', 'PersonalController@apiCreateKualifikasiTA');
+  Route::post('api/kualifikasi_ta/delete', 'PersonalController@apiDeleteKualifikasiTA');
   Route::post('api/kualifikasi_tt', 'PersonalController@apiGetKualifikasiTT');
   Route::post('api/kualifikasi_tt/create', 'PersonalController@apiCreateKualifikasiTT');
+  Route::post('api/kualifikasi_tt/delete', 'PersonalController@apiDeleteKualifikasiTT');
 
   Route::get('/', 'HomeController@index')->name('home');
 

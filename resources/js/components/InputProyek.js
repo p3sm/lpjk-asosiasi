@@ -130,11 +130,23 @@ export default class components extends Component {
 
                   <Form.Group>
                     <Form.Label>Tanggal Awal</Form.Label>
-                    <Datetime value={this.state.tgl_mulai} onChange={(e) => this.setState({tgl_mulai: e.format("YYYY-MM-DD")})} timeFormat={false} />
+                    <Datetime closeOnSelect={true} value={this.state.tgl_mulai} dateFormat="YYYY-MM-DD" onChange={(e) => {
+                      try {
+                        this.setState({tgl_mulai: e.format("YYYY-MM-DD")})
+                      } catch (err) {
+                        this.setState({tgl_mulai: e})
+                      }
+                    }} timeFormat={false} />
                   </Form.Group>
                   <Form.Group>
                     <Form.Label>Tanggal Akhir</Form.Label>
-                    <Datetime value={this.state.tgl_selesai} onChange={(e) => this.setState({tgl_selesai: e.format("YYYY-MM-DD")})} timeFormat={false} />
+                    <Datetime closeOnSelect={true} value={this.state.tgl_selesai} dateFormat="YYYY-MM-DD" onChange={(e) => {
+                      try {
+                        this.setState({tgl_selesai: e.format("YYYY-MM-DD")})
+                      } catch (err) {
+                        this.setState({tgl_selesai: e})
+                      }
+                    }} timeFormat={false} />
                   </Form.Group>
                 </Col>
                 <Col md>

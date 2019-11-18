@@ -235,7 +235,7 @@ export default class Personal extends Component {
                 danger
                 showCancel
                 title="Maaf"
-                btnSize="sm"
+                btnSize="md"
                 confirmBtnBsStyle='success'
                 cancelBtnText="Close"
                 confirmBtnText="Buat data baru"
@@ -251,21 +251,21 @@ export default class Personal extends Component {
                     <InputPendidikan id_personal={this.state.id_personal} data={this.state.pendidikan} refreshData={() => this.getPendidikan()} />
                   </Tab>
                   <Tab eventKey="kursus" title="Kursus">
-                    <InputKursus id_personal={this.state.id_personal} data={this.state.kursus} refreshData={() => this.getPendidikan()}/>
+                    <InputKursus id_personal={this.state.id_personal} data={this.state.kursus} refreshData={() => this.getKursus()}/>
                   </Tab>
                   <Tab eventKey="organisasi" title="Pengalaman Organisasi">
-                    <InputOrganisasi id_personal={this.state.id_personal} data={this.state.organisasi} refreshData={() => this.getPendidikan()}/>
+                    <InputOrganisasi id_personal={this.state.id_personal} data={this.state.organisasi} refreshData={() => this.getOrganisasi()}/>
                   </Tab>
                   <Tab eventKey="proyek" title="Pengalaman Proyek">
-                    <InputProyek id_personal={this.state.id_personal} data={this.state.proyek} refreshData={() => this.getPendidikan()}/>
+                    <InputProyek id_personal={this.state.id_personal} data={this.state.proyek} refreshData={() => this.getProyek()}/>
                   </Tab>
                   <Tab eventKey="kualifikasi" title="Klasifikasi Kualifikasi">
-                    <InputKualifikasi tipe_profesi={1} id_personal={this.state.id_personal} data={this.state.kualifikasi_ta} refreshData={() => this.getPendidikan()}/>
+                    <InputKualifikasi tipe_profesi={1} id_personal={this.state.id_personal} data={this.state.kualifikasi_ta} refreshData={() => this.getKualifikasi()}/>
                   </Tab>
                 </Tabs>
               )}
             </Form>
-            <Alert stack={{limit: 3}} position='top-right' offset={50} effect='slide' timeout='none'/>
+            <Alert stack={{limit: 3}} position='top-right' offset={50} effect='slide' timeout={2000}/>
           </div>
         );
     }

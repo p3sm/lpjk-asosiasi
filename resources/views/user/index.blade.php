@@ -43,6 +43,8 @@
                             <th>Nama</th>
                             <th>User Name</th>
                             <th>Jabatan</th>
+                            <th>Asosiasi</th>
+                            <th>Provinsi</th>
                             <th>Tgl Input</th>
                             <th>Aktif</th>
                             <th>Action</th>
@@ -55,6 +57,8 @@
                             <td>{{$d->name}}</td>
                             <td>{{$d->username}}</td>
                             <td>{{$d->role->name}}</td>
+                            <td>{{$d->asosiasi ? $d->asosiasi->detail->nama : "-"}}</td>
+                            <td>{{$d->asosiasi ? $d->asosiasi->provinsi->nama : "-"}}</td>
                             <td>{{$d->created_at}}</td>
                             <td><div class="label label-{{$d->is_active ? "success" : "danger"}}">{{$d->is_active ? "Active" : "Inactive"}}</div></td>
                             <td>

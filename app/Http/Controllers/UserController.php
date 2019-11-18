@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\UserAsosiasi;
 use App\Role;
+use App\Asosiasi;
+use App\Provinsi;
 
 class UserController extends Controller
 {
@@ -22,11 +24,11 @@ class UserController extends Controller
     }
 
     public function create(){
-        $roles = Role::all()->sortBy("name");
+        $data["roles"] = Role::all()->sortBy("name");
+        $data["asosiasi"] = Asosiasi::all()->sortBy("nama");
+        $data["provinsi"] = Provinsi::all()->sortBy("nama");
 
-        return view('user/create', [
-            "roles" => $roles
-        ]);
+        return view('user/create')->with($data);
     }
 
     public function store(Request $request)
@@ -61,13 +63,12 @@ class UserController extends Controller
 
     public function edit($id)
     {
-        $user = User::findOrFail($id);
-        $roles = Role::all()->sortBy("name");
+        $data["user"] = User::findOrFail($id);
+        $data["roles"] = Role::all()->sortBy("name");
+        $data["asosiasi"] = Asosiasi::all()->sortBy("nama");
+        $data["provinsi"] = Provinsi::all()->sortBy("nama");
 
-        return view('user/edit', [
-            "user" => $user,
-            "roles" => $roles
-        ]);
+        return view('user/edit')->with($data);
     }
 
     public function update(Request $request, $id)

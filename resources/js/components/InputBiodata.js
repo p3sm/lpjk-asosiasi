@@ -5,6 +5,7 @@ import MSelectProvinsi from './MSelectProvinsi'
 import MSelectKabupaten from './MSelectKabupaten'
 import axios from 'axios'
 import Alert from 'react-s-alert';
+import Moment from 'react-moment';
 
 // import { Container } from './styles';
 
@@ -196,7 +197,13 @@ export default class InputBiodata extends Component {
                   </Form.Group>
                   <Form.Group>
                     <Form.Label>Tanggal Lahir</Form.Label>
-                    <Datetime value={this.state.tgl_lahir} onChange={(e) => this.setState({tgl_lahir: e.format("YYYY-MM-DD")})} timeFormat={false} />
+                    <Datetime closeOnSelect={true} value={this.state.tgl_lahir} dateFormat="YYYY-MM-DD" onChange={(e) => {
+                      try {
+                        this.setState({tgl_lahir: e.format("YYYY-MM-DD")})
+                      } catch (err) {
+                        this.setState({tgl_lahir: e})
+                      }
+                    }} timeFormat={false} />
                   </Form.Group>
                   <Form.Group>
                     <Form.Label>Telepon</Form.Label>
@@ -226,7 +233,7 @@ export default class InputBiodata extends Component {
                   <Row>
                     <Col md>
                       <MSelectProvinsi value={this.state.provinsi} onChange={(data) => this.onProvinsiChange(data)} />
-                      <MSelectKabupaten value={this.state.kabupaten} onRef={ref => (this.selectKabupaten = ref)} onChange={(data) => this.setState({kabupaten: data.value})} />
+                      <MSelectKabupaten provinsiId={this.state.provinsi} value={this.state.kabupaten} onRef={ref => (this.selectKabupaten = ref)} onChange={(data) => this.setState({kabupaten: data.value})} />
                       <Form.Group>
                         <Form.Label>Alamat</Form.Label>
                         <Form.Control as="textarea" id="alamat" name="alamat" row="3" value={this.state.alamat} onChange={(e) => this.setState({alamat: e.target.value})}></Form.Control>

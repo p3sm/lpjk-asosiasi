@@ -265,7 +265,7 @@ export default class Personal extends Component {
                 </Tabs>
               )}
             </Form>
-            <Alert stack={{limit: 3}} position='top-right' offset={50} effect='slide' timeout='none'/>
+            <Alert stack={{limit: 3}} position='top-right' offset={50} effect='slide' timeout={2000}/>
           </div>
         );
     }

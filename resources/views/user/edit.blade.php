@@ -5,7 +5,8 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{url("/")}}">Dashboard</a></li>
-        <li class="breadcrumb-item active">Personal</li>
+        <li class="breadcrumb-item"><a href="{{url("/users")}}">Users</a></li>
+        <li class="breadcrumb-item active">Edit</li>
     </ol>
 </nav>
 <div class="container-fluid">
@@ -16,18 +17,6 @@
                     <div class="card">
 											<div class="card-body">
 											
-<!-- Content Header (Page header) -->
-    <section class="content-header">
-      <h1>
-        Users Management
-        {{--  <small>it all starts here</small>  --}}
-      </h1>
-      <ol class="breadcrumb">
-        <li><a href="{{url("")}}"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="{{url("users")}}">Users</a></li>
-        <li class="active"><a href="#">Create</a></li>
-      </ol>
-    </section>
 
     <!-- Main content -->
     <section class="content">
@@ -63,6 +52,24 @@
                   <select class="form-control" name="role_id">
                     @foreach ($roles as $role)
                     <option value="{{$role->id}}" {{$user->role_id == $role->id ? "selected" : ""}}>{{$role->name}}</option>
+                    @endforeach
+                  </select>
+                </div>
+	              <div class="form-group">
+                  <label>Asosiasi</label>
+                  <select class="form-control" name="asosiasi_id">
+										<option value="">-- pilih asosiasi --</option>
+                    @foreach ($asosiasi as $as)
+                    <option value="{{$as->id_asosiasi}}" {{$user->asosiasi->asosiasi_id == $as->id_asosiasi ? "selected" : ""}}>{{$as->nama}}</option>
+                    @endforeach
+                  </select>
+                </div>
+	              <div class="form-group">
+                  <label>Provinsi</label>
+                  <select class="form-control" name="provinsi_id">
+										<option value="">-- pilih provinsi --</option>
+                    @foreach ($provinsi as $prov)
+                    <option value="{{$prov->id_provinsi}}" {{$user->asosiasi->provinsi_id == $prov->id_provinsi ? "selected" : ""}}>{{$prov->nama}}</option>
                     @endforeach
                   </select>
                 </div>

@@ -15,6 +15,8 @@ export default class MSelectKabupaten extends Component {
 
   componentDidMount() {
     this.props.onRef(this)
+    
+    this.getKabupaten(this.props.provinsiId)
   }
 
   componentWillUnmount() {
@@ -54,7 +56,7 @@ export default class MSelectKabupaten extends Component {
     return (
       <Form.Group>
         <Form.Label>Kabupaten</Form.Label>
-        <Select placeholder="-- pilih kabupaten --" isClearable={true} options={this.state.data} isLoading={this.state.loading} onChange={(val) => this.props.onChange(val)}/>
+        <Select placeholder="-- pilih kabupaten --" value={this.state.data.filter(obj => {return obj.value == this.props.value})[0]} options={this.state.data} isLoading={this.state.loading} onChange={(val) => this.props.onChange(val)}/>
       </Form.Group>
     )
   }

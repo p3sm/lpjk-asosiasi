@@ -52,6 +52,24 @@
                     @endforeach
                   </select>
                 </div>
+	              <div class="form-group">
+                  <label>Asosiasi</label>
+                  <select class="form-control" name="asosiasi_id">
+										<option value="">-- pilih asosiasi --</option>
+                    @foreach ($asosiasi as $as)
+                    <option value="{{$as->id_asosiasi}}">{{$as->nama}}</option>
+                    @endforeach
+                  </select>
+                </div>
+	              <div class="form-group">
+                  <label>Provinsi</label>
+                  <select class="form-control" name="provinsi_id">
+										<option value="">-- pilih provinsi --</option>
+                    @foreach ($provinsi as $prov)
+                    <option value="{{$prov->id_provinsi}}">{{$prov->nama}}</option>
+                    @endforeach
+                  </select>
+                </div>
 	              <div class="checkbox">
 	                <label>
 	                  <input type="checkbox" name="is_active" checked="checked"> Active

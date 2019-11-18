@@ -9,6 +9,7 @@ import MSelectSubBidang from './MSelectSubBidang'
 import MSelectUstk from './MSelectUstk'
 import axios from 'axios'
 import Alert from 'react-s-alert';
+import SweetAlert from 'react-bootstrap-sweetalert';
 
 // import { Container } from './styles';
 
@@ -21,7 +22,8 @@ export default class components extends Component {
       submiting: false,
       id_personal: this.props.id_personal,
       tgl_registrasi: moment().format('YYYY-MM-DD'),
-      me: null
+      me: null,
+      delete: false
     }
 
   }
@@ -64,6 +66,43 @@ export default class components extends Component {
       default:
         break;
     }
+  }
+
+  confirmDelete = (id) => {
+    console.log(id)
+    this.setState({delete: true, deleteId: id})
+  }
+
+  deleteKualifikasi = (id) => {
+    this.setState({deleting: true})
+
+    var formData = new FormData();
+    formData.append("id_personal", this.state.id_personal);
+    formData.append(this.props.tipe_profesi == 1 ? "ID_Registrasi_TK_Ahli" : "ID_Registrasi_TK_Trampil", id);
+    
+    var endpoint = "/api/kualifikasi_ta/delete"
+
+    if(this.props.tipe_profesi !== 1)
+      endpoint = "/api/kualifikasi_tt/delete"
+      
+    axios.post(endpoint, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    }).then(response => {
+      console.log(response)
+      
+      this.setState({deleting: false, delete: false})
+      this.props.refreshData()
+      
+      Alert.success(response.data.message);
+      
+    }).catch(err => {
+      console.log(err.response.data.message)
+
+      this.setState({deleting: false, delete: false})
+      Alert.error(err.response.data.message);
+    })
   }
 
   handleSubmit = () => {
@@ -112,13 +151,10 @@ export default class components extends Component {
 
   resetState = () => {
     this.setState({
-      id_personal: "",
       sub_bidang: "",
       asosiasi: "",
       kualifikasi: "",
-      tgl_registrasi: "",
       provinsi: "",
-      no_reg_asosiasi: "",
       id_unit_sertifikasi: "",
       id_permohonan: "",
       file_berita_acara_vva: "",
@@ -143,7 +179,8 @@ export default class components extends Component {
               <th>Asosiasi</th>
               <th>Provinsi</th>
               <th>Tanggal</th>
-              <th>Status Terbaru</th>
+              <th>Status Terakhir</th>
+              <th>Action</th>
             </tr>
             {this.props.data.map((d) => (
               <tr>
@@ -151,11 +188,12 @@ export default class components extends Component {
                 <td>{d.ID_Kualifikasi}</td>
                 <td>{d.ID_Sub_Bidang}</td>
                 <td>{d.id_unit_sertifikasi}</td>
-                <td>{d.id_permohonan}</td>
+                <td>{d.id_permohonan == 1 ? "Baru" : d.id_permohonan == 2 ? "Perpanjangan" : "Perubahan"}</td>
                 <td>{d.ID_Asosiasi_Profesi}</td>
                 <td>{d.ID_Propinsi_reg}</td>
                 <td>{d.Tgl_Registrasi}</td>
                 <td>{d.status_terbaru}</td>
+                <td><Button variant="outline-danger" size="sm" onClick={() => this.confirmDelete(this.props.tipe_profesi == 1 ? d.ID_Registrasi_TK_Ahli : d.ID_Registrasi_TK_Trampil)}><span className="cui-trash"></span> Delete</Button></td>
               </tr>
             ))}
           </tbody>
@@ -241,6 +279,19 @@ export default class components extends Component {
           </Modal.Footer>
           <Alert stack={{limit: 3}} position="top-right" offset="40" effect="slide" timeout="none" />
         </Modal>
+          
+        <SweetAlert
+          show={this.state.delete}
+          warning
+          showCancel
+          title="Hapus Data"
+          btnSize="md"
+          confirmBtnBsStyle='success'
+          cancelBtnText="Close"
+          confirmBtnText={this.state.deleting ? "Deleting..." : "Delete"}
+          onConfirm={() => this.deleteKualifikasi(this.state.deleteId)}
+          onCancel={() => this.setState({delete: false})}
+        >Anda yakin akan menghapus data ini?</SweetAlert>
       </div>
     )
   }
