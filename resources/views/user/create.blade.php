@@ -5,7 +5,8 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{url("/")}}">Dashboard</a></li>
-        <li class="breadcrumb-item active">Personal</li>
+        <li class="breadcrumb-item"><a href="{{url("/users")}}">Users</a></li>
+        <li class="breadcrumb-item active">Create</li>
     </ol>
 </nav>
 <div class="container-fluid">
@@ -15,20 +16,6 @@
                 <div class="col-md-12">
                     <div class="card">
 											<div class="card-body">
-											
-<!-- Content Header (Page header) -->
-    <section class="content-header">
-      <h1>
-        Users Management
-        {{--  <small>it all starts here</small>  --}}
-      </h1>
-      <ol class="breadcrumb">
-        <li><a href="{{url("")}}"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="{{url("users")}}">Users</a></li>
-        <li class="active"><a href="#">Create</a></li>
-      </ol>
-    </section>
-
     <!-- Main content -->
     <section class="content">
     	<div class="row">

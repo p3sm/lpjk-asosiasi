@@ -36,7 +36,9 @@ export default class Personal extends Component {
     componentDidMount(){
     }
 
-    onNikSearch(){
+    onNikSearch(e){
+      e.preventDefault()
+
       if(!this.state.loading){
         if(this.state.id_personal == ""){
           Alert.error('ID Personal / KTP tidak boleh kosong', {
@@ -54,7 +56,7 @@ export default class Personal extends Component {
     }
 
     getBiodata(){
-      this.setState({loading: true})
+      this.setState({loading: true, biodata: null})
 
       let body = {id_personal: this.state.id_personal}
   
@@ -85,6 +87,8 @@ export default class Personal extends Component {
     }
 
     getPendidikan(){
+      this.setState({pendidikan: []})
+
       let body = {id_personal: this.state.id_personal}
   
       axios.get(`/api/pendidikan/` + this.state.id_personal).then(response => {
@@ -107,6 +111,8 @@ export default class Personal extends Component {
     }
 
     getKursus(){
+      this.setState({kursus: []})
+
       let body = {id_personal: this.state.id_personal}
   
       axios.post(`/api/kursus`, body).then(response => {
@@ -129,6 +135,8 @@ export default class Personal extends Component {
     }
 
     getOrganisasi(){
+      this.setState({organisasi: []})
+
       let body = {id_personal: this.state.id_personal}
   
       axios.post(`/api/organisasi`, body).then(response => {
@@ -151,6 +159,8 @@ export default class Personal extends Component {
     }
 
     getProyek(){
+      this.setState({proyek: []})
+
       let body = {id_personal: this.state.id_personal}
   
       axios.post(`/api/proyek`, body).then(response => {
@@ -173,6 +183,8 @@ export default class Personal extends Component {
     }
 
     getKualifikasi(){
+      this.setState({kualifikasi_ta: []})
+
       let body = {id_personal: this.state.id_personal}
   
       axios.post(`/api/kualifikasi_ta`, body).then(response => {
@@ -203,13 +215,13 @@ export default class Personal extends Component {
     render() {
         return (
           <div>
-            <form>
+            <Form onSubmit={(e) => this.onNikSearch(e)}>
               <div className="form-group">
                 <label htmlFor="nik">ID Personal / KTP</label>
                 <div className="input-group">
                   <Form.Control id="nama" placeholder="No. KTP" onChange={(event) => this.handleChange(event)} value={this.state.id_personal}></Form.Control>
                   <div className="input-group-append">
-                    <button className={"btn btn-" + (this.state.loading ? "light" : "primary")} onClick={() => this.onNikSearch()} type="button">{this.state.loading ? "Mencari..." : "Cari Data"}</button>
+                    <button className={"btn btn-" + (this.state.loading ? "light" : "primary")} onClick={(e) => this.onNikSearch(e)} type="button">{this.state.loading ? "Mencari..." : "Cari Data"}</button>
                   </div>
                 </div>
               </div>
@@ -253,7 +265,7 @@ export default class Personal extends Component {
                   </Tab>
                 </Tabs>
               )}
-            </form>
+            </Form>
             <Alert stack={{limit: 3}} />
           </div>
         );

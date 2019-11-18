@@ -30,7 +30,7 @@
             @endif
             {{--  sub menu  --}}
             <div style="margin-bottom: 20px">
-                 <a href="{{url('users/create')}}" class="btn btn-primary"><span>Input</span></a>
+                 <a href="{{url('users/create')}}" class="btn btn-primary"><span>Add new</span></a>
             </div>
             {{--  end of sub menu  --}}
 
@@ -58,8 +58,8 @@
                             <td>{{$d->created_at}}</td>
                             <td><div class="label label-{{$d->is_active ? "success" : "danger"}}">{{$d->is_active ? "Active" : "Inactive"}}</div></td>
                             <td>
-                                <a href="{{url('users/' . $d->id . '/edit')}}" class="btn btn-warning btn-xs"><span class='glyphicon glyphicon-pencil'></span></a>
-                                <button class='btn btn-xs btn-danger delete' data-id="{{$d->id}}" data-name="{{$d->name}}"><span class='glyphicon glyphicon-trash'></span></button></td>
+                                <a href="{{url('users/' . $d->id . '/edit')}}" class="btn btn-outline-secondary btn-sm"><span class='cui-pencil'></span> Edit</a>
+                                <button class='btn btn-sm btn-outline-danger delete' data-url="users/{{$d->id}}" data-id="{{$d->id}}" data-name="{{$d->name}}"><span class='cui-trash'></span> Delete</button></td>
                             </td>
                         </tr>
                         @endforeach
@@ -75,8 +75,8 @@
                 <div class="modal-dialog modal-sm">
                     <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                         <h4 class="modal-title" id="myModalLabel">Konfirmasi</h4>
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                     </div>
                     <div class="modal-body" id="konfirmasi-body">
                         test
@@ -106,43 +106,3 @@
     </div>
 </div>
 @endsection
-
-@push('script')
-<script>
-$(function(){
-    $(".delete").on("click", function(){
-        $("#modal-konfirmasi").modal('show');
-
-        $("#modal-konfirmasi").find("#btn-hapus").data("id", $(this).data("id"));
-        $("#konfirmasi-body").text("Delete data User " + $(this).data("name"));
-    })
-
-    $('#btn-hapus').click(function(){
-        var id = $(this).data("id");
-
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-        $.ajax(
-        {
-            url: "users/"+id,
-            type: 'delete', // replaced from put
-            dataType: "JSON",
-            data: {
-                "id": id // method and token not needed in data
-            },
-            success: function (response)
-            {
-                location.reload();
-            },
-            error: function(xhr) {
-            console.log(xhr.responseText); // this line will save you tons of hours while debugging
-            // do something here because of error
-        }
-        });
-    });
-});
-</script>
-@endpush

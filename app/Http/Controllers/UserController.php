@@ -31,7 +31,7 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-        $find = User::where("username", $request->get('username'));
+        $find = User::where("username", $request->get('username'))->first();
 
         if($find){
             return redirect('/users/create')->with('error', 'User sudah ada');
