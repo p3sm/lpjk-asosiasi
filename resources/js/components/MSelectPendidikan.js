@@ -42,7 +42,7 @@ export default class MSelectProvinsi extends Component {
     return (
       <Form.Group>
         <Form.Label>Jenjang</Form.Label>
-        <Select placeholder="-- pilih Jenjang --" options={this.state.data} onChange={(val) => this.props.onChange(val)}/>
+        <Select placeholder="-- pilih Jenjang --" value={this.state.data.filter(obj => {return obj.value == this.props.value})[0]} options={this.state.data} onChange={(val) => this.props.onChange(val)}/>
       </Form.Group>
     )
   }

@@ -37,12 +37,16 @@ Route::group(['middleware' => 'auth'], function(){
   Route::post('api/biodata/{id}', 'PersonalController@apiUpdateBiodata');
   Route::get('api/pendidikan/{id_personal}', 'PersonalController@apiGetPendidikan');
   Route::post('api/pendidikan', 'PersonalController@apiCreatePendidikan');
+  Route::post('api/pendidikan/update', 'PersonalController@apiUpdatePendidikan');
   Route::post('api/kursus', 'PersonalController@apiGetKursus');
   Route::post('api/kursus/create', 'PersonalController@apiCreateKursus');
+  Route::post('api/kursus/update', 'PersonalController@apiUpdateKursus');
   Route::post('api/organisasi', 'PersonalController@apiGetOrganisasi');
   Route::post('api/organisasi/create', 'PersonalController@apiCreateOrganisasi');
+  Route::post('api/organisasi/update', 'PersonalController@apiUpdateOrganisasi');
   Route::post('api/proyek', 'PersonalController@apiGetProyek');
   Route::post('api/proyek/create', 'PersonalController@apiCreateProyek');
+  Route::post('api/proyek/update', 'PersonalController@apiUpdateProyek');
   Route::post('api/kualifikasi_ta', 'PersonalController@apiGetKualifikasiTA');
   Route::post('api/kualifikasi_ta/create', 'PersonalController@apiCreateKualifikasiTA');
   Route::post('api/kualifikasi_ta/delete', 'PersonalController@apiDeleteKualifikasiTA');

@@ -14,6 +14,7 @@ export default class components extends Component {
       showFormAdd: false,
       submiting: false,
       id_personal: this.props.id_personal,
+      isUpdate: false
     }
 
   }
@@ -25,12 +26,40 @@ export default class components extends Component {
     this.setState({showFormAdd: false})
   }
 
+  openUpdateForm = (data) => {
+    this.setState({
+      showFormAdd: true,
+      isUpdate: true,
+      ID_Personal_Pengalaman: data.ID_Personal_Pengalaman,
+      id_personal: data.ID_Personal,
+      nama_bu: data.Nama_Badan_Usaha,
+      nrbu: data.NRBU,
+      alamat: data.Alamat,
+      jenis_bu: data.Jenis_BU,
+      jabatan: data.Jabatan,
+      tgl_mulai: data.Tgl_Mulai,
+      tgl_selesai: data.Tgl_Selesai,
+      role_pekerjaan: data.Role_Pekerjaan,
+    })
+  }
+
+
   onUploadChangeHandler = event => {
-    $( event.target ).siblings("label").addClass("selected")
-    $( event.target ).siblings("label").append(" (" + event.target.files[0].name + ")")
+    var size = event.target.files[0].size
+    var label = $( event.target ).siblings("label")
+
+    if(size > 20000000){
+      Alert.error('Max file size 20mb')
+
+      return
+    }
+
+    label.addClass("selected")
+    label.html(event.target.files[0].name)
 
     switch(event.target.id){
       case "file_pengalaman":
+        label.prepend("Upload Pengalaman Organisasi ")
         this.setState({ file_pengalaman: event.target.files[0] })
         break;
       default:
@@ -42,6 +71,7 @@ export default class components extends Component {
     this.setState({submiting: true})
 
     var formData = new FormData();
+    formData.append("ID_Personal_Pengalaman", this.state.ID_Personal_Pengalaman);
     formData.append("id_personal", this.state.id_personal);
     formData.append("nama_bu", this.state.nama_bu);
     formData.append("nrbu", this.state.nrbu);
@@ -53,7 +83,9 @@ export default class components extends Component {
     formData.append("role_pekerjaan", this.state.role_pekerjaan);
     formData.append("file_pengalaman", this.state.file_pengalaman);
 
-    axios.post(`/api/organisasi/create`, formData, {
+    var uri = this.state.isUpdate ? "/api/organisasi/update" : "/api/organisasi/create"
+
+    axios.post(uri, formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
@@ -76,7 +108,6 @@ export default class components extends Component {
 
   resetState = () => {
     this.setState({
-      id_personal: "",
       nama_bu: "",
       nrbu: "",
       alamat: "",
@@ -101,6 +132,7 @@ export default class components extends Component {
               <th>Pekerjaan</th>
               <th>Tanggal</th>
               <th>Alamat</th>
+              <th>Action</th>
             </tr>
             {this.props.data.map((d) => (
               <tr>
@@ -109,6 +141,7 @@ export default class components extends Component {
                 <td>{d.Role_Pekerjaan}</td>
                 <td>{d.Tgl_Mulai} - {d.Tgl_Selesai}</td>
                 <td>{d.Alamat}</td>
+                <td><Button variant="outline-warning" size="sm" onClick={() => this.openUpdateForm(d)}><span className="cui-pencil"></span> Ubah</Button></td>
               </tr>
             ))}
           </tbody>
@@ -118,7 +151,7 @@ export default class components extends Component {
         onHide={this.handleClose}
         show={this.state.showFormAdd}>
           <Modal.Header closeButton>
-            <Modal.Title>Tambah Data</Modal.Title>
+            <Modal.Title>{this.state.isUpdate ? "Ubah" : "Tambah"} Data</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Form>
@@ -140,20 +173,32 @@ export default class components extends Component {
                     <Form.Label>Jenis Instansi</Form.Label>
                     <Form.Control as="select" name="jenis_bu" onChange={(e) => this.setState({jenis_bu: e.target.value})}>
                       <option value="">-- Pilih Jenis Instansi --</option>
-                      <option value="1">Formal Pemerintah</option>
-                      <option value="2">Formal Swasta</option>
-                      <option value="3">Non-Formal</option>
+                      <option value="1" selected={this.state.jenis_bu == "1" ? "selected" : ""}>Formal Pemerintah</option>
+                      <option value="2" selected={this.state.jenis_bu == "2" ? "selected" : ""}>Formal Swasta</option>
+                      <option value="3" selected={this.state.jenis_bu == "3" ? "selected" : ""}>Non-Formal</option>
                     </Form.Control>
                   </Form.Group>
                 </Col>
                 <Col md>
                   <Form.Group>
                     <Form.Label>Tanggal Awal</Form.Label>
-                    <Datetime value={this.state.tgl_mulai} onChange={(e) => this.setState({tgl_mulai: e.format("YYYY-MM-DD")})} timeFormat={false} />
+                    <Datetime closeOnSelect={true} inputProps={{ placeholder: 'contoh: 1980-01-01'}} value={this.state.tgl_mulai} dateFormat="YYYY-MM-DD" onChange={(e) => {
+                      try {
+                        this.setState({tgl_mulai: e.format("YYYY-MM-DD")})
+                      } catch (err) {
+                        this.setState({tgl_mulai: e})
+                      }
+                    }} timeFormat={false} />
                   </Form.Group>
                   <Form.Group>
                     <Form.Label>Tanggal Akhir</Form.Label>
-                    <Datetime value={this.state.tgl_selesai} onChange={(e) => this.setState({tgl_selesai: e.format("YYYY-MM-DD")})} timeFormat={false} />
+                    <Datetime closeOnSelect={true} inputProps={{ placeholder: 'contoh: 1980-01-01'}} value={this.state.tgl_selesai} dateFormat="YYYY-MM-DD" onChange={(e) => {
+                      try {
+                        this.setState({tgl_selesai: e.format("YYYY-MM-DD")})
+                      } catch (err) {
+                        this.setState({tgl_selesai: e})
+                      }
+                    }} timeFormat={false} />
                   </Form.Group>
                   <Form.Group>
                     <Form.Label>Deskripsi Pekerjaan</Form.Label>
@@ -161,7 +206,7 @@ export default class components extends Component {
                   </Form.Group>
                   <div class="custom-file mb-3">
                     <input type="file" class="custom-file-input" id="file_pengalaman" onChange={this.onUploadChangeHandler}></input>
-                    <label class="custom-file-label" for="file_pengalaman">Pengalaman Organisasi</label>
+                    <label class="custom-file-label" for="file_pengalaman">Upload Pengalaman Organisasi</label>
                   </div>
                 </Col>
               </Row>

@@ -47,20 +47,33 @@ export default class components extends Component {
   }
 
   onUploadChangeHandler = event => {
-    $( event.target ).siblings("label").addClass("selected")
-    $( event.target ).siblings("label").append(" (" + event.target.files[0].name + ")")
+    var size = event.target.files[0].size
+    var label = $( event.target ).siblings("label")
+
+    if(size > 20000000){
+      Alert.error('Max file size 20mb')
+
+      return
+    }
+
+    label.addClass("selected")
+    label.html(event.target.files[0].name)
 
     switch(event.target.id){
       case "file_berita_acara_vva":
+        label.prepend("Upload Berita Acara VVA ")
         this.setState({ file_berita_acara_vva: event.target.files[0] })
         break;
       case "file_surat_permohonan_asosiasi":
+        label.prepend("Upload Surat Pengantar Permohonan Asosiasi ")
         this.setState({ file_surat_permohonan_asosiasi: event.target.files[0] })
         break;
       case "file_surat_permohonan":
+        label.prepend("Upload Surat Permohonan ")
         this.setState({ file_surat_permohonan: event.target.files[0] })
         break;
       case "file_penilaian_mandiri":
+        label.prepend("Upload Penilaian Mandiri Pemohon ")
         this.setState({ file_penilaian_mandiri: event.target.files[0] })
         break;
       default:
@@ -248,21 +261,21 @@ export default class components extends Component {
                   </Form.Group>
                   <div class="custom-file mb-3">
                     <input type="file" class="custom-file-input" id="file_berita_acara_vva" onChange={this.onUploadChangeHandler}></input>
-                    <label class="custom-file-label" for="file_berita_acara_vva">Berita Acara VVA</label>
+                    <label class="custom-file-label" for="file_berita_acara_vva">Upload Berita Acara VVA</label>
                   </div>
                   <div class="custom-file mb-3">
                     <input type="file" class="custom-file-input" id="file_surat_permohonan_asosiasi" onChange={this.onUploadChangeHandler}></input>
-                    <label class="custom-file-label" for="file_surat_permohonan_asosiasi">Surat Pengantar Permohonan Asosiasi</label>
+                    <label class="custom-file-label" for="file_surat_permohonan_asosiasi">Upload Surat Pengantar Permohonan Asosiasi</label>
                   </div>
                   <div class="custom-file mb-3">
                     <input type="file" class="custom-file-input" id="file_surat_permohonan" onChange={this.onUploadChangeHandler}></input>
-                    <label class="custom-file-label" for="file_surat_permohonan">Surat Permohonan</label>
+                    <label class="custom-file-label" for="file_surat_permohonan">Upload Surat Permohonan</label>
                   </div>
 
                   {this.props.tipe_profesi === 1 && (
                     <div class="custom-file mb-3">
                       <input type="file" class="custom-file-input" id="file_penilaian_mandiri" onChange={this.onUploadChangeHandler}></input>
-                      <label class="custom-file-label" for="file_penilaian_mandiri">Penilaian Mandiri Pemohon</label>
+                      <label class="custom-file-label" for="file_penilaian_mandiri">Upload Penilaian Mandiri Pemohon</label>
                     </div>
                   )}
                 </Col>

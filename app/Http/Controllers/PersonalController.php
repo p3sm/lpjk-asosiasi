@@ -94,11 +94,11 @@ class PersonalController extends Controller
             "no_hp"               => $request->telepon,
             "id_negara"           => $request->negara,
             "jenis_tenaga_kerja"  => $request->jenis_tenaga_kerja,
-            "url_pdf_ktp"                             => curl_file_create($request->file("file_ktp")->path()),
-            "url_pdf_npwp"                            => $request->jenis_tenaga_kerja == "tenaga_ahli" ? curl_file_create($request->file("file_npwp")->path()) : "",
-            "url_pdf_photo"                           => curl_file_create($request->file("file_photo")->path()),
-            "url_pdf_surat_pernyataan_kebenaran_data" => curl_file_create($request->file("file_pernyataan")->path()),
-            "url_pdf_daftar_riwayat_hidup"            => curl_file_create($request->file("file_cv")->path())
+            "url_pdf_ktp"                             => $request->file("file_ktp") ? curl_file_create($request->file("file_ktp")->path()) : "",
+            "url_pdf_npwp"                            => $request->jenis_tenaga_kerja == "tenaga_ahli" && $request->file("file_npwp") ? curl_file_create($request->file("file_npwp")->path()) : "",
+            "url_pdf_photo"                           => $request->file("file_photo") ? curl_file_create($request->file("file_photo")->path()) : "",
+            "url_pdf_surat_pernyataan_kebenaran_data" => $request->file("file_pernyataan") ? curl_file_create($request->file("file_pernyataan")->path()) : "",
+            "url_pdf_daftar_riwayat_hidup"            => $request->file("file_cv") ? curl_file_create($request->file("file_cv")->path()) : ""
             ];
 
         $key = ApiKey::first();
@@ -156,11 +156,11 @@ class PersonalController extends Controller
             "no_hp"               => $request->telepon,
             "id_negara"           => $request->negara,
             "jenis_tenaga_kerja"  => $request->jenis_tenaga_kerja,
-            "url_pdf_ktp"                             => curl_file_create($request->file("file_ktp")->path()),
-            "url_pdf_npwp"                            => curl_file_create($request->file("file_npwp")->path()),
-            "url_pdf_photo"                           => curl_file_create($request->file("file_photo")->path()),
-            "url_pdf_surat_pernyataan_kebenaran_data" => curl_file_create($request->file("file_pernyataan")->path()),
-            "url_pdf_daftar_riwayat_hidup"            => curl_file_create($request->file("file_cv")->path())
+            "url_pdf_ktp"                             => $request->file("file_ktp") ? curl_file_create($request->file("file_ktp")->path()) : "",
+            "url_pdf_npwp"                            => $request->file("file_npwp") ? curl_file_create($request->file("file_npwp")->path()) : "",
+            "url_pdf_photo"                           => $request->file("file_photo") ? curl_file_create($request->file("file_photo")->path()) : "",
+            "url_pdf_surat_pernyataan_kebenaran_data" => $request->file("file_pernyataan") ? curl_file_create($request->file("file_pernyataan")->path()) : "",
+            "url_pdf_daftar_riwayat_hidup"            => $request->file("file_cv") ? curl_file_create($request->file("file_cv")->path()) : ""
             ];
 
         $key = ApiKey::first();
@@ -245,9 +245,9 @@ class PersonalController extends Controller
             "jenjang"                                    => $request->jenjang,
             "jurusan"                                    => $request->jurusan,
             "no_ijazah"                                  => $request->no_ijazah,
-            "url_pdf_ijazah"                             => curl_file_create($request->file("file_ijazah")->path()),
-            "url_pdf_data_pendidikan"                    => curl_file_create($request->file("file_data_pendidikan")->path()),
-            "url_pdf_data_surat_keterangan_dari_sekolah" => curl_file_create($request->file("file_keterangan_sekolah")->path()),
+            "url_pdf_ijazah"                             => $request->file("file_ijazah") ? curl_file_create($request->file("file_ijazah")->path()) : "",
+            "url_pdf_data_pendidikan"                    => $request->file("file_data_pendidikan") ? curl_file_create($request->file("file_data_pendidikan")->path()) : "",
+            "url_pdf_data_surat_keterangan_dari_sekolah" => $request->file("file_keterangan_sekolah") ? curl_file_create($request->file("file_keterangan_sekolah")->path()) : "",
         ];
         $key = ApiKey::first();
 
@@ -257,6 +257,59 @@ class PersonalController extends Controller
         $header[] = "Content-Type:multipart/form-data";
         curl_setopt_array($curl, array(
         CURLOPT_URL => env("LPJK_ENDPOINT") . "Service/Pendidikan/Tambah",
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_CUSTOMREQUEST => "POST",
+        CURLOPT_POSTFIELDS => $postData,
+        CURLOPT_HTTPHEADER => $header,
+        CURLOPT_SSL_VERIFYHOST => 0,
+        CURLOPT_SSL_VERIFYPEER => 0
+        ));
+        $response = curl_exec($curl);
+        
+		if($obj = json_decode($response)){
+            $result = new \stdClass();
+            $result->message = $obj->message;
+            $result->status = $obj->response;
+
+			if($obj->response == 1) {
+                return response()->json($result, 200);
+            }
+            return response()->json($result, 400);
+        }
+        
+        $result = new \stdClass();
+        $result->message = "An error occurred";
+        $result->status = 500;
+
+    	return response()->json($result, 500);
+    }
+
+    public function apiUpdatePendidikan(Request $request)
+    {
+        $postData = [
+            "id_personal_pendidikan"                     => $request->ID_Personal_Pendidikan,
+            "id_personal"                                => $request->id_personal,
+            "nama_sekolah"                               => $request->nama,
+            "alamat_sekolah"                             => $request->alamat,
+            "id_propinsi_sekolah"                        => $request->provinsi,
+            "id_kabupaten_sekolah"                       => $request->kabupaten,
+            "id_negara_sekolah"                          => $request->negara,
+            "tahun"                                      => $request->tahun,
+            "jenjang"                                    => $request->jenjang,
+            "jurusan"                                    => $request->jurusan,
+            "no_ijazah"                                  => $request->no_ijazah,
+            "url_pdf_ijazah"                             => $request->file("file_ijazah") ? curl_file_create($request->file("file_ijazah")->path()) : "",
+            "url_pdf_data_pendidikan"                    => $request->file("file_data_pendidikan") ? curl_file_create($request->file("file_data_pendidikan")->path()) : "",
+            "url_pdf_data_surat_keterangan_dari_sekolah" => $request->file("file_keterangan_sekolah") ? curl_file_create($request->file("file_keterangan_sekolah")->path()) : "",
+        ];
+        $key = ApiKey::first();
+
+        $curl = curl_init();
+        $header[] = "X-Api-Key:" . $key->lpjk_key;
+        $header[] = "Token:" . $key->token;
+        $header[] = "Content-Type:multipart/form-data";
+        curl_setopt_array($curl, array(
+        CURLOPT_URL => env("LPJK_ENDPOINT") . "Service/Pendidikan/Ubah",
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_CUSTOMREQUEST => "POST",
         CURLOPT_POSTFIELDS => $postData,
@@ -330,7 +383,7 @@ class PersonalController extends Controller
             "id_countries" => $request->negara,
             "tahun" => $request->tahun,
             "no_sertifikat" => $request->no_sertifikat,
-            "url_pdf_persyaratan_kursus" => curl_file_create($request->file("file_persyaratan")->path()),
+            "url_pdf_persyaratan_kursus" => $request->file("file_persyaratan") ? curl_file_create($request->file("file_persyaratan")->path()) : "",
         ];
         $key = ApiKey::first();
 
@@ -340,6 +393,56 @@ class PersonalController extends Controller
         $header[] = "Content-Type:multipart/form-data";
         curl_setopt_array($curl, array(
         CURLOPT_URL => env("LPJK_ENDPOINT") . "Service/Kursus/Tambah",
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_CUSTOMREQUEST => "POST",
+        CURLOPT_POSTFIELDS => $postData,
+        CURLOPT_HTTPHEADER => $header,
+        CURLOPT_SSL_VERIFYHOST => 0,
+        CURLOPT_SSL_VERIFYPEER => 0
+        ));
+        $response = curl_exec($curl);
+        
+		if($obj = json_decode($response)){
+            $result = new \stdClass();
+            $result->message = $obj->message;
+            $result->status = $obj->response;
+
+			if($obj->response == 1) {
+                return response()->json($result, 200);
+            }
+            return response()->json($result, 400);
+        }
+        
+        $result = new \stdClass();
+        $result->message = "An error occurred";
+        $result->status = 500;
+
+    	return response()->json($result, 500);
+    }
+
+    public function apiUpdateKursus(Request $request)
+    {
+        $postData = [
+            "ID_Personal_Kursus" => $request->ID_Personal_Kursus,
+            "id_personal" => $request->id_personal,
+            "nama_kursus" => $request->nama_kursus,
+            "nama_penyelenggara_Kursus" => $request->penyelenggara,
+            "alamat" => $request->alamat,
+            "id_propinsi" => $request->provinsi,
+            "id_kabupaten" => $request->kabupaten,
+            "id_countries" => $request->negara,
+            "tahun" => $request->tahun,
+            "no_sertifikat" => $request->no_sertifikat,
+            "url_pdf_persyaratan_kursus" => $request->file("file_persyaratan") ? curl_file_create($request->file("file_persyaratan")->path()) : "",
+        ];
+        $key = ApiKey::first();
+
+        $curl = curl_init();
+        $header[] = "X-Api-Key:" . $key->lpjk_key;
+        $header[] = "Token:" . $key->token;
+        $header[] = "Content-Type:multipart/form-data";
+        curl_setopt_array($curl, array(
+        CURLOPT_URL => env("LPJK_ENDPOINT") . "Service/Kursus/Ubah",
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_CUSTOMREQUEST => "POST",
         CURLOPT_POSTFIELDS => $postData,
@@ -413,7 +516,7 @@ class PersonalController extends Controller
             "tgl_mulai" => $request->tgl_mulai,
             "tgl_selesai" => $request->tgl_selesai,
             "role_pekerjaan" => $request->role_pekerjaan,
-            "url_pdf_persyaratan_pengalaman_organisasi" => curl_file_create($request->file("file_pengalaman")->path()),
+            "url_pdf_persyaratan_pengalaman_organisasi" => $request->file("file_pengalaman") ? curl_file_create($request->file("file_pengalaman")->path()) : "",
         ];
         $key = ApiKey::first();
 
@@ -423,6 +526,56 @@ class PersonalController extends Controller
         $header[] = "Content-Type:multipart/form-data";
         curl_setopt_array($curl, array(
         CURLOPT_URL => env("LPJK_ENDPOINT") . "Service/Organisasi/Tambah",
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_CUSTOMREQUEST => "POST",
+        CURLOPT_POSTFIELDS => $postData,
+        CURLOPT_HTTPHEADER => $header,
+        CURLOPT_SSL_VERIFYHOST => 0,
+        CURLOPT_SSL_VERIFYPEER => 0
+        ));
+        $response = curl_exec($curl);
+        
+		if($obj = json_decode($response)){
+            $result = new \stdClass();
+            $result->message = $obj->message;
+            $result->status = $obj->response;
+
+			if($obj->response == 1) {
+                return response()->json($result, 200);
+            }
+            return response()->json($result, 400);
+        }
+        
+        $result = new \stdClass();
+        $result->message = "An error occurred";
+        $result->status = 500;
+
+    	return response()->json($result, 500);
+    }
+
+    public function apiUpdateOrganisasi(Request $request)
+    {
+        $postData = [
+            "ID_Personal_Pengalaman" => $request->ID_Personal_Pengalaman,
+            "id_personal" => $request->id_personal,
+            "nama_badan_usaha" => $request->nama_bu,
+            "NRBU" => " ",
+            "alamat" => $request->alamat,
+            "jenis_bu" => $request->jenis_bu,
+            "jabatan" => $request->jabatan,
+            "tgl_mulai" => $request->tgl_mulai,
+            "tgl_selesai" => $request->tgl_selesai,
+            "role_pekerjaan" => $request->role_pekerjaan,
+            "url_pdf_persyaratan_pengalaman_organisasi" => $request->file("file_pengalaman") ? curl_file_create($request->file("file_pengalaman")->path()) : "",
+        ];
+        $key = ApiKey::first();
+
+        $curl = curl_init();
+        $header[] = "X-Api-Key:" . $key->lpjk_key;
+        $header[] = "Token:" . $key->token;
+        $header[] = "Content-Type:multipart/form-data";
+        curl_setopt_array($curl, array(
+        CURLOPT_URL => env("LPJK_ENDPOINT") . "Service/Organisasi/Ubah",
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_CUSTOMREQUEST => "POST",
         CURLOPT_POSTFIELDS => $postData,
@@ -494,7 +647,7 @@ class PersonalController extends Controller
             "tgl_selesai" => $request->tgl_selesai,
             "jabatan" => $request->jabatan,
             "nilai_proyek" => $request->nilai_proyek,
-            "url_pdf_persyaratan_pengalaman_proyek" => curl_file_create($request->file("file_pengalaman")->path()),
+            "url_pdf_persyaratan_pengalaman_proyek" => $request->file("file_pengalaman") ? curl_file_create($request->file("file_pengalaman")->path()) : "",
         ];
         $key = ApiKey::first();
 
@@ -504,6 +657,54 @@ class PersonalController extends Controller
         $header[] = "Content-Type:multipart/form-data";
         curl_setopt_array($curl, array(
         CURLOPT_URL => env("LPJK_ENDPOINT") . "Service/Proyek/Tambah",
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_CUSTOMREQUEST => "POST",
+        CURLOPT_POSTFIELDS => $postData,
+        CURLOPT_HTTPHEADER => $header,
+        CURLOPT_SSL_VERIFYHOST => 0,
+        CURLOPT_SSL_VERIFYPEER => 0
+        ));
+        $response = curl_exec($curl);
+        
+		if($obj = json_decode($response)){
+            $result = new \stdClass();
+            $result->message = $obj->message;
+            $result->status = $obj->response;
+
+			if($obj->response == 1) {
+                return response()->json($result, 200);
+            }
+            return response()->json($result, 400);
+        }
+        
+        $result = new \stdClass();
+        $result->message = "An error occurred";
+        $result->status = 500;
+
+    	return response()->json($result, 500);
+    }
+
+    public function apiUpdateProyek(Request $request)
+    {
+        $postData = [
+            "id_personal_proyek" => $request->id_personal_proyek,
+            "id_personal" => $request->id_personal,
+            "nama_proyek" => $request->nama_proyek,
+            "lokasi" => $request->lokasi,
+            "tgl_mulai" => $request->tgl_mulai,
+            "tgl_selesai" => $request->tgl_selesai,
+            "jabatan" => $request->jabatan,
+            "nilai_proyek" => $request->nilai_proyek,
+            "url_pdf_persyaratan_pengalaman_proyek" => $request->file("file_pengalaman") ? curl_file_create($request->file("file_pengalaman")->path()) : "",
+        ];
+        $key = ApiKey::first();
+
+        $curl = curl_init();
+        $header[] = "X-Api-Key:" . $key->lpjk_key;
+        $header[] = "Token:" . $key->token;
+        $header[] = "Content-Type:multipart/form-data";
+        curl_setopt_array($curl, array(
+        CURLOPT_URL => env("LPJK_ENDPOINT") . "Service/Proyek/Ubah",
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_CUSTOMREQUEST => "POST",
         CURLOPT_POSTFIELDS => $postData,
@@ -579,10 +780,10 @@ class PersonalController extends Controller
             "id_permohonan"         => $request->id_permohonan,
             "tgl_registrasi"        => $request->tgl_registrasi,
             "id_propinsi_reg"       => $user->asosiasi->provinsi_id,
-            "url_pdf_berita_acara_vva"          => curl_file_create($request->file("file_berita_acara_vva")->path()),
-            "url_pdf_surat_permohonan_asosiasi" => curl_file_create($request->file("file_surat_permohonan_asosiasi")->path()),
-            "url_pdf_surat_permohonan"          => curl_file_create($request->file("file_surat_permohonan")->path()),
-            "url_pdf_penilaian_mandiri_f19"     => curl_file_create($request->file("file_penilaian_mandiri")->path()),
+            "url_pdf_berita_acara_vva"          => $request->file("file_berita_acara_vva") ? curl_file_create($request->file("file_berita_acara_vva")->path()) : "",
+            "url_pdf_surat_permohonan_asosiasi" => $request->file("file_surat_permohonan_asosiasi") ? curl_file_create($request->file("file_surat_permohonan_asosiasi")->path()) : "",
+            "url_pdf_surat_permohonan"          => $request->file("file_surat_permohonan") ? curl_file_create($request->file("file_surat_permohonan")->path()) : "",
+            "url_pdf_penilaian_mandiri_f19"     => $request->file("file_penilaian_mandiri") ? curl_file_create($request->file("file_penilaian_mandiri")->path()) : "",
           ];
 
         $key = ApiKey::first();
@@ -713,9 +914,9 @@ class PersonalController extends Controller
             "tgl_registrasi"        => $request->tgl_registrasi,
             "id_propinsi_reg"       => $user->asosiasi->provinsi_id,
             "no_sk"                 => "-",
-            "url_pdf_berita_acara_vva"          => curl_file_create($request->file("file_berita_acara_vva")->path()),
-            "url_pdf_surat_permohonan_asosiasi" => curl_file_create($request->file("file_surat_permohonan_asosiasi")->path()),
-            "url_pdf_surat_permohonan"          => curl_file_create($request->file("file_surat_permohonan")->path()),
+            "url_pdf_berita_acara_vva"          => $request->file("file_berita_acara_vva") ? curl_file_create($request->file("file_berita_acara_vva")->path()) : "",
+            "url_pdf_surat_permohonan_asosiasi" => $request->file("file_surat_permohonan_asosiasi") ? curl_file_create($request->file("file_surat_permohonan_asosiasi")->path()) : "",
+            "url_pdf_surat_permohonan"          => $request->file("file_surat_permohonan") ? curl_file_create($request->file("file_surat_permohonan")->path()) : "",
           ];
 
         $key = ApiKey::first();

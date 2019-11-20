@@ -44,7 +44,7 @@ export default class Personal extends Component {
           Alert.error('ID Personal / KTP tidak boleh kosong');
 
           return
-        } else if(this.state.id_personal.length < 16){
+        } else if(this.state.id_personal.length != 16){
           Alert.error('ID Personal / KTP harus 16 karakter')
 
           return

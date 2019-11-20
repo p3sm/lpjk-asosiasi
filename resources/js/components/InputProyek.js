@@ -15,6 +15,7 @@ export default class components extends Component {
       showFormAdd: false,
       submiting: false,
       id_personal: this.props.id_personal,
+      isUpdate: false
     }
 
   }
@@ -26,12 +27,37 @@ export default class components extends Component {
     this.setState({showFormAdd: false})
   }
 
+  openUpdateForm = (data) => {
+    this.setState({
+      showFormAdd: true,
+      isUpdate: true,
+      id_personal_proyek: data.id_personal_proyek,
+      id_personal: data.id_personal,
+      nama_proyek: data.Proyek,
+      lokasi: data.Lokasi,
+      tgl_mulai: data.Tgl_Mulai,
+      tgl_selesai: data.Tgl_Selesai,
+      jabatan: data.Jabatan,
+      nilai_proyek: data.Nilai,
+    })
+  }
+
   onUploadChangeHandler = event => {
-    $( event.target ).siblings("label").addClass("selected")
-    $( event.target ).siblings("label").append(" (" + event.target.files[0].name + ")")
+    var size = event.target.files[0].size
+    var label = $( event.target ).siblings("label")
+
+    if(size > 20000000){
+      Alert.error('Max file size 20mb')
+
+      return
+    }
+
+    label.addClass("selected")
+    label.html(event.target.files[0].name)
 
     switch(event.target.id){
       case "file_pengalaman":
+        label.prepend("Upload Pengalaman Proyek ")
         this.setState({ file_pengalaman: event.target.files[0] })
         break;
       default:
@@ -43,6 +69,7 @@ export default class components extends Component {
     this.setState({submiting: true})
 
     var formData = new FormData();
+    formData.append("id_personal_proyek", this.state.id_personal_proyek);
     formData.append("id_personal", this.state.id_personal);
     formData.append("nama_proyek", this.state.nama_proyek);
     formData.append("lokasi", this.state.lokasi);
@@ -52,7 +79,9 @@ export default class components extends Component {
     formData.append("nilai_proyek", this.state.nilai_proyek);
     formData.append("file_pengalaman", this.state.file_pengalaman);
 
-    axios.post(`/api/proyek/create`, formData, {
+    var uri = this.state.isUpdate ? "/api/proyek/update" : "/api/proyek/create"
+
+    axios.post(uri, formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
@@ -75,7 +104,6 @@ export default class components extends Component {
 
   resetState = () => {
     this.setState({
-      id_personal: "",
       nama_proyek: "",
       lokasi: "",
       tgl_mulai: "",
@@ -98,6 +126,7 @@ export default class components extends Component {
               <th>Nilai</th>
               <th>Tanggal</th>
               <th>Lokasi</th>
+              <th>Action</th>
             </tr>
             {this.props.data.map((d) => (
               <tr>
@@ -106,6 +135,7 @@ export default class components extends Component {
                 <td>{d.Nilai}</td>
                 <td>{d.Tgl_Mulai} - {d.Tgl_Selesai}</td>
                 <td>{d.Lokasi}</td>
+                <td><Button variant="outline-warning" size="sm" onClick={() => this.openUpdateForm(d)}><span className="cui-pencil"></span> Ubah</Button></td>
               </tr>
             ))}
           </tbody>
@@ -115,7 +145,7 @@ export default class components extends Component {
         onHide={this.handleClose}
         show={this.state.showFormAdd}>
           <Modal.Header closeButton>
-            <Modal.Title>Tambah Data</Modal.Title>
+            <Modal.Title>{this.state.isUpdate ? "Ubah" : "Tambah"} Data</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Form>
@@ -130,7 +160,7 @@ export default class components extends Component {
 
                   <Form.Group>
                     <Form.Label>Tanggal Awal</Form.Label>
-                    <Datetime closeOnSelect={true} value={this.state.tgl_mulai} dateFormat="YYYY-MM-DD" onChange={(e) => {
+                    <Datetime closeOnSelect={true} inputProps={{ placeholder: 'contoh: 1980-01-01'}} value={this.state.tgl_mulai} dateFormat="YYYY-MM-DD" onChange={(e) => {
                       try {
                         this.setState({tgl_mulai: e.format("YYYY-MM-DD")})
                       } catch (err) {
@@ -140,7 +170,7 @@ export default class components extends Component {
                   </Form.Group>
                   <Form.Group>
                     <Form.Label>Tanggal Akhir</Form.Label>
-                    <Datetime closeOnSelect={true} value={this.state.tgl_selesai} dateFormat="YYYY-MM-DD" onChange={(e) => {
+                    <Datetime closeOnSelect={true} inputProps={{ placeholder: 'contoh: 1980-01-01'}} value={this.state.tgl_selesai} dateFormat="YYYY-MM-DD" onChange={(e) => {
                       try {
                         this.setState({tgl_selesai: e.format("YYYY-MM-DD")})
                       } catch (err) {
@@ -160,7 +190,7 @@ export default class components extends Component {
                   </Form.Group>
                   <div class="custom-file mb-3">
                     <input type="file" class="custom-file-input" id="file_pengalaman" onChange={this.onUploadChangeHandler}></input>
-                    <label class="custom-file-label" for="file_pengalaman">Pengalaman Proyek</label>
+                    <label class="custom-file-label" for="file_pengalaman">Upload Pengalaman Proyek</label>
                   </div>
                 </Col>
               </Row>

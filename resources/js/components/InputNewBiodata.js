@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Form, Button, Row, Col, Card, Modal, Table, Spinner } from 'react-bootstrap';
 import Datetime from 'react-datetime'
+import InputMask from 'react-input-mask';
 import MSelectProvinsi from './MSelectProvinsi'
 import MSelectKabupaten from './MSelectKabupaten'
 import axios from 'axios'
@@ -32,24 +33,38 @@ export default class InputBiodata extends Component {
   }
 
   onChangeHandler = event => {
-    $( event.target ).siblings("label").addClass("selected")
-    $( event.target ).siblings("label").append(" (" + event.target.files[0].name + ")")
+    var size = event.target.files[0].size
+    var label = $( event.target ).siblings("label")
+
+    if(size > 20000000){
+      Alert.error('Max file size 20mb')
+
+      return
+    }
+
+    label.addClass("selected")
+    label.html(event.target.files[0].name)
 
     switch(event.target.id){
       case "ktp":
+        label.prepend("Upload KTP ")
         this.setState({ file_ktp: event.target.files[0] })
         break;
       case "npwp":
-          this.setState({ file_npwp: event.target.files[0] })
+        label.prepend("Upload NPWP ")
+        this.setState({ file_npwp: event.target.files[0] })
         break;
       case "cv":
-          this.setState({ file_cv: event.target.files[0] })
+        label.prepend("Upload Daftar Riwayat Hidup ")
+        this.setState({ file_cv: event.target.files[0] })
         break;
       case "pernyataan":
-          this.setState({ file_pernyataan: event.target.files[0] })
+        label.prepend("Upload Surat Pernyataan Kebenaran Data Pemohon ")
+        this.setState({ file_pernyataan: event.target.files[0] })
         break;
       case "photo":
-          this.setState({ file_photo: event.target.files[0] })
+        label.prepend("Upload Pas Photo Pemohon ")
+        this.setState({ file_photo: event.target.files[0] })
         break;
       default:
         break;
@@ -57,6 +72,18 @@ export default class InputBiodata extends Component {
   }
 
   handleSubmit = () => {
+    if(this.props.id_personal.length != 16){
+      Alert.error('ID Personal / KTP harus 16 karakter')
+
+      return
+    }
+
+    if(!/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/.test(this.state.email)){
+      Alert.error('Format email tidak valid')
+
+      return
+    }
+
     this.setState({submiting: true})
 
     var formData = new FormData();
@@ -133,7 +160,9 @@ export default class InputBiodata extends Component {
                 </Form.Group>
                 <Form.Group>
                   <Form.Label>NPWP</Form.Label>
-                  <Form.Control type="text" id="npwp" name="npwp" onChange={(e) => this.setState({npwp: e.target.value})} placeholder="" value={this.state.npwp}></Form.Control>
+                  <InputMask mask="99.999.999.9-999.999" type="text" id="npwp" name="npwp" onChange={(e) => this.setState({npwp: e.target.value})} placeholder="" value={this.state.npwp}>
+                      {(inputProps) => <Form.Control {...inputProps}></Form.Control>}
+                    </InputMask>
                 </Form.Group>
               </Col>
               <Col md>
@@ -143,11 +172,17 @@ export default class InputBiodata extends Component {
                 </Form.Group>
                 <Form.Group>
                   <Form.Label>Tanggal Lahir</Form.Label>
-                  <Datetime value={this.state.tgl_lahir} onChange={(e) => this.setState({tgl_lahir: e.format("YYYY-MM-DD")})} timeFormat={false} />
+                  <Datetime closeOnSelect={true} inputProps={{ placeholder: 'contoh: 1980-01-01'}} value={this.state.tgl_lahir} dateFormat="YYYY-MM-DD" onChange={(e) => {
+                      try {
+                        this.setState({tgl_lahir: e.format("YYYY-MM-DD")})
+                      } catch (err) {
+                        this.setState({tgl_lahir: e})
+                      }
+                    }} timeFormat={false} />
                 </Form.Group>
                 <Form.Group>
                   <Form.Label>Telepon</Form.Label>
-                  <Form.Control type="text" id="telepon" name="telepon" onChange={(e) => this.setState({telepon: e.target.value})} placeholder="" value={this.state.telepon}></Form.Control>
+                  <Form.Control type="number" id="telepon" name="telepon" onChange={(e) => this.setState({telepon: e.target.value})} placeholder="" value={this.state.telepon}></Form.Control>
                 </Form.Group>
                 <Form.Group>
                   <Form.Label>Jenis Kelamin</Form.Label>

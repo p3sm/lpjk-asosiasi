@@ -18,6 +18,7 @@ export default class components extends Component {
       showFormAdd: false,
       submiting: false,
       id_personal: this.props.id_personal,
+      isUpdate: false
     }
   }
 
@@ -38,19 +39,49 @@ export default class components extends Component {
     this.setState({negara: data.value})
   }
 
+  openUpdateForm = (data) => {
+    this.setState({
+      showFormAdd: true,
+      isUpdate: true,
+      ID_Personal_Pendidikan: data.ID_Personal_Pendidikan,
+      id_personal: data.ID_Personal,
+      nama: data.Nama_Sekolah,
+      alamat: data.Alamat1,
+      provinsi: data.ID_Propinsi,
+      kabupaten: data.ID_Kabupaten,
+      negara: data.ID_Countries,
+      tahun: data.Tahun,
+      jenjang: data.Jenjang,
+      jurusan: data.Jurusan,
+      no_ijazah: data.No_Ijazah,
+    })
+  }
+
   onUploadChangeHandler = event => {
-    $( event.target ).siblings("label").addClass("selected")
-    $( event.target ).siblings("label").append(" (" + event.target.files[0].name + ")")
+    var size = event.target.files[0].size
+    var label = $( event.target ).siblings("label")
+
+    if(size > 20000000){
+      Alert.error('Max file size 20mb')
+
+      return
+    }
+
+    label.addClass("selected")
+    label.html(event.target.files[0].name)
 
     switch(event.target.id){
       case "file_ijazah":
+        label.prepend("Upload Ijazah ")
         this.setState({ file_ijazah: event.target.files[0] })
         break;
       case "file_data_pendidikan":
-          this.setState({ file_data_pendidikan: event.target.files[0] })
+        label.prepend("Upload Data Pendidikan ")
+        this.setState({ file_data_pendidikan: event.target.files[0] })
         break;
       case "file_keterangan_sekolah":
-          this.setState({ file_keterangan_sekolah: event.target.files[0] })
+        label.prepend("Upload Surat Keterangan dari Sekolah ")
+        this.setState({ file_keterangan_sekolah: event.target.files[0] })
         break;
       default:
         break;
@@ -61,6 +92,7 @@ export default class components extends Component {
     this.setState({submiting: true})
 
     var formData = new FormData();
+    formData.append("ID_Personal_Pendidikan", this.state.ID_Personal_Pendidikan);
     formData.append("id_personal", this.state.id_personal);
     formData.append("nama", this.state.nama);
     formData.append("alamat", this.state.alamat);
@@ -75,7 +107,9 @@ export default class components extends Component {
     formData.append("file_data_pendidikan", this.state.file_data_pendidikan);
     formData.append("file_keterangan_sekolah", this.state.file_keterangan_sekolah);
 
-    axios.post(`/api/pendidikan`, formData, {
+    var uri = this.state.isUpdate ? "/api/pendidikan/update" : "/api/pendidikan"
+
+    axios.post(uri, formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
@@ -98,7 +132,6 @@ export default class components extends Component {
 
   resetState = () => {
     this.setState({
-      id_personal: "",
       nama: "",
       alamat: "",
       provinsi: "",
@@ -127,6 +160,7 @@ export default class components extends Component {
               <th>Tahun</th>
               <th>Provinsi</th>
               <th>Alamat</th>
+              <th>Action</th>
             </tr>
             {this.props.data.map((d) => (
               <tr>
@@ -136,6 +170,7 @@ export default class components extends Component {
                 <td>{d.Tahun}</td>
                 <td>{d.ID_Propinsi}</td>
                 <td>{d.Alamat1}</td>
+                <td><Button variant="outline-warning" size="sm" onClick={() => this.openUpdateForm(d)}><span className="cui-pencil"></span> Ubah</Button></td>
               </tr>
             ))}
           </tbody>
@@ -145,7 +180,7 @@ export default class components extends Component {
         onHide={this.handleClose}
         show={this.state.showFormAdd}>
           <Modal.Header closeButton>
-            <Modal.Title>Tambah Data</Modal.Title>
+            <Modal.Title>{this.state.isUpdate ? "Ubah" : "Tambah"} Data</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Form>
@@ -179,19 +214,19 @@ export default class components extends Component {
                   
                   <MSelectProvinsi value={this.state.provinsi} onChange={(data) => this.onProvinsiChange(data)} />
                   
-                  <MSelectKabupaten value={this.state.kabupaten} onRef={ref => (this.selectKabupaten = ref)} onChange={(data) => this.setState({kabupaten: data.value})} />
+                  <MSelectKabupaten value={this.state.kabupaten} provinsiId={this.state.provinsi} onRef={ref => (this.selectKabupaten = ref)} onChange={(data) => this.setState({kabupaten: data.value})} />
                   
                   <div class="custom-file mb-3">
                     <input type="file" class="custom-file-input" id="file_ijazah" onChange={this.onUploadChangeHandler}></input>
-                    <label class="custom-file-label" for="file_ijazah">Ijazah</label>
+                    <label class="custom-file-label" for="file_ijazah">Upload Ijazah</label>
                   </div>
                   <div class="custom-file mb-3">
                     <input type="file" class="custom-file-input" id="file_data_pendidikan" onChange={this.onUploadChangeHandler}></input>
-                    <label class="custom-file-label" for="file_data_pendidikan">Data Pendidikan</label>
+                    <label class="custom-file-label" for="file_data_pendidikan">Upload Data Pendidikan</label>
                   </div>
                   <div class="custom-file mb-3">
                     <input type="file" class="custom-file-input" id="file_keterangan_sekolah" onChange={this.onUploadChangeHandler}></input>
-                    <label class="custom-file-label" for="file_keterangan_sekolah">Surat Keterangan dari Sekolah</label>
+                    <label class="custom-file-label" for="file_keterangan_sekolah">Upload Surat Keterangan dari Sekolah</label>
                   </div>
                 </Col>
               </Row>
