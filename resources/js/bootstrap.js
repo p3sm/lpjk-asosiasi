@@ -12,6 +12,7 @@ try {
 
     require('bootstrap');
     require('@coreui/coreui');
+    require('@fancyapps/fancybox');
 } catch (e) {}
 
 /**

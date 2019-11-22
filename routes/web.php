@@ -15,10 +15,12 @@ Auth::routes();
 
 Route::group(['middleware' => 'auth'], function(){
   Route::get('/clear-cache', function() {
-    Artisan::call('cache:clear');
     Artisan::call('route:clear');
     Artisan::call('config:clear');
+    Artisan::call('cache:clear');
     Artisan::call('view:clear');
+    Artisan::call('clear-compiled');
+    return 'Application cache cleared';
   });
 
   Route::get('api/users', 'UserController@apiList');

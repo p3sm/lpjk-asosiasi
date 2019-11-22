@@ -255,10 +255,12 @@ export default class components extends Component {
                     <Form.Label>Provinsi</Form.Label>
                     <Form.Control disabled={true} value={this.state.me ? this.state.me.asosiasi.provinsi.nama : ""}></Form.Control>
                   </Form.Group>
-                  <Form.Group>
-                    <Form.Label>No Reg Asosiasi</Form.Label>
-                    <Form.Control value={this.state.no_reg_asosiasi} onChange={(e) => this.setState({no_reg_asosiasi: e.target.value})}></Form.Control>
-                  </Form.Group>
+                  {this.props.tipe_profesi === 1 && (
+                    <Form.Group>
+                      <Form.Label>No Reg Asosiasi</Form.Label>
+                      <Form.Control value={this.state.no_reg_asosiasi} onChange={(e) => this.setState({no_reg_asosiasi: e.target.value})}></Form.Control>
+                    </Form.Group>
+                  )}
                   <div class="custom-file mb-3">
                     <input type="file" class="custom-file-input" id="file_berita_acara_vva" onChange={this.onUploadChangeHandler}></input>
                     <label class="custom-file-label" for="file_berita_acara_vva">Upload Berita Acara VVA</label>

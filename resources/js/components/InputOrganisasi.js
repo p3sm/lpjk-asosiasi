@@ -13,6 +13,7 @@ export default class components extends Component {
     this.state = {
       showFormAdd: false,
       submiting: false,
+      role_pekerjaan: "",
       id_personal: this.props.id_personal,
       isUpdate: false
     }
@@ -80,7 +81,7 @@ export default class components extends Component {
     formData.append("jabatan", this.state.jabatan);
     formData.append("tgl_mulai", this.state.tgl_mulai);
     formData.append("tgl_selesai", this.state.tgl_selesai);
-    formData.append("role_pekerjaan", this.state.role_pekerjaan);
+    formData.append("role_pekerjaan", this.state.role_pekerjaan != "" ? this.state.role_pekerjaan : "-");
     formData.append("file_pengalaman", this.state.file_pengalaman);
 
     var uri = this.state.isUpdate ? "/api/organisasi/update" : "/api/organisasi/create"

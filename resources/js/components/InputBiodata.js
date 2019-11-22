@@ -108,7 +108,7 @@ export default class InputBiodata extends Component {
     formData.append("nama_tanpa_gelar", this.state.nama_tanpa_gelar);
     formData.append("tempat_lahir", this.state.tempat_lahir);
     formData.append("email", this.state.email);
-    formData.append("npwp", this.state.npwp);
+    formData.append("npwp",  this.props.tipe_profesi === 2 && this.state.npwp == "" ? "-" : this.state.npwp);
     formData.append("tgl_lahir", this.state.tgl_lahir);
     formData.append("telepon", this.state.telepon);
     formData.append("jenis_kelamin", this.state.jenis_kelamin);
@@ -188,6 +188,18 @@ export default class InputBiodata extends Component {
               <th>Alamat</th>
               <td colSpan="3">{this.props.data.Alamat1}</td>
             </tr>
+            {/* <tr>
+              <th>KTP</th>
+              <td><a data-type="iframe" data-fancybox href={this.props.data.file ? this.props.data.file["persyaratan_5"] : "#"}>View</a></td>
+              <th>NPWP</th>
+              <td><a data-fancybox href={this.props.data.file ? this.props.data.file["persyaratan_8"] : "#"}>View</a></td>
+            </tr>
+            <tr>
+              <th>Pernyataan Kebenaran Data</th>
+              <td><a data-fancybox href={this.props.data.file ? this.props.data.file["persyaratan_4"] : "#"}>View</a></td>
+              <th>Daftar Riwayat Hidup</th>
+              <td><a data-fancybox href={this.props.data.file ? this.props.data.file["persyaratan_11"] : "#"}>View</a></td>
+            </tr> */}
           </tbody>
         </Table>
         <Modal

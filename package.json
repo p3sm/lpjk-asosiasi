@@ -28,6 +28,7 @@
     "dependencies": {
         "@coreui/coreui": "^2.1.16",
         "@coreui/icons": "^0.4.1",
+        "@fancyapps/fancybox": "^3.5.7",
         "@fortawesome/fontawesome-free": "^5.11.2",
         "materialize-css": "^1.0.0-rc.2",
         "moment": "^2.24.0",
