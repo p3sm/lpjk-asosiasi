@@ -16,17 +16,24 @@
                   <i class="nav-icon icon-user"></i> Permohonan SKT
               </a>
           </li>
-          <li class="nav-title">Settings</li>
-          <li class="nav-item">
-              <a class="nav-link" href="{{ url('users') }}">
-                  <i class="nav-icon icon-user"></i> Users
-              </a>
-          </li>
-          <li class="nav-item">
-              <a class="nav-link" href="{{ url('user_role') }}">
-                  <i class="nav-icon icon-lock"></i> Roles
-              </a>
-          </li>
+
+        @if(Helpers::checkPermission('user') || Helpers::checkPermission('role') )
+            <li class="nav-title">Settings</li>
+            @if(Helpers::checkPermission('user'))
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url('users') }}">
+                        <i class="nav-icon icon-user"></i> Users
+                    </a>
+                </li>
+            @endif
+            @if(Helpers::checkPermission('role') )
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url('user_role') }}">
+                        <i class="nav-icon icon-lock"></i> Roles
+                    </a>
+                </li>
+            @endif
+        @endif
       </ul>
   </nav>
   <button class="sidebar-minimizer brand-minimizer" type="button"></button>

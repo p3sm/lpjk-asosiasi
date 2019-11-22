@@ -58,24 +58,31 @@ Route::group(['middleware' => 'auth'], function(){
 
   Route::get('/', 'HomeController@index')->name('home');
 
-  Route::resources([
-      'users' => 'UserController',
-  ]);
+	Route::group(['middleware' => 'authorization:user'], function () {
+    Route::resources([
+        'users' => 'UserController',
+    ]);
+  });
 
-  Route::resources([
-    'user_role' => 'UserRoleController',
-  ]);
+	Route::group(['middleware' => 'authorization:role'], function () {
+    Route::resources([
+      'user_role' => 'UserRoleController',
+    ]);
+  });
 
   Route::resources([
       'personal' => 'PersonalController',
   ]);
 
-  Route::resources([
-      'permohonan_ska' => 'PermohonanSKAController',
-  ]);
+	Route::group(['middleware' => 'authorization:ska'], function () {
+    Route::resources([
+        'permohonan_ska' => 'PermohonanSKAController',
+    ]);
+  });
 
-  Route::resources([
-      'permohonan_skt' => 'PermohonanSKTController',
-  ]);
-  
+	Route::group(['middleware' => 'authorization:skt'], function () {
+    Route::resources([
+        'permohonan_skt' => 'PermohonanSKTController',
+    ]);
+	});
 });

@@ -49,7 +49,8 @@ class UserController extends Controller
         if($user->save()){
             $uAsosiasi = new UserAsosiasi();
             $uAsosiasi->user_id = $user->id;
-            $uAsosiasi->asosiasi_id = $request->get('asosiasi');
+            $uAsosiasi->asosiasi_id = $request->get('asosiasi_id');
+            $uAsosiasi->provinsi_id = $request->get('provinsi_id');
             $uAsosiasi->save();
         }
 
@@ -83,9 +84,17 @@ class UserController extends Controller
         $user->name      = $request->get('name');
         $user->role_id   = $request->get('role_id');
         $user->is_active = $request->get('is_active') ? 1 : 0;
+        $user->asosiasi->asosiasi_id = $request->get('asosiasi_id');
+        $user->asosiasi->provinsi_id = $request->get('provinsi_id');
 
-        $user->save();
-        return redirect('/users')->with('success', 'User berhasil diupdate');
+        if($user->save()){
+            $uAsosiasi = UserAsosiasi::where("user_id", $user->id)->first();
+            $uAsosiasi->asosiasi_id = $request->get('asosiasi_id');
+            $uAsosiasi->provinsi_id = $request->get('provinsi_id');
+            $uAsosiasi->save();
+            return redirect('/users')->with('success', 'User berhasil diupdate');
+        }
+        return redirect('/users')->with('error', 'User gagal diupdate');
     }
 
     public function destroy($id)

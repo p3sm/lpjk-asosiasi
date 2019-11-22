@@ -4,8 +4,8 @@
   </button>
   <a class="navbar-brand" href="{{ url('/') }}">
       {{-- <img class="navbar-brand-full" src="svg/modulr.svg" width="89" height="25" alt="Modulr Logo"> --}}
-      <span class="navbar-brand-full"><b>LPJKP</b> Riau</span>
-      <span class="navbar-brand-minimized"><b>LPJK</b>R</span>
+      <span class="navbar-brand-full"><b>DIKI</b> Riau</span>
+      <span class="navbar-brand-minimized"><b>DIKI</b>R</span>
       {{-- <img class="navbar-brand-minimized" src="svg/modulr-icon.svg" width="30" height="30" alt="Modulr Logo"> --}}
   </a>
   <button class="navbar-toggler sidebar-toggler d-md-down-none" type="button" data-toggle="sidebar-lg-show">

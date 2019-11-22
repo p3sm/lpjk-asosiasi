@@ -10,6 +10,8 @@ class UserAsosiasi extends Authenticatable
 {
     protected $table =  'user_asosiasi';
     
+    public $timestamps = false;
+    
     public function detail()
     {
       return $this->belongsTo('App\Asosiasi', 'asosiasi_id');
