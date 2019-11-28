@@ -56,6 +56,11 @@ Route::group(['middleware' => 'auth'], function(){
   Route::post('api/kualifikasi_tt/create', 'PersonalController@apiCreateKualifikasiTT');
   Route::post('api/kualifikasi_tt/delete', 'PersonalController@apiDeleteKualifikasiTT');
 
+  Route::get('api/profile', 'ProfileController@apiGetProfile');
+  Route::post('api/profile/edit', 'ProfileController@apiEditProfile');
+  Route::post('api/profile/changepassword', 'ProfileController@apiChangePassword');
+  Route::post('api/profile/uploadfile', 'ProfileController@apiUploadFile');
+
   Route::get('/', 'HomeController@index')->name('home');
 
 	Route::group(['middleware' => 'authorization:user'], function () {
@@ -84,5 +89,7 @@ Route::group(['middleware' => 'auth'], function(){
     Route::resources([
         'permohonan_skt' => 'PermohonanSKTController',
     ]);
-	});
+  });
+  
+  Route::get('profile', 'ProfileController@index')->name('profile');
 });

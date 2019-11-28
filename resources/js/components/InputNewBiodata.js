@@ -78,7 +78,7 @@ export default class InputBiodata extends Component {
       return
     }
 
-    if(!/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/.test(this.state.email)){
+    if(!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.state.email)){
       Alert.error('Format email tidak valid')
 
       return
@@ -93,7 +93,7 @@ export default class InputBiodata extends Component {
     formData.append("nama_tanpa_gelar", this.state.nama_tanpa_gelar);
     formData.append("tempat_lahir", this.state.tempat_lahir);
     formData.append("email", this.state.email);
-    formData.append("npwp", this.state.npwp);
+    formData.append("npwp", this.props.tipe_profesi === 2 && this.state.npwp == "" ? "-" : this.state.npwp);
     formData.append("tgl_lahir", this.state.tgl_lahir);
     formData.append("telepon", this.state.telepon);
     formData.append("jenis_kelamin", this.state.jenis_kelamin);

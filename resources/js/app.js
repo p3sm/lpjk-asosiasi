@@ -16,3 +16,4 @@ require('./components/User');
 require('./components/Personal');
 require('./components/PermohonanSka');
 require('./components/PermohonanSkt');
+require('./components/Profile');

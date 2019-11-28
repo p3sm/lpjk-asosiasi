@@ -14,6 +14,7 @@ export default class components extends Component {
       showFormAdd: false,
       submiting: false,
       role_pekerjaan: "",
+      nrbu: "-",
       id_personal: this.props.id_personal,
       isUpdate: false
     }

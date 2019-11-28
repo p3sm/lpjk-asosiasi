@@ -22,6 +22,7 @@ export default class components extends Component {
       submiting: false,
       id_personal: this.props.id_personal,
       tgl_registrasi: moment().format('YYYY-MM-DD'),
+      no_reg_asosiasi: "",
       me: null,
       delete: false
     }
@@ -203,7 +204,7 @@ export default class components extends Component {
                 <td>{d.id_unit_sertifikasi}</td>
                 <td>{d.id_permohonan == 1 ? "Baru" : d.id_permohonan == 2 ? "Perpanjangan" : "Perubahan"}</td>
                 <td>{d.ID_Asosiasi_Profesi}</td>
-                <td>{d.ID_Propinsi_reg}</td>
+                <td>{d.id_permohonan == 1 ? d.ID_Propinsi_reg : d.ID_propinsi_reg}</td>
                 <td>{d.Tgl_Registrasi}</td>
                 <td>{d.status_terbaru}</td>
                 <td><Button variant="outline-danger" size="sm" onClick={() => this.confirmDelete(this.props.tipe_profesi == 1 ? d.ID_Registrasi_TK_Ahli : d.ID_Registrasi_TK_Trampil)}><span className="cui-trash"></span> Delete</Button></td>
