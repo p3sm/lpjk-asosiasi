@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Profile;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 
 class ProfileController extends Controller
@@ -126,6 +127,76 @@ class ProfileController extends Controller
         if($data->save()){
             $result = new \stdClass();
             $result->message = "Profile updated successfully";
+            $result->status = 200;
+
+            return response()->json($result, 200);
+        }
+        
+        $result = new \stdClass();
+        $result->message = "An error occurred";
+        $result->status = 500;
+
+    	return response()->json($result, 500);
+    }
+
+    public function apiGetFile()
+    {
+        $userId = Auth::user()->id;
+
+        $data = Profile::where("user_id", $userId)->with('user')->first();
+        
+        if($data){
+            $obj =  new \stdClass();
+            $obj->file_ktp = asset("storage/" . $data->file_ktp);
+            $obj->file_photo = asset("storage/" . $data->file_photo);
+            $obj->file_pernyataan = asset("storage/" . $data->file_pernyataan);
+
+            $result = new \stdClass();
+            $result->data = $obj;
+            $result->message = "Success";
+            $result->status = 200;
+
+            return response()->json($result, 200);
+        }
+        $result = new \stdClass();
+        $result->data = null;
+        $result->message = "Data not available";
+        $result->status = 200;
+
+    	return response()->json($result, 200);
+    }
+
+    public function apiUploadFile(Request $request)
+    {
+        $userId = Auth::user()->id;
+
+        $data = Profile::where("user_id", $userId)->first();
+        
+        if(!$data){
+            $data = new Profile();
+            $data->user_id = $userId;
+        }
+        
+        $ktp = $request->file("file_ktp") ? $request->file_ktp->store('profile/ktp') : null;
+        $photo = $request->file("file_photo") ? $request->file_photo->store('profile/photo') : null;
+        $pernyataan = $request->file("file_pernyataan") ? $request->file_pernyataan->store('profile/pernyataan') : null;
+
+        if($ktp != null){
+            Storage::delete($data->file_ktp);
+            $data->file_ktp = $ktp;
+        }
+        if($photo != null){
+            Storage::delete($data->file_photo);
+            $data->file_photo = $photo;
+        }
+        if($pernyataan != null){
+            Storage::delete($data->file_pernyataan);
+            $data->file_pernyataan = $pernyataan;
+        }
+
+        if($data->save()){
+            $result = new \stdClass();
+            $result->message = "Document updated successfully";
             $result->status = 200;
 
             return response()->json($result, 200);

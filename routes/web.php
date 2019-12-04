@@ -59,6 +59,7 @@ Route::group(['middleware' => 'auth'], function(){
   Route::get('api/profile', 'ProfileController@apiGetProfile');
   Route::post('api/profile/edit', 'ProfileController@apiEditProfile');
   Route::post('api/profile/changepassword', 'ProfileController@apiChangePassword');
+  Route::get('api/profile/file', 'ProfileController@apiGetFile');
   Route::post('api/profile/uploadfile', 'ProfileController@apiUploadFile');
 
   Route::get('/', 'HomeController@index')->name('home');

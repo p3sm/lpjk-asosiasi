@@ -93,7 +93,7 @@ export default class InputBiodata extends Component {
       return
     }
 
-    if(!/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/.test(this.state.email)){
+    if(!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.state.email)){
       Alert.error('Format email tidak valid')
 
       return

@@ -16,7 +16,8 @@ export default class InputBiodata extends Component {
     this.state = {
       submiting: false,
       id_personal: this.props.id_personal,
-      negara: "ID"
+      negara: "ID",
+      pos: ""
     }
   }
 

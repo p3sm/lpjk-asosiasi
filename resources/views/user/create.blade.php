@@ -65,8 +65,10 @@
                   <label>Provinsi</label>
                   <select class="form-control" name="provinsi_id">
 										<option value="">-- pilih provinsi --</option>
-                    @foreach ($provinsi as $prov)
-                    <option value="{{$prov->id_provinsi}}">{{$prov->nama}}</option>
+										@foreach ($provinsi as $prov)
+											@if($prov->id_provinsi == "04")
+												<option value="{{$prov->id_provinsi}}" {{$prov->id_provinsi == "04" ? "selected" : ""}}>{{$prov->nama}}</option>
+											@endif
                     @endforeach
                   </select>
                 </div>

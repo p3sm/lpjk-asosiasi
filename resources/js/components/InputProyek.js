@@ -7,6 +7,12 @@ import Alert from 'react-s-alert';
 
 // import { Container } from './styles';
 
+
+const formatter = new Intl.NumberFormat("id-ID", {
+  style: "decimal",
+  currency: "IDR"
+});
+
 export default class components extends Component {
   constructor(props){
     super(props)
@@ -15,7 +21,8 @@ export default class components extends Component {
       showFormAdd: false,
       submiting: false,
       id_personal: this.props.id_personal,
-      isUpdate: false
+      isUpdate: false,
+      nilai_proyek: 0
     }
 
   }
@@ -132,7 +139,7 @@ export default class components extends Component {
               <tr>
                 <td>{d.Proyek}</td>
                 <td>{d.Jabatan}</td>
-                <td>{d.Nilai}</td>
+                <td>{formatter.format(d.Nilai)}</td>
                 <td>{d.Tgl_Mulai} - {d.Tgl_Selesai}</td>
                 <td>{d.Lokasi}</td>
                 <td><Button variant="outline-warning" size="sm" onClick={() => this.openUpdateForm(d)}><span className="cui-pencil"></span> Ubah</Button></td>
@@ -186,7 +193,7 @@ export default class components extends Component {
                   </Form.Group>
                   <Form.Group>
                     <Form.Label>Nilai Proyek</Form.Label>
-                    <Form.Control placeholder="" onChange={(e) => this.setState({nilai_proyek: e.target.value})} value={this.state.nilai_proyek}></Form.Control>
+                    <Form.Control placeholder="" onChange={(e) =>  this.setState({nilai_proyek: e.target.value.split('.').join("")})} value={formatter.format(this.state.nilai_proyek)}></Form.Control>
                   </Form.Group>
                   <div class="custom-file mb-3">
                     <input type="file" class="custom-file-input" id="file_pengalaman" onChange={this.onUploadChangeHandler}></input>

@@ -8,6 +8,7 @@ import Alert from 'react-s-alert';
 
 import ProfileBiodata from './ProfileBiodata'
 import ProfilePassword from './ProfilePassword'
+import ProfileDocument from './ProfileDocument'
 
 export default class Profile extends Component {
     constructor(props){
@@ -78,6 +79,13 @@ export default class Profile extends Component {
                 <Card.Header>Biodata</Card.Header>
                 <Card.Body>
                   <ProfileBiodata data={this.state.biodata}/>
+                </Card.Body>
+              </Card>    
+
+              <Card>
+                <Card.Header>Dokumen</Card.Header>
+                <Card.Body>
+                  <ProfileDocument data={this.state.biodata}/>
                 </Card.Body>
               </Card>    
 

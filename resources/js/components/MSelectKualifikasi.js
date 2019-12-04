@@ -19,10 +19,12 @@ export default class MSelectKualifikasi extends Component {
       let data = []
 
       response.data.map((d) => {
-        data.push({
-          value: d.id,
-          label: this.props.tipe_profesi == 1 ? d.deskripsi_ahli : d.deskripsi_trampil
-        })
+        if(this.props.tipe_profesi != 1 || d.id != 1){
+          data.push({
+            value: d.id,
+            label: this.props.tipe_profesi == 1 ? d.deskripsi_ahli : d.deskripsi_trampil
+          })
+        }
       })
 
       this.setState({

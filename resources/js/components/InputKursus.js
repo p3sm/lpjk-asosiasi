@@ -172,13 +172,22 @@ export default class components extends Component {
                     <Form.Label>Nama Penyelenggara</Form.Label>
                     <Form.Control placeholder="" onChange={(e) => this.setState({penyelenggara: e.target.value})} value={this.state.penyelenggara}></Form.Control>
                   </Form.Group>
-                  <Form.Group>
-                    <Form.Label>Nama Kursus</Form.Label>
-                    <Form.Control placeholder="" onChange={(e) => this.setState({nama_kursus: e.target.value})} value={this.state.nama_kursus}></Form.Control>
-                  </Form.Group>
+
+                  <MSelectCountry value={this.state.negara} onChange={(data) => this.onNegaraChange(data)} />
+
+                  <MSelectProvinsi value={this.state.provinsi} onChange={(data) => this.onProvinsiChange(data)} />
+
+                  <MSelectKabupaten value={this.state.kabupaten} provinsiId={this.state.provinsi} onRef={ref => (this.selectKabupaten = ref)} onChange={(data) => this.setState({kabupaten: data.value})} />
+
                   <Form.Group>
                     <Form.Label>Alamat</Form.Label>
                     <Form.Control as="textarea" row="3" onChange={(e) => this.setState({alamat: e.target.value})} value={this.state.alamat}></Form.Control>
+                  </Form.Group>
+                </Col>
+                <Col md>
+                  <Form.Group>
+                    <Form.Label>Nama Kursus</Form.Label>
+                    <Form.Control placeholder="" onChange={(e) => this.setState({nama_kursus: e.target.value})} value={this.state.nama_kursus}></Form.Control>
                   </Form.Group>
                   <Form.Group>
                     <Form.Label>No. Sertifikat</Form.Label>
@@ -188,14 +197,6 @@ export default class components extends Component {
                     <Form.Label>Tahun</Form.Label>
                     <Form.Control type="email" placeholder="" onChange={(e) => this.setState({tahun: e.target.value})} value={this.state.tahun}></Form.Control>
                   </Form.Group>
-                </Col>
-                <Col md>
-                  <MSelectCountry value={this.state.negara} onChange={(data) => this.onNegaraChange(data)} />
-                  
-                  <MSelectProvinsi value={this.state.provinsi} onChange={(data) => this.onProvinsiChange(data)} />
-                  
-                  <MSelectKabupaten value={this.state.kabupaten} provinsiId={this.state.provinsi} onRef={ref => (this.selectKabupaten = ref)} onChange={(data) => this.setState({kabupaten: data.value})} />
-                  
                   <div class="custom-file mb-3">
                     <input type="file" class="custom-file-input" id="file_persyaratan" onChange={this.onUploadChangeHandler}></input>
                     <label class="custom-file-label" for="file_persyaratan">Upload Persyaratan Kursus</label>

@@ -18,7 +18,9 @@ export default class components extends Component {
       showFormAdd: false,
       submiting: false,
       id_personal: this.props.id_personal,
-      isUpdate: false
+      isUpdate: false,
+      file_data_pendidikan: "",
+      file_keterangan_sekolah: ""
     }
   }
 
@@ -104,8 +106,9 @@ export default class components extends Component {
     formData.append("jurusan", this.state.jurusan);
     formData.append("no_ijazah", this.state.no_ijazah);
     formData.append("file_ijazah", this.state.file_ijazah);
-    formData.append("file_data_pendidikan", this.state.file_data_pendidikan);
-    formData.append("file_keterangan_sekolah", this.state.file_keterangan_sekolah);
+
+    formData.append("file_data_pendidikan", this.state.negara == "ID" && this.state.file_data_pendidikan == "" ? this.state.file_ijazah : this.state.file_data_pendidikan);
+    formData.append("file_keterangan_sekolah", this.state.negara == "ID" && this.state.file_keterangan_sekolah == "" ? this.state.file_ijazah :  this.state.file_keterangan_sekolah);
 
     var uri = this.state.isUpdate ? "/api/pendidikan/update" : "/api/pendidikan"
 
@@ -190,6 +193,21 @@ export default class components extends Component {
                     <Form.Label>Nama Sekolah / Perguruan Tinggi</Form.Label>
                     <Form.Control placeholder="" onChange={(e) => this.setState({nama: e.target.value})} value={this.state.nama}></Form.Control>
                   </Form.Group>
+
+                  <MSelectPendidikan value={this.state.jenjang} onChange={(data) => this.setState({jenjang: data.value})} />
+
+                  <MSelectCountry value={this.state.negara} onChange={(data) => this.onNegaraChange(data)} />
+
+                  <MSelectProvinsi value={this.state.provinsi} onChange={(data) => this.onProvinsiChange(data)} />
+
+                  <MSelectKabupaten value={this.state.kabupaten} provinsiId={this.state.provinsi} onRef={ref => (this.selectKabupaten = ref)} onChange={(data) => this.setState({kabupaten: data.value})} />
+
+                  <Form.Group>
+                    <Form.Label>Alamat</Form.Label>
+                    <Form.Control as="textarea" row="3" onChange={(e) => this.setState({alamat: e.target.value})} value={this.state.alamat}></Form.Control>
+                  </Form.Group>
+                </Col>
+                <Col md>
                   <Form.Group>
                     <Form.Label>No. Ijazah</Form.Label>
                     <Form.Control placeholder="" onChange={(e) => this.setState({no_ijazah: e.target.value})} value={this.state.no_ijazah}></Form.Control>
@@ -199,23 +217,9 @@ export default class components extends Component {
                     <Form.Control placeholder="" onChange={(e) => this.setState({jurusan: e.target.value})} value={this.state.jurusan}></Form.Control>
                   </Form.Group>
                   <Form.Group>
-                    <Form.Label>Alamat</Form.Label>
-                    <Form.Control as="textarea" row="3" onChange={(e) => this.setState({alamat: e.target.value})} value={this.state.alamat}></Form.Control>
-                  </Form.Group>
-                  <Form.Group>
                     <Form.Label>Tahun Lulus</Form.Label>
                     <Form.Control placeholder="" onChange={(e) => this.setState({tahun: e.target.value})} value={this.state.tahun}></Form.Control>
                   </Form.Group>
-                </Col>
-                <Col md>
-                  <MSelectPendidikan value={this.state.jenjang} onChange={(data) => this.setState({jenjang: data.value})} />
-
-                  <MSelectCountry value={this.state.negara} onChange={(data) => this.onNegaraChange(data)} />
-                  
-                  <MSelectProvinsi value={this.state.provinsi} onChange={(data) => this.onProvinsiChange(data)} />
-                  
-                  <MSelectKabupaten value={this.state.kabupaten} provinsiId={this.state.provinsi} onRef={ref => (this.selectKabupaten = ref)} onChange={(data) => this.setState({kabupaten: data.value})} />
-                  
                   <div class="custom-file mb-3">
                     <input type="file" class="custom-file-input" id="file_ijazah" onChange={this.onUploadChangeHandler}></input>
                     <label class="custom-file-label" for="file_ijazah">Upload Ijazah</label>
