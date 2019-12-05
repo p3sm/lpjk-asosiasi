@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use App\Profile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -88,8 +89,9 @@ class ProfileController extends Controller
     public function apiGetProfile()
     {
         $userId = Auth::user()->id;
+        $data = User::where("id", $userId)->with('profile')->first();
 
-        $data = Profile::where("user_id", $userId)->with('user')->first();
+        // $data = Profile::where("user_id", $userId)->with('user')->first();
         
         if($data){
             $result = new \stdClass();
@@ -102,9 +104,9 @@ class ProfileController extends Controller
         $result = new \stdClass();
         $result->data = null;
         $result->message = "Data not available";
-        $result->status = 200;
+        $result->status = 204;
 
-    	return response()->json($result, 200);
+    	return response()->json($result, 204);
     }
 
     public function apiEditProfile(Request $request)
@@ -161,9 +163,9 @@ class ProfileController extends Controller
         $result = new \stdClass();
         $result->data = null;
         $result->message = "Data not available";
-        $result->status = 200;
+        $result->status = 204;
 
-    	return response()->json($result, 200);
+    	return response()->json($result, 204);
     }
 
     public function apiUploadFile(Request $request)

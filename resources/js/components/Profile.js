@@ -27,33 +27,6 @@ export default class Profile extends Component {
     componentDidMount(){
     }
 
-    getBiodata(){
-      this.setState({loading: true})
-
-      let body = {id_personal: this.state.id_personal}
-  
-      axios.post(`/api/biodata`, body).then(response => {
-        let result = response.data
-        console.log(result.data)
-
-        this.setState({
-          biodata: result.data,
-          loading: false
-        })
-
-        this.getPendidikan()
-        
-      }).catch(err => {
-        console.log(err.response)
-
-        this.setState({
-          loading: false,
-          error: true,
-          errorMsg: err.response.data.message
-        })
-      })
-    }
-
     render() {
         return (
           <div>

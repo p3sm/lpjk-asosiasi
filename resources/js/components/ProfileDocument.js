@@ -120,18 +120,18 @@ export default class ProfileDocument extends Component {
     return (
       <div>
         <Button className="mb-3" onClick={() => this.setState({formEditBiodata: true})}>Edit Dokumen</Button>
-        {this.state.profile != null && (
+        {!this.state.loading && (
           <Table bordered>
             <tbody>
               <tr>
                 <th>Surat Pernyataan</th>
-                <td><a target="_blank" href={this.state.profile.file_pernyataan}>File</a></td>
+                <td><a data-type="iframe" data-fancybox target="_blank" href={this.state.profile ? this.state.profile.file_pernyataan: ""}>File</a></td>
                 <th>Foto</th>
-                <td><a target="_blank" href={this.state.profile.file_photo}>File</a></td>
+                <td><a data-type="iframe" data-fancybox target="_blank" href={this.state.profile ? this.state.profile.file_photo : ""}>File</a></td>
               </tr>
               <tr>
                 <th>KTP</th>
-                <td><a target="_blank" href={this.state.profile.file_ktp}>File</a></td>
+                <td><a data-type="iframe" data-fancybox target="_blank" href={this.state.profile ? this.state.profile.file_ktp : ""}>File</a></td>
                 <th>Template</th>
                 <td>-</td>
               </tr>
@@ -150,7 +150,7 @@ export default class ProfileDocument extends Component {
             <Spinner style={{alignSelf: "center"}} animation="border" variant="primary" />
           </Row>
           <Modal.Body>
-          {this.state.profile != null && (
+          {!this.state.loading && (
             <Form>
               <Row>
                 <Col md>

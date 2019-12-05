@@ -46,6 +46,9 @@
                             <th>Asosiasi</th>
                             <th>Provinsi</th>
                             <th>Tgl Input</th>
+                            <th>KTP</th>
+                            <th>Photo</th>
+                            <th>File Pernyataan</th>
                             <th>Aktif</th>
                             <th>Action</th>
                         </tr>
@@ -60,6 +63,21 @@
                             <td>{{$d->asosiasi ? $d->asosiasi->detail->nama : "-"}}</td>
                             <td>{{$d->asosiasi ? $d->asosiasi->provinsi->nama : "-"}}</td>
                             <td>{{$d->created_at}}</td>
+                            <td>
+                                @if($d->profile && $d->profile->file_ktp != "")
+                                    <a data-type="iframe" data-fancybox href={{asset("storage/" . $d->profile->file_ktp)}}>View</a>
+                                @endif
+                            </td>
+                            <td>
+                                @if($d->profile && $d->profile->file_photo != "")
+                                    <a data-type="iframe" data-fancybox href={{asset("storage/" . $d->profile->file_photo)}}>View</a>
+                                @endif
+                            </td>
+                            <td>
+                                @if($d->profile && $d->profile->file_pernyataan != "")
+                                    <a data-type="iframe" data-fancybox href={{asset("storage/" . $d->profile->file_pernyataan)}}>View</a>
+                                @endif
+                            </td>
                             <td><div class="label label-{{$d->is_active ? "success" : "danger"}}">{{$d->is_active ? "Active" : "Inactive"}}</div></td>
                             <td>
                                 <a href="{{url('users/' . $d->id . '/edit')}}" class="btn btn-outline-secondary btn-sm"><span class='cui-pencil'></span> Edit</a>

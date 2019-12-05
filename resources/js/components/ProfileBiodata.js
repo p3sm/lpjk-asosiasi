@@ -18,7 +18,12 @@ export default class ProfileBiodata extends Component {
       profile: null,
       loading: false,
       formEditBiodata: false,
-      username: this.props.username
+      username: "",
+      email: "",
+      ktp: "",
+      jabatan: "",
+      phone: "",
+      nama: "",
     }
   }
 
@@ -35,20 +40,22 @@ export default class ProfileBiodata extends Component {
 
     axios.get('/api/profile').then(response => {
       let result = response.data
-      console.log(result.data)
 
-      this.setState({
-        profile: result.data,
-        email: result.data.email,
-        ktp: result.data.ktp,
-        jabatan: result.data.jabatan,
-        phone: result.data.phone,
-        nama: result.data.nama,
-        loading: false
-      })
+      this.setState({loading: false, username: result.data.username})
+
+      if(result.data.profile){
+        this.setState({
+          profile: result.data.profile,
+          email: result.data.profile.email,
+          ktp: result.data.profile.ktp,
+          jabatan: result.data.profile.jabatan,
+          phone: result.data.profile.phone,
+          nama: result.data.profile.nama,
+        })
+      }
       
     }).catch(err => {
-      console.log(err.response)
+      console.log(err)
 
       this.setState({ loading: false })
 
@@ -102,26 +109,26 @@ export default class ProfileBiodata extends Component {
     return (
       <div>
         <Button className="mb-3" onClick={() => this.setState({formEditBiodata: true})}>Edit Profile</Button>
-        {this.state.profile != null && (
+        {!this.state.loading && (
           <Table bordered>
             <tbody>
               <tr>
                 <th>Username</th>
-                <td>{this.state.profile.user.name}</td>
+                <td>{this.state.username}</td>
                 <th>Jabatan</th>
-                <td>{this.state.profile.jabatan}</td>
+                <td>{this.state.profile ? this.state.profile.jabatan : ""}</td>
               </tr>
               <tr>
                 <th>Email</th>
-                <td>{this.state.profile.email}</td>
+                <td>{this.state.profile ? this.state.profile.email : ""}</td>
                 <th>Telepon</th>
-                <td>{this.state.profile.phone}</td>
+                <td>{this.state.profile ? this.state.profile.phone : ""}</td>
               </tr>
               <tr>
                 <th>KTP</th>
-                <td>{this.state.profile.ktp}</td>
+                <td>{this.state.profile ? this.state.profile.ktp : ""}</td>
                 <th>Nama</th>
-                <td>{this.state.profile.nama}</td>
+                <td>{this.state.profile ? this.state.profile.nama : ""}</td>
               </tr>
             </tbody>
           </Table>
@@ -138,13 +145,13 @@ export default class ProfileBiodata extends Component {
             <Spinner style={{alignSelf: "center"}} animation="border" variant="primary" />
           </Row>
           <Modal.Body>
-          {this.state.profile != null && (
+          {!this.state.loading && (
             <Form>
               <Row>
                 <Col>
                   <Form.Group>
                     <Form.Label>Username</Form.Label>
-                    <Form.Control disabled={true} placeholder="" value={this.state.profile.user.name}></Form.Control>
+                    <Form.Control disabled={true} placeholder="" value={this.state.username}></Form.Control>
                   </Form.Group>
                   <Form.Group>
                     <Form.Label>Email</Form.Label>
