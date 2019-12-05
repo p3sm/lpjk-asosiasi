@@ -18,16 +18,37 @@ export default class ProfileDocument extends Component {
       profile: null,
       loading: false,
       formEditBiodata: false,
-      username: this.props.username
+      username: this.props.username,
+      template: ""
     }
   }
 
   componentDidMount(){
+    this.getTemplate();
     this.getDocument();
   }
 
   handleClose = () => {
     this.setState({formEditBiodata: false})
+  }
+
+  getTemplate(){
+    axios.get('/api/profile/filetemplate').then(response => {
+      let result = response.data
+      console.log(result.data)
+
+      this.setState({
+        template: result.data.file_template,
+        loading: false
+      })
+      
+    }).catch(err => {
+      console.log(err.response)
+
+      this.setState({ loading: false })
+
+      Alert.error(err.response.data.message);
+    })
   }
 
   getDocument(){
@@ -133,7 +154,7 @@ export default class ProfileDocument extends Component {
                 <th>KTP</th>
                 <td><a data-type="iframe" data-fancybox target="_blank" href={this.state.profile ? this.state.profile.file_ktp : ""}>File</a></td>
                 <th>Template</th>
-                <td>-</td>
+                <td><a data-type="iframe" data-fancybox target="_blank" href={this.state.template}>File</a></td>
               </tr>
             </tbody>
           </Table>

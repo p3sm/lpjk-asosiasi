@@ -60,6 +60,7 @@ Route::group(['middleware' => 'auth'], function(){
   Route::post('api/profile/edit', 'ProfileController@apiEditProfile');
   Route::post('api/profile/changepassword', 'ProfileController@apiChangePassword');
   Route::get('api/profile/file', 'ProfileController@apiGetFile');
+  Route::get('api/profile/filetemplate', 'ProfileController@apiGetFileTemplate');
   Route::post('api/profile/uploadfile', 'ProfileController@apiUploadFile');
 
   Route::get('/', 'HomeController@index')->name('home');

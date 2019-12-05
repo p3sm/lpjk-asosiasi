@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use App\Profile;
+use App\Setting;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
@@ -139,6 +140,18 @@ class ProfileController extends Controller
         $result->status = 500;
 
     	return response()->json($result, 500);
+    }
+
+    public function apiGetFileTemplate()
+    {
+        $obj =  new \stdClass();
+        $obj->file_template = asset("storage/" . Setting::where("code", "template_pernyataan")->first()->value);
+        
+        $result = new \stdClass();
+        $result->data = $obj;
+        $result->message = "Success";
+        $result->status = 200;
+        return response()->json($result, 200);
     }
 
     public function apiGetFile()
