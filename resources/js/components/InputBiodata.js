@@ -116,7 +116,7 @@ export default class InputBiodata extends Component {
     formData.append("provinsi", this.state.provinsi);
     formData.append("kabupaten", this.state.kabupaten);
     formData.append("alamat", this.state.alamat);
-    formData.append("pos", this.state.pos);
+    formData.append("pos", this.state.pos == "" ? "-" : this.state.pos);
     formData.append("file_ktp", this.state.file_ktp);
     formData.append("file_npwp", this.state.file_npwp);
     formData.append("file_cv", this.state.file_cv);
