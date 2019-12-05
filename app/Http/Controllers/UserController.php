@@ -84,8 +84,6 @@ class UserController extends Controller
         $user->name      = $request->get('name');
         $user->role_id   = $request->get('role_id');
         $user->is_active = $request->get('is_active') ? 1 : 0;
-        $user->asosiasi->asosiasi_id = $request->get('asosiasi_id');
-        $user->asosiasi->provinsi_id = $request->get('provinsi_id');
 
         if($user->save()){
             $uAsosiasi = UserAsosiasi::where("user_id", $user->id)->first();

@@ -11,6 +11,12 @@
                 <h1>{{ __('Login') }}</h1>
                 <p class="text-muted">Sign In to your account</p>
 
+                @if ($errors->has('active'))
+                    <div class="alert alert-danger">
+                    {{ $errors->first('active') }}
+                    </div>
+                @endif
+
                 <form method="POST" action="{{ route('login') }}">
                     @csrf
                     <div class="input-group mb-3">
