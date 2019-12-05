@@ -54,7 +54,7 @@
 									<div style="column-count: 3">
 										@foreach($permission as $perm)
 											<div class="checkbox" style="margin-top: 0">
-												<label><input type="checkbox" name="permission[]" value="{{$perm->id}}">{{$perm->name}}</label>
+												<label><input type="checkbox" name="permission[]" value="{{$perm->id}}">{{$perm->label}}</label>
 											</div>
 										@endforeach
 									</div>
