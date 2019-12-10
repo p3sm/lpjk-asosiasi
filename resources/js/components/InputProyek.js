@@ -4,6 +4,7 @@ import Datetime from 'react-datetime'
 import MSelectProvinsi from './MSelectProvinsi'
 import axios from 'axios'
 import Alert from 'react-s-alert';
+import SweetAlert from 'react-bootstrap-sweetalert';
 
 // import { Container } from './styles';
 
@@ -22,7 +23,8 @@ export default class components extends Component {
       submiting: false,
       id_personal: this.props.id_personal,
       isUpdate: false,
-      nilai_proyek: 0
+      nilai_proyek: 0,
+      delete: false
     }
 
   }
@@ -109,6 +111,38 @@ export default class components extends Component {
     })
   }
 
+  confirmDelete = (id) => {
+    console.log(id)
+    this.setState({delete: true, deleteId: id})
+  }
+
+  deleteProyek = (id) => {
+    this.setState({deleting: true})
+
+    var formData = new FormData();
+    formData.append("id_personal_proyek", id);
+      
+    axios.post("/api/proyek/delete", formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    }).then(response => {
+      console.log(response)
+      
+      this.setState({deleting: false, delete: false})
+      this.props.refreshData()
+      
+      Alert.success(response.data.message);
+      
+    }).catch(err => {
+      console.log(err.response.data.message)
+
+      this.setState({deleting: false, delete: false})
+      Alert.error(err.response.data.message);
+    })
+  }
+
+
   resetState = () => {
     this.setState({
       nama_proyek: "",
@@ -133,7 +167,7 @@ export default class components extends Component {
               <th>Nilai</th>
               <th>Tanggal</th>
               <th>Lokasi</th>
-              <th>Action</th>
+              <th colSpan={2}>Action</th>
             </tr>
             {this.props.data.map((d) => (
               <tr>
@@ -143,6 +177,7 @@ export default class components extends Component {
                 <td>{d.Tgl_Mulai} - {d.Tgl_Selesai}</td>
                 <td>{d.Lokasi}</td>
                 <td><Button variant="outline-warning" size="sm" onClick={() => this.openUpdateForm(d)}><span className="cui-pencil"></span> Ubah</Button></td>
+                <td><Button variant="outline-danger" size="sm" onClick={() => this.confirmDelete(d.id_personal_proyek)}><span className="cui-trash"></span> Delete</Button></td>
               </tr>
             ))}
           </tbody>
@@ -211,8 +246,21 @@ export default class components extends Component {
               {this.state.submiting ? 'Submiting...' : 'Submit'}
             </Button>
           </Modal.Footer>
-          <Alert stack={{limit: 3}} position="top-right" offset="40" effect="slide" timeout="none" />
+          <Alert stack={{limit: 3}} position="top-right" offset="40" effect="slide" timeout="2000" />
         </Modal>
+          
+          <SweetAlert
+            show={this.state.delete}
+            warning
+            showCancel
+            title="Hapus Data"
+            btnSize="md"
+            confirmBtnBsStyle='success'
+            cancelBtnText="Close"
+            confirmBtnText={this.state.deleting ? "Deleting..." : "Delete"}
+            onConfirm={() => this.deleteProyek(this.state.deleteId)}
+            onCancel={() => this.setState({delete: false})}
+          >Anda yakin akan menghapus data ini?</SweetAlert>
       </div>
     )
   }

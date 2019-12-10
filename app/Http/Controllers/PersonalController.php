@@ -418,6 +418,49 @@ class PersonalController extends Controller
     	return response()->json($result, 500);
     }
 
+    public function apiDeletePendidikan(Request $request)
+    {
+        $user = User::find(Auth::user()->id);
+
+        $postData = [
+            "id_personal_pendidikan" => $request->id_personal_pendidikan,
+          ];
+
+        $key = ApiKey::first();
+
+        $curl = curl_init();
+        $header[] = "X-Api-Key:" . $key->lpjk_key;
+        $header[] = "Token:" . $key->token;
+        $header[] = "Content-Type:multipart/form-data";
+        curl_setopt_array($curl, array(
+        CURLOPT_URL => env("LPJK_ENDPOINT") . "Service/Pendidikan/Hapus",
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_CUSTOMREQUEST => "POST",
+        CURLOPT_POSTFIELDS => $postData,
+        CURLOPT_HTTPHEADER => $header,
+        CURLOPT_SSL_VERIFYHOST => 0,
+        CURLOPT_SSL_VERIFYPEER => 0
+        ));
+        $response = curl_exec($curl);
+        
+		if($obj = json_decode($response)){
+            $result = new \stdClass();
+            $result->message = $obj->message;
+            $result->status = $obj->response;
+
+			if($obj->response == 1) {
+                return response()->json($result, 200);
+            }
+            return response()->json($result, 400);
+        }
+        
+        $result = new \stdClass();
+        $result->message = "An error occurred";
+        $result->status = 500;
+
+    	return response()->json($result, 500);
+    }
+
     public function storeLocalPendidikan(Request $request, $id)
     {
         $data = PersonalPendidikan::find($id);
@@ -596,6 +639,49 @@ class PersonalController extends Controller
     	return response()->json($result, 500);
     }
 
+    public function apiDeleteKursus(Request $request)
+    {
+        $user = User::find(Auth::user()->id);
+
+        $postData = [
+            "ID_Personal_Kursus" => $request->id_personal_kursus,
+          ];
+
+        $key = ApiKey::first();
+
+        $curl = curl_init();
+        $header[] = "X-Api-Key:" . $key->lpjk_key;
+        $header[] = "Token:" . $key->token;
+        $header[] = "Content-Type:multipart/form-data";
+        curl_setopt_array($curl, array(
+        CURLOPT_URL => env("LPJK_ENDPOINT") . "Service/Kursus/Hapus",
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_CUSTOMREQUEST => "POST",
+        CURLOPT_POSTFIELDS => $postData,
+        CURLOPT_HTTPHEADER => $header,
+        CURLOPT_SSL_VERIFYHOST => 0,
+        CURLOPT_SSL_VERIFYPEER => 0
+        ));
+        $response = curl_exec($curl);
+        
+		if($obj = json_decode($response)){
+            $result = new \stdClass();
+            $result->message = $obj->message;
+            $result->status = $obj->response;
+
+			if($obj->response == 1) {
+                return response()->json($result, 200);
+            }
+            return response()->json($result, 400);
+        }
+        
+        $result = new \stdClass();
+        $result->message = "An error occurred";
+        $result->status = 500;
+
+    	return response()->json($result, 500);
+    }
+
     public function storeLocalKursus(Request $request, $id)
     {
         $data = PersonalKursus::find($id);
@@ -761,6 +847,49 @@ class PersonalController extends Controller
     	return response()->json($result, 500);
     }
 
+    public function apiDeleteOrganisasi(Request $request)
+    {
+        $user = User::find(Auth::user()->id);
+
+        $postData = [
+            "ID_Personal_Pengalaman" => $request->id_personal_pengalaman,
+          ];
+
+        $key = ApiKey::first();
+
+        $curl = curl_init();
+        $header[] = "X-Api-Key:" . $key->lpjk_key;
+        $header[] = "Token:" . $key->token;
+        $header[] = "Content-Type:multipart/form-data";
+        curl_setopt_array($curl, array(
+        CURLOPT_URL => env("LPJK_ENDPOINT") . "Service/Organisasi/Hapus",
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_CUSTOMREQUEST => "POST",
+        CURLOPT_POSTFIELDS => $postData,
+        CURLOPT_HTTPHEADER => $header,
+        CURLOPT_SSL_VERIFYHOST => 0,
+        CURLOPT_SSL_VERIFYPEER => 0
+        ));
+        $response = curl_exec($curl);
+        
+		if($obj = json_decode($response)){
+            $result = new \stdClass();
+            $result->message = $obj->message;
+            $result->status = $obj->response;
+
+			if($obj->response == 1) {
+                return response()->json($result, 200);
+            }
+            return response()->json($result, 400);
+        }
+        
+        $result = new \stdClass();
+        $result->message = "An error occurred";
+        $result->status = 500;
+
+    	return response()->json($result, 500);
+    }
+
     public function storeLocalOrganisasi(Request $request, $id)
     {
         $data = PersonalOrganisasi::find($id);
@@ -910,6 +1039,49 @@ class PersonalController extends Controller
 
 			if($obj->response == 1) {
                 $this->storeLocalProyek($request, $request->id_personal_proyek);
+                return response()->json($result, 200);
+            }
+            return response()->json($result, 400);
+        }
+        
+        $result = new \stdClass();
+        $result->message = "An error occurred";
+        $result->status = 500;
+
+    	return response()->json($result, 500);
+    }
+
+    public function apiDeleteProyek(Request $request)
+    {
+        $user = User::find(Auth::user()->id);
+
+        $postData = [
+            "id_personal_proyek" => $request->id_personal_proyek,
+          ];
+
+        $key = ApiKey::first();
+
+        $curl = curl_init();
+        $header[] = "X-Api-Key:" . $key->lpjk_key;
+        $header[] = "Token:" . $key->token;
+        $header[] = "Content-Type:multipart/form-data";
+        curl_setopt_array($curl, array(
+        CURLOPT_URL => env("LPJK_ENDPOINT") . "Service/Proyek/Hapus",
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_CUSTOMREQUEST => "POST",
+        CURLOPT_POSTFIELDS => $postData,
+        CURLOPT_HTTPHEADER => $header,
+        CURLOPT_SSL_VERIFYHOST => 0,
+        CURLOPT_SSL_VERIFYPEER => 0
+        ));
+        $response = curl_exec($curl);
+        
+		if($obj = json_decode($response)){
+            $result = new \stdClass();
+            $result->message = $obj->message;
+            $result->status = $obj->response;
+
+			if($obj->response == 1) {
                 return response()->json($result, 200);
             }
             return response()->json($result, 400);
