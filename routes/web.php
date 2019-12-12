@@ -31,7 +31,7 @@ Route::group(['middleware' => 'auth'], function(){
   Route::get('api/kualifikasi', 'KualifikasiController@apiGetList');
   Route::get('api/bidang/{tipe_profesi}', 'BidangController@apiGetList');
   Route::get('api/subbidang/{bidang_id}', 'SubBidangController@apiGetList');
-  Route::get('api/ustk/{provinsi_id}', 'UstkController@apiGetList');
+  Route::get('api/ustk/{provinsi_id}/{bidang}', 'UstkController@apiGetList');
 
   Route::get('api/pendidikan', 'PendidikanController@apiGetList');
   Route::post('api/biodata', 'PersonalController@apiGetBiodata');

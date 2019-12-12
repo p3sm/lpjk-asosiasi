@@ -13,7 +13,17 @@ export default class MSelectProvinsi extends Component {
   }
 
   componentDidMount(){
-    axios.get(`/api/ustk/` + this.props.provinsi_id).then(response => {
+    this.props.onRef(this)
+
+    this.getUSTK("ALL")
+  }
+
+  componentWillUnmount() {
+    this.props.onRef(undefined)
+  }
+
+  getUSTK(bidang){
+    axios.get(`/api/ustk/` + this.props.provinsi_id + '/' + bidang).then(response => {
       console.log(response)
 
       let data = []

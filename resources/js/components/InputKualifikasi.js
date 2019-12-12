@@ -21,6 +21,7 @@ export default class components extends Component {
       showFormAdd: false,
       submiting: false,
       id_personal: this.props.id_personal,
+      id_permohonan: "1",
       tgl_registrasi: moment().format('YYYY-MM-DD'),
       no_reg_asosiasi: "",
       me: null,
@@ -43,8 +44,10 @@ export default class components extends Component {
   }
 
   onBidangChange = (data) => {
+    console.log(data.value)
     this.setState({bidang: data.value})
     this.selectSubBidang.getSubBidang(data.value)
+    this.selectUSTK.getUSTK(data.value)
   }
 
   onUploadChangeHandler = event => {
@@ -236,7 +239,7 @@ export default class components extends Component {
 
                   <Form.Group>
                     <Form.Label>Jenis Permohonan</Form.Label>
-                    <Form.Control as="select" onChange={(e) => this.setState({id_permohonan: e.target.value})}>
+                    <Form.Control as="select" value={this.state.id_permohonan} onChange={(e) => this.setState({id_permohonan: e.target.value})}>
                       <option value="">-- Pilih Jenis Permohonan --</option>
                       <option value="1">Baru</option>
                       <option value="2">Perpanjangan</option>
@@ -244,7 +247,7 @@ export default class components extends Component {
                     </Form.Control>
                   </Form.Group>
 
-                  <MSelectUstk value={this.state.id_unit_sertifikasi} provinsi_id={this.state.me ? this.state.me.asosiasi.provinsi_id : 0} onChange={(data) => this.setState({id_unit_sertifikasi: data.value})} />
+                  <MSelectUstk value={this.state.id_unit_sertifikasi} onRef={ref => (this.selectUSTK = ref)} provinsi_id={this.state.me ? this.state.me.asosiasi.provinsi_id : 0} onChange={(data) => this.setState({id_unit_sertifikasi: data.value})} />
                   
                 </Col>
                 <Col md>

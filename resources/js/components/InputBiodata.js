@@ -188,7 +188,7 @@ export default class InputBiodata extends Component {
               <th>Alamat</th>
               <td colSpan="3">{this.props.data.Alamat1}</td>
             </tr>
-            <tr>
+            {/* <tr>
               <th>KTP</th>
               <td><a data-type="iframe" data-fancybox href={this.props.data.file ? this.props.data.file["persyaratan_5"] : "#"}>View</a></td>
               <th>NPWP</th>
@@ -199,7 +199,7 @@ export default class InputBiodata extends Component {
               <td><a data-fancybox href={this.props.data.file ? this.props.data.file["persyaratan_4"] : "#"}>View</a></td>
               <th>Daftar Riwayat Hidup</th>
               <td><a data-fancybox href={this.props.data.file ? this.props.data.file["persyaratan_11"] : "#"}>View</a></td>
-            </tr>
+            </tr> */}
           </tbody>
         </Table>
         <Modal
