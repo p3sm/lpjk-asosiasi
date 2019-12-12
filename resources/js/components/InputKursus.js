@@ -70,10 +70,14 @@ export default class components extends Component {
 
     label.addClass("selected")
     label.html(event.target.files[0].name)
+    label.css("border", "#6ab04c solid 1px")
+    label.css("background", "#f0f3f1")
+    
+    var check = '<i class="fa fa-check" aria-hidden="true" style="color: #6cae64;margin-right: 10px;"></i>';
 
     switch(event.target.id){
       case "file_persyaratan":
-        label.prepend("Upload Persyaratan Kursus ")
+        label.prepend(check + "Upload Persyaratan Kursus ")
         this.setState({ file_persyaratan: event.target.files[0] })
         break;
       default:

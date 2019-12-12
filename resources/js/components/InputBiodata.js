@@ -6,7 +6,7 @@ import MSelectProvinsi from './MSelectProvinsi'
 import MSelectKabupaten from './MSelectKabupaten'
 import axios from 'axios'
 import Alert from 'react-s-alert';
-import Moment from 'react-moment';
+import Moment from 'moment';
 
 // import { Container } from './styles';
 
@@ -58,26 +58,30 @@ export default class InputBiodata extends Component {
 
     label.addClass("selected")
     label.html(event.target.files[0].name)
+    label.css("border", "#6ab04c solid 1px")
+    label.css("background", "#f0f3f1")
+    
+    var check = '<i class="fa fa-check" aria-hidden="true" style="color: #6cae64;margin-right: 10px;"></i>';
 
     switch(event.target.id){
       case "ktp":
-        label.prepend("Upload KTP ")
+        label.prepend(check + "Upload KTP ")
         this.setState({ file_ktp: event.target.files[0] })
         break;
       case "npwp":
-        label.prepend("Upload NPWP ")
+        label.prepend(check + "Upload NPWP ")
         this.setState({ file_npwp: event.target.files[0] })
         break;
       case "cv":
-        label.prepend("Upload Daftar Riwayat Hidup ")
+        label.prepend(check + "Upload Daftar Riwayat Hidup ")
         this.setState({ file_cv: event.target.files[0] })
         break;
       case "pernyataan":
-        label.prepend("Upload Surat Pernyataan Kebenaran Data Pemohon ")
+        label.prepend(check + "Upload Surat Pernyataan Kebenaran Data Pemohon ")
         this.setState({ file_pernyataan: event.target.files[0] })
         break;
       case "photo":
-        label.prepend("Upload Pas Photo Pemohon ")
+        label.prepend(check + "Upload Pas Photo Pemohon ")
         this.setState({ file_photo: event.target.files[0] })
         break;
       default:
@@ -109,7 +113,7 @@ export default class InputBiodata extends Component {
     formData.append("tempat_lahir", this.state.tempat_lahir);
     formData.append("email", this.state.email);
     formData.append("npwp",  this.props.tipe_profesi === 2 && this.state.npwp == "" ? "-" : this.state.npwp);
-    formData.append("tgl_lahir", this.state.tgl_lahir);
+    formData.append("tgl_lahir", Moment(this.state.tgl_lahir, "DD-MM-YYYY").format("YYYY-MM-DD"));
     formData.append("telepon", this.state.telepon);
     formData.append("jenis_kelamin", this.state.jenis_kelamin);
     formData.append("negara", this.state.negara);
@@ -155,7 +159,7 @@ export default class InputBiodata extends Component {
               <td>{this.props.data.npwp}</td>
             </tr>
             <tr>
-              <th>Nama Sertifikat</th>
+              <th>Nama Pemohon</th>
               <td>{this.props.data.Nama}</td>
               <th>Nama Tanpa Gelar</th>
               <td>{this.props.data.nama_tanpa_gelar}</td>
@@ -164,7 +168,7 @@ export default class InputBiodata extends Component {
               <th>Tempat Lahir</th>
               <td>{this.props.data.Tempat_Lahir}</td>
               <th>Tanggal Lahir</th>
-              <td>{this.props.data.Tgl_Lahir}</td>
+              <td>{Moment(this.props.data.Tgl_Lahir).format("DD-MM-YYYY")}</td>
             </tr>
             <tr>
               <th>Email</th>
@@ -214,7 +218,7 @@ export default class InputBiodata extends Component {
               <Row>
                 <Col>
                   <Form.Group>
-                    <Form.Label>Nama Sertifikat</Form.Label>
+                    <Form.Label>Nama Pemohon (nama yang tercetak di sertifikat)</Form.Label>
                     <Form.Control id="nama" name="nama" onChange={(e) => this.setState({nama: e.target.value})} placeholder="" value={this.state.nama}></Form.Control>
                   </Form.Group>
                   <Form.Group>
@@ -239,9 +243,9 @@ export default class InputBiodata extends Component {
                   </Form.Group>
                   <Form.Group>
                     <Form.Label>Tanggal Lahir</Form.Label>
-                    <Datetime closeOnSelect={true} inputProps={{ placeholder: 'contoh: 1980-01-01'}} value={this.state.tgl_lahir} dateFormat="YYYY-MM-DD" onChange={(e) => {
+                    <Datetime closeOnSelect={true} inputProps={{ placeholder: 'contoh: 01-01-1990'}} value={Moment(this.state.tgl_lahir, "YYYY-MM-DD").format("DD-MM-YYYY")} dateFormat="DD-MM-YYYY" onChange={(e) => {
                       try {
-                        this.setState({tgl_lahir: e.format("YYYY-MM-DD")})
+                        this.setState({tgl_lahir: e.format("DD-MM-YYYY")})
                       } catch (err) {
                         this.setState({tgl_lahir: e})
                       }

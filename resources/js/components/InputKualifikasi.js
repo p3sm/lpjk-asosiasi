@@ -62,22 +62,26 @@ export default class components extends Component {
 
     label.addClass("selected")
     label.html(event.target.files[0].name)
+    label.css("border", "#6ab04c solid 1px")
+    label.css("background", "#f0f3f1")
+    
+    var check = '<i class="fa fa-check" aria-hidden="true" style="color: #6cae64;margin-right: 10px;"></i>';
 
     switch(event.target.id){
       case "file_berita_acara_vva":
-        label.prepend("Upload Berita Acara VVA ")
+        label.prepend(check + "Upload Berita Acara VVA ")
         this.setState({ file_berita_acara_vva: event.target.files[0] })
         break;
       case "file_surat_permohonan_asosiasi":
-        label.prepend("Upload Surat Pengantar Permohonan Asosiasi ")
+        label.prepend(check + "Upload Surat Pengantar Permohonan Asosiasi ")
         this.setState({ file_surat_permohonan_asosiasi: event.target.files[0] })
         break;
       case "file_surat_permohonan":
-        label.prepend("Upload Surat Permohonan ")
+        label.prepend(check + "Upload Surat Permohonan ")
         this.setState({ file_surat_permohonan: event.target.files[0] })
         break;
       case "file_penilaian_mandiri":
-        label.prepend("Upload Penilaian Mandiri Pemohon ")
+        label.prepend(check + "Upload Penilaian Mandiri Pemohon ")
         this.setState({ file_penilaian_mandiri: event.target.files[0] })
         break;
       default:
@@ -173,7 +177,7 @@ export default class components extends Component {
       kualifikasi: "",
       provinsi: "",
       id_unit_sertifikasi: "",
-      id_permohonan: "",
+      id_permohonan: "1",
       file_berita_acara_vva: "",
       file_surat_permohonan_asosiasi: "",
       file_surat_permohonan: "",

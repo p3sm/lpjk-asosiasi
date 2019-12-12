@@ -6,6 +6,7 @@ import MSelectProvinsi from './MSelectProvinsi'
 import MSelectKabupaten from './MSelectKabupaten'
 import axios from 'axios'
 import Alert from 'react-s-alert';
+import Moment from 'moment';
 
 // import { Container } from './styles';
 
@@ -17,6 +18,7 @@ export default class InputBiodata extends Component {
       submiting: false,
       id_personal: this.props.id_personal,
       negara: "ID",
+      jenis_kelamin: "L",
       pos: ""
     }
   }
@@ -45,26 +47,30 @@ export default class InputBiodata extends Component {
 
     label.addClass("selected")
     label.html(event.target.files[0].name)
+    label.css("border", "#6ab04c solid 1px")
+    label.css("background", "#f0f3f1")
+    
+    var check = '<i class="fa fa-check" aria-hidden="true" style="color: #6cae64;margin-right: 10px;"></i>';
 
     switch(event.target.id){
       case "ktp":
-        label.prepend("Upload KTP ")
+        label.prepend(check + " Upload KTP ")
         this.setState({ file_ktp: event.target.files[0] })
         break;
       case "npwp":
-        label.prepend("Upload NPWP ")
+        label.prepend(check + " Upload NPWP ")
         this.setState({ file_npwp: event.target.files[0] })
         break;
       case "cv":
-        label.prepend("Upload Daftar Riwayat Hidup ")
+        label.prepend(check + " Upload Daftar Riwayat Hidup ")
         this.setState({ file_cv: event.target.files[0] })
         break;
       case "pernyataan":
-        label.prepend("Upload Surat Pernyataan Kebenaran Data Pemohon ")
+        label.prepend(check + " Upload Surat Pernyataan Kebenaran Data Pemohon ")
         this.setState({ file_pernyataan: event.target.files[0] })
         break;
       case "photo":
-        label.prepend("Upload Pas Photo Pemohon ")
+        label.prepend(check + " Upload Pas Photo Pemohon ")
         this.setState({ file_photo: event.target.files[0] })
         break;
       default:
@@ -95,7 +101,7 @@ export default class InputBiodata extends Component {
     formData.append("tempat_lahir", this.state.tempat_lahir);
     formData.append("email", this.state.email);
     formData.append("npwp", this.props.tipe_profesi === 2 && this.state.npwp == "" ? "-" : this.state.npwp);
-    formData.append("tgl_lahir", this.state.tgl_lahir);
+    formData.append("tgl_lahir", Moment(this.state.tgl_lahir, "DD-MM-YYYY").format("YYYY-MM-DD"));
     formData.append("telepon", this.state.telepon);
     formData.append("jenis_kelamin", this.state.jenis_kelamin);
     formData.append("negara", this.state.negara);
@@ -148,8 +154,8 @@ export default class InputBiodata extends Component {
                   <Form.Control disabled={true} placeholder="" value={this.props.id_personal}></Form.Control>
                 </Form.Group>
                 <Form.Group>
-                  <Form.Label>Nama Sertifikat</Form.Label>
-                  <Form.Control id="nama" name="nama" onChange={(e) => this.setState({nama: e.target.value})} placeholder="" value={this.state.nama}></Form.Control>
+                  <Form.Label>Nama Pemohon (nama yang tercetak di sertifikat)</Form.Label>
+                  <Form.Control id="nama" name="nama" onChange={(e) => this.setState({nama: e.target.value, nama_tanpa_gelar: e.target.value})} placeholder="" value={this.state.nama}></Form.Control>
                 </Form.Group>
                 <Form.Group>
                   <Form.Label>Nama Tanpa Gelar</Form.Label>
@@ -173,9 +179,9 @@ export default class InputBiodata extends Component {
                 </Form.Group>
                 <Form.Group>
                   <Form.Label>Tanggal Lahir</Form.Label>
-                  <Datetime closeOnSelect={true} inputProps={{ placeholder: 'contoh: 1980-01-01'}} value={this.state.tgl_lahir} dateFormat="YYYY-MM-DD" onChange={(e) => {
+                  <Datetime closeOnSelect={true} inputProps={{ placeholder: 'contoh: 01-01-1990'}} value={this.state.tgl_lahir} defaultValue={Moment().subtract(20, "years")} dateFormat="DD-MM-YYYY" onChange={(e) => {
                       try {
-                        this.setState({tgl_lahir: e.format("YYYY-MM-DD")})
+                        this.setState({tgl_lahir: e.format("DD-MM-YYYY")})
                       } catch (err) {
                         this.setState({tgl_lahir: e})
                       }

@@ -73,18 +73,22 @@ export default class components extends Component {
 
     label.addClass("selected")
     label.html(event.target.files[0].name)
+    label.css("border", "#6ab04c solid 1px")
+    label.css("background", "#f0f3f1")
+    
+    var check = '<i class="fa fa-check" aria-hidden="true" style="color: #6cae64;margin-right: 10px;"></i>';
 
     switch(event.target.id){
       case "file_ijazah":
-        label.prepend("Upload Ijazah ")
+        label.prepend(check + "Upload Ijazah ")
         this.setState({ file_ijazah: event.target.files[0] })
         break;
       case "file_data_pendidikan":
-        label.prepend("Upload Data Pendidikan ")
+        label.prepend(check + "Upload Data Pendidikan ")
         this.setState({ file_data_pendidikan: event.target.files[0] })
         break;
       case "file_keterangan_sekolah":
-        label.prepend("Upload Surat Keterangan dari Sekolah ")
+        label.prepend(check + "Upload Surat Keterangan dari Sekolah ")
         this.setState({ file_keterangan_sekolah: event.target.files[0] })
         break;
       default:
