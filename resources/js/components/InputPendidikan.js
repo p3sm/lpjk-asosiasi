@@ -22,7 +22,10 @@ export default class components extends Component {
       isUpdate: false,
       file_data_pendidikan: "",
       file_keterangan_sekolah: "",
-      delete: false
+      delete: false,
+      jenjang: this.props.tipe_profesi == 1 ? 4 : 2,
+      negara: "ID",
+      jurusan: this.props.tipe_profesi == 1 ? "Teknik Sipil" : "Bangunan",
     }
   }
 
@@ -40,7 +43,11 @@ export default class components extends Component {
 
   onNegaraChange = (data) => {
     console.log(data)
-    this.setState({negara: data.value})
+    this.setState({negara: data.value, provinsi: data.value == "ID" ? "" : 99, kabupaten: data.value == "ID" ? "" : 9999})
+
+    if(data.value != "ID"){
+      this.selectKabupaten.getKabupaten(99)
+    }
   }
 
   openUpdateForm = (data) => {
@@ -236,9 +243,9 @@ export default class components extends Component {
 
                   <MSelectCountry value={this.state.negara} onChange={(data) => this.onNegaraChange(data)} />
 
-                  <MSelectProvinsi value={this.state.provinsi} onChange={(data) => this.onProvinsiChange(data)} />
+                  <MSelectProvinsi value={this.state.provinsi} onChange={(data) => this.onProvinsiChange(data)} disabled={this.state.negara != "ID"} />
 
-                  <MSelectKabupaten value={this.state.kabupaten} provinsiId={this.state.provinsi} onRef={ref => (this.selectKabupaten = ref)} onChange={(data) => this.setState({kabupaten: data.value})} />
+                  <MSelectKabupaten value={this.state.kabupaten} provinsiId={this.state.provinsi} onRef={ref => (this.selectKabupaten = ref)} onChange={(data) => this.setState({kabupaten: data.value})} disabled={this.state.negara != "ID"}/>
 
                   <Form.Group>
                     <Form.Label>Alamat</Form.Label>
@@ -252,7 +259,7 @@ export default class components extends Component {
                   </Form.Group>
                   <Form.Group>
                     <Form.Label>Program Studi</Form.Label>
-                    <Form.Control placeholder="" onChange={(e) => this.setState({jurusan: e.target.value})} value={this.state.jurusan}></Form.Control>
+                    <Form.Control placeholder="" onChange={(e) => this.setState({jurusan: e.target.value})} onFocus={(event) => event.target.select()} value={this.state.jurusan}></Form.Control>
                   </Form.Group>
                   <Form.Group>
                     <Form.Label>Tahun Lulus</Form.Label>

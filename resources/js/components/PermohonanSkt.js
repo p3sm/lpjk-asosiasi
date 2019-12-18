@@ -248,7 +248,7 @@ export default class Personal extends Component {
                     <InputBiodata tipe_profesi={2} data={this.state.biodata} refreshData={() => this.getBiodata()}/>
                   </Tab>
                   <Tab eventKey="pendidikan" title="Pendidikan">
-                    <InputPendidikan id_personal={this.state.id_personal} data={this.state.pendidikan} refreshData={() => this.getPendidikan()}/>
+                    <InputPendidikan tipe_profesi={2} id_personal={this.state.id_personal} data={this.state.pendidikan} refreshData={() => this.getPendidikan()}/>
                   </Tab>
                   <Tab eventKey="kursus" title="Kursus">
                     <InputKursus id_personal={this.state.id_personal} data={this.state.kursus} refreshData={() => this.getKursus()}/>

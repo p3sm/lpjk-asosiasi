@@ -4,6 +4,10 @@ import axios from 'axios'
 import Select from 'react-select'
 
 export default class MSelectKabupaten extends Component {
+  static defaultProps = {
+    disabled: false
+  }
+
   constructor(props){
     super(props)
 
@@ -56,7 +60,7 @@ export default class MSelectKabupaten extends Component {
     return (
       <Form.Group>
         <Form.Label>Kabupaten</Form.Label>
-        <Select placeholder="-- pilih kabupaten --" value={this.state.data.filter(obj => {return obj.value == this.props.value})[0]} options={this.state.data} isLoading={this.state.loading} onChange={(val) => this.props.onChange(val)}/>
+        <Select isDisabled={this.props.disabled} placeholder="-- pilih kabupaten --" value={this.state.data.filter(obj => {return obj.value == this.props.value})[0]} options={this.state.data} isLoading={this.state.loading} onChange={(val) => this.props.onChange(val)}/>
       </Form.Group>
     )
   }

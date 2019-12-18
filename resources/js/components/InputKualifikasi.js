@@ -214,7 +214,11 @@ export default class components extends Component {
                 <td>{this.props.tipe_profesi == 1 ? d.ID_Propinsi_reg : d.ID_propinsi_reg}</td>
                 <td>{d.Tgl_Registrasi}</td>
                 <td>{d.status_terbaru}</td>
-                <td><Button variant="outline-danger" size="sm" onClick={() => this.confirmDelete(this.props.tipe_profesi == 1 ? d.ID_Registrasi_TK_Ahli : d.ID_Registrasi_TK_Trampil)}><span className="cui-trash"></span> Delete</Button></td>
+                <td>
+                  {!d.status_terbaru && (
+                    <Button variant="outline-danger" size="sm" onClick={() => this.confirmDelete(this.props.tipe_profesi == 1 ? d.ID_Registrasi_TK_Ahli : d.ID_Registrasi_TK_Trampil)}><span className="cui-trash"></span> Delete</Button>
+                  )}
+                </td>
               </tr>
             ))}
           </tbody>

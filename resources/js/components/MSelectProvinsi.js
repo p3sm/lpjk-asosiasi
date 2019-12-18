@@ -4,6 +4,10 @@ import axios from 'axios'
 import Select from 'react-select'
 
 export default class MSelectProvinsi extends Component {
+  static defaultProps = {
+    disabled: false
+  }
+
   constructor(props){
     super(props)
 
@@ -42,7 +46,7 @@ export default class MSelectProvinsi extends Component {
     return (
       <Form.Group>
         <Form.Label>Provinsi</Form.Label>
-        <Select placeholder="-- pilih provinsi --" value={this.state.data.filter(obj => {return obj.value == this.props.value})[0]} options={this.state.data} onChange={(val) => this.props.onChange(val)}/>
+        <Select isDisabled={this.props.disabled} placeholder="-- pilih provinsi --" value={this.props.value != "" ? this.state.data.filter(obj => {return obj.value == this.props.value})[0] : ""} options={this.state.data} onChange={(val) => this.props.onChange(val)}/>
       </Form.Group>
     )
   }
