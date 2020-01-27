@@ -26,7 +26,7 @@ export default class InputBiodata extends Component {
       tgl_lahir: this.props.data.Tgl_Lahir,
       telepon: this.props.data.no_hp,
       jenis_kelamin: this.props.data.jenis_kelamin,
-      negara: this.props.data.ID_Negara,
+      negara: this.props.data.ID_Negara ? this.props.data.ID_Negara : "ID",
       provinsi: this.props.data.ID_Propinsi,
       kabupaten: this.props.data.ID_Kabupaten_Alamat,
       alamat: this.props.data.Alamat1,
