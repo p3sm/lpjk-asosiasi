@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Form, Button, Row, Col, Card, Modal, Table } from 'react-bootstrap';
 import Datetime from 'react-datetime'
+import ViewProyek from './ViewProyek'
 import MSelectProvinsi from './MSelectProvinsi'
 import axios from 'axios'
 import Alert from 'react-s-alert';
@@ -163,29 +164,7 @@ export default class components extends Component {
     return(
       <div>
         <Button variant="outline-info" className="mb-3" onClick={() => this.setState({showFormAdd: true})}><span className="fa fa-edit"></span>Tambah Data</Button>
-        <Table bordered>
-          <tbody>
-            <tr>
-              <th>Nama Proyek</th>
-              <th>Jabatan</th>
-              <th>Nilai</th>
-              <th>Tanggal</th>
-              <th>Lokasi</th>
-              <th colSpan={2}>Action</th>
-            </tr>
-            {this.props.data.map((d) => (
-              <tr>
-                <td>{d.Proyek}</td>
-                <td>{d.Jabatan}</td>
-                <td>{formatter.format(d.Nilai)}</td>
-                <td>{d.Tgl_Mulai} - {d.Tgl_Selesai}</td>
-                <td>{d.Lokasi}</td>
-                <td><Button variant="outline-warning" size="sm" onClick={() => this.openUpdateForm(d)}><span className="cui-pencil"></span> Ubah</Button></td>
-                <td><Button variant="outline-danger" size="sm" onClick={() => this.confirmDelete(d.id_personal_proyek)}><span className="cui-trash"></span> Delete</Button></td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
+        <ViewProyek data={this.props.data} onUpdateClick={(d) => this.openUpdateForm(d)} onDeleteClick={(d) => this.confirmDelete(d.id_personal_proyek)}  />
         <Modal
         size="xl"
         onHide={this.handleClose}

@@ -4,6 +4,7 @@ import Datetime from 'react-datetime'
 import axios from 'axios'
 import Alert from 'react-s-alert';
 import SweetAlert from 'react-bootstrap-sweetalert';
+import ViewOrganisasi from './ViewOrganisasi'
 
 // import { Container } from './styles';
 
@@ -164,29 +165,7 @@ export default class components extends Component {
     return(
       <div>
         <Button variant="outline-info" className="mb-3" onClick={() => this.setState({showFormAdd: true})}><span className="fa fa-edit"></span>Tambah Data</Button>
-        <Table bordered>
-          <tbody>
-            <tr>
-              <th>Nama Organisasi</th>
-              <th>Jabatan</th>
-              <th>Pekerjaan</th>
-              <th>Tanggal</th>
-              <th>Alamat</th>
-              <th colSpan={2}>Action</th>
-            </tr>
-            {this.props.data.map((d) => (
-              <tr>
-                <td>{d.Nama_Badan_Usaha}</td>
-                <td>{d.Jabatan}</td>
-                <td>{d.Role_Pekerjaan}</td>
-                <td>{d.Tgl_Mulai} - {d.Tgl_Selesai}</td>
-                <td>{d.Alamat}</td>
-                <td><Button variant="outline-warning" size="sm" onClick={() => this.openUpdateForm(d)}><span className="cui-pencil"></span> Ubah</Button></td>
-                <td><Button variant="outline-danger" size="sm" onClick={() => this.confirmDelete(d.ID_Personal_Pengalaman)}><span className="cui-trash"></span> Delete</Button></td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
+        <ViewOrganisasi data={this.props.data} onUpdateClick={(d) => this.openUpdateForm(d)} onDeleteClick={(d) => this.confirmDelete(d.ID_Personal_Pengalaman)}  />
         <Modal
         size="xl"
         onHide={this.handleClose}

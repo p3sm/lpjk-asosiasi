@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Form, Button, Row, Col, Card, Modal, Table } from 'react-bootstrap';
 import Datetime from 'react-datetime'
+import ViewKursus from './ViewKursus'
 import MSelectCountry from './MSelectCountry'
 import MSelectProvinsi from './MSelectProvinsi'
 import MSelectKabupaten from './MSelectKabupaten'
@@ -173,29 +174,7 @@ export default class components extends Component {
     return(
       <div>
         <Button variant="outline-info" className="mb-3" onClick={() => this.setState({showFormAdd: true})}><span className="fa fa-edit"></span>Tambah Data</Button>
-        <Table bordered>
-          <tbody>
-            <tr>
-              <th>Nama Kursus</th>
-              <th>Penyelenggara</th>
-              <th>No Sertifikat</th>
-              <th>Tahun</th>
-              <th>Provinsi</th>
-              <th colSpan={2}>Action</th>
-            </tr>
-            {this.props.data.map((d) => (
-              <tr>
-                <td>{d.Nama_Kursus}</td>
-                <td>{d.Nama_Penyelenggara_Kursus}</td>
-                <td>{d.No_Sertifikat}</td>
-                <td>{d.Tahun}</td>
-                <td>{d.ID_Propinsi}</td>
-                <td><Button variant="outline-warning" size="sm" onClick={() => this.openUpdateForm(d)}><span className="cui-pencil"></span> Ubah</Button></td>
-                <td><Button variant="outline-danger" size="sm" onClick={() => this.confirmDelete(d.ID_Personal_Kursus)}><span className="cui-trash"></span> Delete</Button></td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
+        <ViewKursus data={this.props.data} onUpdateClick={(d) => this.openUpdateForm(d)} onDeleteClick={(d) => this.confirmDelete(d.ID_Personal_Kursus)}  />
         <Modal
         size="xl"
         onHide={this.handleClose}

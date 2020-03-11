@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\ApiKey;
 use App\User;
 
-class PermohonanSKAController extends Controller
+class PengajuanNaikStatusController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -23,8 +23,12 @@ class PermohonanSKAController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function ska()
     {
-        return view('permohonan_ska/index');
+        return view('pengajuan_status/indexSKA');
+    }
+    public function skt()
+    {
+        return view('pengajuan_status/indexSKT');
     }
 }

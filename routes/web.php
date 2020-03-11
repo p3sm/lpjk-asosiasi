@@ -32,8 +32,8 @@ Route::group(['middleware' => 'auth'], function(){
   Route::get('api/bidang/{tipe_profesi}', 'BidangController@apiGetList');
   Route::get('api/subbidang/{bidang_id}', 'SubBidangController@apiGetList');
   Route::get('api/ustk/{provinsi_id}/{bidang}', 'UstkController@apiGetList');
-
   Route::get('api/pendidikan', 'PendidikanController@apiGetList');
+
   Route::post('api/biodata', 'PersonalController@apiGetBiodata');
   Route::post('api/biodata/create', 'PersonalController@apiCreateBiodata');
   Route::post('api/biodata/{id}', 'PersonalController@apiUpdateBiodata');
@@ -54,11 +54,14 @@ Route::group(['middleware' => 'auth'], function(){
   Route::post('api/proyek/update', 'PersonalController@apiUpdateProyek');
   Route::post('api/proyek/delete', 'PersonalController@apiDeleteProyek');
   Route::post('api/kualifikasi_ta', 'PersonalController@apiGetKualifikasiTA');
+  Route::post('api/kualifikasi_ta_99', 'PersonalController@apiGetKualifikasiTAStatus99');
   Route::post('api/kualifikasi_ta/create', 'PersonalController@apiCreateKualifikasiTA');
   Route::post('api/kualifikasi_ta/delete', 'PersonalController@apiDeleteKualifikasiTA');
+  Route::post('api/kualifikasi_ta/naik_status', 'PersonalController@apiPengajuanNaikStatus');
   Route::post('api/kualifikasi_tt', 'PersonalController@apiGetKualifikasiTT');
   Route::post('api/kualifikasi_tt/create', 'PersonalController@apiCreateKualifikasiTT');
   Route::post('api/kualifikasi_tt/delete', 'PersonalController@apiDeleteKualifikasiTT');
+
 
   Route::get('api/profile', 'ProfileController@apiGetProfile');
   Route::post('api/profile/edit', 'ProfileController@apiEditProfile');
@@ -96,6 +99,11 @@ Route::group(['middleware' => 'auth'], function(){
         'permohonan_skt' => 'PermohonanSKTController',
     ]);
   });
+
+  Route::get('pengajuan_naik_status/ska', 'PengajuanNaikStatusController@ska');
+  Route::get('pengajuan_naik_status/skt', 'PengajuanNaikStatusController@skt');
+
+	Route::resources(['document' => 'DocumentController']);
   
   Route::get('profile', 'ProfileController@index')->name('profile');
 });

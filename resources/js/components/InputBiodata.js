@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Form, Button, Row, Col, Card, Modal, Table, Spinner } from 'react-bootstrap';
 import Datetime from 'react-datetime'
 import InputMask from 'react-input-mask';
+import ViewBiodata from './ViewBiodata'
 import MSelectProvinsi from './MSelectProvinsi'
 import MSelectKabupaten from './MSelectKabupaten'
 import axios from 'axios'
@@ -150,62 +151,9 @@ export default class InputBiodata extends Component {
     return (
       <div>
         <Button variant="outline-info" className="mb-3" onClick={() => this.setState({showFormEdit: true})}><span className="fa fa-edit"></span>Edit Data</Button>
-        <Table bordered>
-          <tbody>
-            <tr>
-              <th>ID Personal</th>
-              <td>{this.props.data.id_personal}</td>
-              <th>NPWP</th>
-              <td>{this.props.data.npwp}</td>
-            </tr>
-            <tr>
-              <th>Nama Pemohon</th>
-              <td>{this.props.data.Nama}</td>
-              <th>Nama Tanpa Gelar</th>
-              <td>{this.props.data.nama_tanpa_gelar}</td>
-            </tr>
-            <tr>
-              <th>Tempat Lahir</th>
-              <td>{this.props.data.Tempat_Lahir}</td>
-              <th>Tanggal Lahir</th>
-              <td>{Moment(this.props.data.Tgl_Lahir).format("DD-MM-YYYY")}</td>
-            </tr>
-            <tr>
-              <th>Email</th>
-              <td>{this.props.data.email}</td>
-              <th>Telepon</th>
-              <td>{this.props.data.no_hp}</td>
-            </tr>
-            <tr>
-              <th>Jenis Kelamin</th>
-              <td>{this.props.data.jenis_kelamin}</td>
-              <th>Negara</th>
-              <td>{this.props.data.ID_Negara}</td>
-            </tr>
-            <tr>
-              <th>Provinsi</th>
-              <td>{this.props.data.ID_Propinsi}</td>
-              <th>Kabupaten</th>
-              <td>{this.props.data.ID_Kabupaten_Alamat}</td>
-            </tr>
-            <tr>
-              <th>Alamat</th>
-              <td colSpan="3">{this.props.data.Alamat1}</td>
-            </tr>
-            {/* <tr>
-              <th>KTP</th>
-              <td><a data-type="iframe" data-fancybox href={this.props.data.file ? this.props.data.file["persyaratan_5"] : "#"}>View</a></td>
-              <th>NPWP</th>
-              <td><a data-fancybox href={this.props.data.file ? this.props.data.file["persyaratan_8"] : "#"}>View</a></td>
-            </tr>
-            <tr>
-              <th>Pernyataan Kebenaran Data</th>
-              <td><a data-fancybox href={this.props.data.file ? this.props.data.file["persyaratan_4"] : "#"}>View</a></td>
-              <th>Daftar Riwayat Hidup</th>
-              <td><a data-fancybox href={this.props.data.file ? this.props.data.file["persyaratan_11"] : "#"}>View</a></td>
-            </tr> */}
-          </tbody>
-        </Table>
+        
+        <ViewBiodata data={this.props.data}/>
+        
         <Modal
         size="xl"
         onHide={this.handleClose}

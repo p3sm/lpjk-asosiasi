@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Form, Button, Row, Col, Card, Modal, Table, Spinner } from 'react-bootstrap';
 import Datetime from 'react-datetime'
+import ViewPendidikan from './ViewPendidikan'
 import MSelectCountry from './MSelectCountry'
 import MSelectProvinsi from './MSelectProvinsi'
 import MSelectKabupaten from './MSelectKabupaten'
@@ -198,31 +199,7 @@ export default class components extends Component {
     return(
       <div>
         <Button variant="outline-info" className="mb-3" onClick={() => this.setState({showFormAdd: true})}><span className="fa fa-edit"></span>Tambah Data</Button>
-        <Table bordered>
-          <tbody>
-            <tr>
-              <th>Nama Sekolah</th>
-              <th>Program Studi</th>
-              <th>No Ijazah</th>
-              <th>Tahun</th>
-              <th>Provinsi</th>
-              <th>Alamat</th>
-              <th colSpan={2}>Action</th>
-            </tr>
-            {this.props.data.map((d) => (
-              <tr>
-                <td>{d.Nama_Sekolah}</td>
-                <td>{d.Jurusan}</td>
-                <td>{d.No_Ijazah}</td>
-                <td>{d.Tahun}</td>
-                <td>{d.ID_Propinsi}</td>
-                <td>{d.Alamat1}</td>
-                <td><Button variant="outline-warning" size="sm" onClick={() => this.openUpdateForm(d)}><span className="cui-pencil"></span> Ubah</Button></td>
-                <td><Button variant="outline-danger" size="sm" onClick={() => this.confirmDelete(d.ID_Personal_Pendidikan)}><span className="cui-trash"></span> Delete</Button></td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
+        <ViewPendidikan data={this.props.data} onUpdateClick={(d) => this.openUpdateForm(d)} onDeleteClick={(d) => this.confirmDelete(d.ID_Personal_Pendidikan)} />
         <Modal
         size="xl"
         onHide={this.handleClose}
