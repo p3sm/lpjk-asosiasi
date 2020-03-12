@@ -32,7 +32,11 @@ class DocumentController extends Controller
             return;
         }
 
-        return view('document/index')->with($data);
+        if($request->query('profesi') == 1){
+            return view('document/index')->with($data);
+        } else {
+            return view('document/indexSKT')->with($data);
+        }
     }
 
     /**
