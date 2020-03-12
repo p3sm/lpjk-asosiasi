@@ -59,8 +59,10 @@ Route::group(['middleware' => 'auth'], function(){
   Route::post('api/kualifikasi_ta/delete', 'PersonalController@apiDeleteKualifikasiTA');
   Route::post('api/kualifikasi_ta/naik_status', 'PersonalController@apiPengajuanNaikStatus');
   Route::post('api/kualifikasi_tt', 'PersonalController@apiGetKualifikasiTT');
+  Route::post('api/kualifikasi_tt_99', 'PersonalController@apiGetKualifikasiTTStatus99');
   Route::post('api/kualifikasi_tt/create', 'PersonalController@apiCreateKualifikasiTT');
   Route::post('api/kualifikasi_tt/delete', 'PersonalController@apiDeleteKualifikasiTT');
+  Route::post('api/kualifikasi_tt/naik_status', 'PersonalController@apiPengajuanNaikStatusTT');
 
 
   Route::get('api/profile', 'ProfileController@apiGetProfile');
@@ -100,10 +102,12 @@ Route::group(['middleware' => 'auth'], function(){
     ]);
   });
 
-  Route::get('pengajuan_naik_status/ska', 'PengajuanNaikStatusController@ska');
-  Route::get('pengajuan_naik_status/skt', 'PengajuanNaikStatusController@skt');
+	Route::group(['middleware' => 'authorization:verify'], function () {
+    Route::get('pengajuan_naik_status/ska', 'PengajuanNaikStatusController@ska');
+    Route::get('pengajuan_naik_status/skt', 'PengajuanNaikStatusController@skt');
 
-	Route::resources(['document' => 'DocumentController']);
+    Route::resources(['document' => 'DocumentController']);
+  });
   
   Route::get('profile', 'ProfileController@index')->name('profile');
 });

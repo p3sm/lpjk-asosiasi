@@ -5,7 +5,7 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{url("/")}}">Dashboard</a></li>
-        <li class="breadcrumb-item active">Pengajuan Naik Status SKA</li>
+        <li class="breadcrumb-item active">Kirim VVA SKA</li>
     </ol>
 </nav>
 <div class="container-fluid">
@@ -15,7 +15,7 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-body">
-                            <h3 class="docs-title" id="content">Pengajuan Naik Status SKA</h3>
+                            <h3 class="docs-title" id="content">Kirim VVA SKA</h3>
                           
                             @if(session()->get('success'))
                             <div class="alert alert-success">

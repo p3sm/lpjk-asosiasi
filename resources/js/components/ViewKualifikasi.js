@@ -44,7 +44,9 @@ export default class components extends Component {
     formData.append("tanggal", this.state.submit_tanggal);
     formData.append("id_personal", this.state.submit_id_personal);
 
-    axios.post("/api/kualifikasi_ta/naik_status", formData).then(response => {
+    let uri = this.props.tipe_profesi == 1 ? "/api/kualifikasi_ta/naik_status" : "/api/kualifikasi_tt/naik_status"
+
+    axios.post(uri, formData).then(response => {
       console.log(response)
       
       submiting[this.state.submit_index] = false
@@ -82,6 +84,7 @@ export default class components extends Component {
               <th>Provinsi</th>
               <th>Tanggal</th>
               <th>Status Terakhir</th>
+              <th>Dokumen</th>
               <th>Naik Status</th>
             </tr>
             {this.props.data.map((d, i) => (
@@ -98,7 +101,7 @@ export default class components extends Component {
                 <td><a className="fancybox" data-fancybox data-type="iframe" data-src={"/document?data=" + d.doc_url} href="javascript:;">View</a></td>
                 <td className="text-center">
                   {d.status_terbaru == "99" && d.diajukan != "1" && !this.state.diajukan[i] && !this.state.submiting[i] && (
-                    <Button variant="outline-success" size="sm" onClick={() => this.confirmPengajuan(i, d.ID_Registrasi_TK_Ahli, d.Tgl_Registrasi, d.ID_Personal)}>Ajukan</Button>
+                    <Button variant="outline-success" size="sm" onClick={() => this.confirmPengajuan(i, (this.props.tipe_profesi == 1 ? d.ID_Registrasi_TK_Ahli : d.ID_Registrasi_TK_Trampil), d.Tgl_Registrasi, d.ID_Personal)}>Ajukan</Button>
                   )}
                   {((d.diajukan == "1" && d.status_terbaru == "99") || this.state.diajukan[i]) && (
                     <span className="badge badge-success">Sudah diajukan</span>

@@ -5,7 +5,7 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{url("/")}}">Dashboard</a></li>
-        <li class="breadcrumb-item active">Pengajuan Naik Status SKT</li>
+        <li class="breadcrumb-item active">Kirim VVA SKT</li>
     </ol>
 </nav>
 <div class="container-fluid">
@@ -15,7 +15,7 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-body">
-                            <h3 class="docs-title" id="content">Pengajuan Naik Status SKT</h3>
+                            <h3 class="docs-title" id="content">Kirim VVA SKT</h3>
                           
                             @if(session()->get('success'))
                             <div class="alert alert-success">
@@ -52,3 +52,13 @@
     </div>
 </div>
 @endsection
+
+<style>
+  .fancybox-content {
+    width: 900px!important;
+    padding: 20px!important;
+  }
+  .fancybox-iframe {
+    padding: 40px!important;
+  }
+</style>
