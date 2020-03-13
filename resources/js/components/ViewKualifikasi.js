@@ -82,6 +82,7 @@ export default class components extends Component {
               <th>Provinsi</th>
               <th>Tanggal</th>
               <th>Status Terakhir</th>
+              <th>Dokumen</th>
               <th>Naik Status</th>
             </tr>
             {this.props.data.map((d, i) => (
@@ -95,7 +96,7 @@ export default class components extends Component {
                 <td>{this.props.tipe_profesi == 1 ? d.ID_Propinsi_reg : d.ID_propinsi_reg}</td>
                 <td>{d.Tgl_Registrasi}</td>
                 <td>{d.status_terbaru}</td>
-                <td><a className="fancybox" data-fancybox data-type="iframe" data-src={"/document?data=" + d.doc_url} href="javascript:;">View</a></td>
+                <td><a className="fancybox" data-fancybox data-type="iframe" data-src={"/document?data=" + d.doc_url} href="javascript:;">Lihat Dokumen</a></td>
                 <td className="text-center">
                   {d.status_terbaru == "99" && d.diajukan != "1" && !this.state.diajukan[i] && !this.state.submiting[i] && (
                     <Button variant="outline-success" size="sm" onClick={() => this.confirmPengajuan(i, d.ID_Registrasi_TK_Ahli, d.Tgl_Registrasi, d.ID_Personal)}>Ajukan</Button>
