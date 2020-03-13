@@ -15,6 +15,7 @@ use App\PersonalProyek;
 use App\PersonalRegTA;
 use App\PersonalRegTT;
 use App\PengajuanNaikStatus;
+use App\PengajuanNaikStatusTT;
 use Carbon\Carbon;
 
 class PersonalController extends Controller
@@ -1363,7 +1364,7 @@ class PersonalController extends Controller
     {
         $regta = PersonalRegTA::find($request->permohonan_id);
         $regta->diajukan = 1;
-        $regta->diajukan_oleh = Auth::user()->id;
+        $regta->diajukan_by = Auth::user()->id;
         $regta->diajukan_at = Carbon::now();
         $regta->save();
 
@@ -1417,6 +1418,59 @@ class PersonalController extends Controller
         $result->data = $obj->result;
 
     	return response()->json($result, $obj->response > 0 ? 200 : 400);
+    }
+
+    public function apiGetKualifikasiTTStatus99(Request $request)
+    {
+        $key = ApiKey::first();
+
+        $postData = [
+            "ID_Personal" => $request->id_personal
+            // "status_99" => 0
+          ];
+
+        $curl = curl_init();
+        $header[] = "X-Api-Key:" . $key->lpjk_key;
+        $header[] = "Token:" . $key->token;
+        $header[] = "Content-Type:multipart/form-data";
+        curl_setopt_array($curl, array(
+            CURLOPT_URL            => env("LPJK_ENDPOINT") . "Service/Klasifikasi/Get-TT",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_CUSTOMREQUEST  => "POST",
+            CURLOPT_POSTFIELDS     => $postData,
+            CURLOPT_HTTPHEADER     => $header,
+            CURLOPT_SSL_VERIFYHOST => 0,
+            CURLOPT_SSL_VERIFYPEER => 0
+        ));
+        $response = curl_exec($curl);
+
+        $obj = json_decode($response);
+
+        try {
+            $filtered_result = [];
+
+            foreach($obj->result as $data){
+                $exist = PersonalRegTT::find($data->ID_Registrasi_TK_Trampil);
+                if($exist){
+                    $data->doc_url = \Illuminate\Support\Facades\Crypt::encryptString($exist->ID_Personal . "." . date('Y-m-d', strtotime($exist->Tgl_Registrasi)));
+                    $data->diajukan = $exist->diajukan;
+                    $filtered_result[] = $data;
+                }
+            }
+
+            $result = new \stdClass();
+            $result->message = $obj->message;
+            $result->status = $obj->response;
+            $result->data = $filtered_result;
+    
+            return response()->json($result, $obj->response > 0 ? 200 : 400);
+        } catch (\Exception $e){
+            $result = new \stdClass();
+            $result->message = "An error has occurred";
+            $result->status = 400;
+            $result->data = null;
+            return response()->json($result, 400);
+        }
     }
 
     public function apiCreateKualifikasiTT(Request $request)
@@ -1559,5 +1613,31 @@ class PersonalController extends Controller
         }
 
         $data->save();
+    }
+
+    public function apiPengajuanNaikStatusTT(Request $request)
+    {
+        $regta = PersonalRegTT::find($request->permohonan_id);
+        $regta->diajukan = 1;
+        $regta->diajukan_by = Auth::user()->id;
+        $regta->diajukan_at = Carbon::now();
+        $regta->save();
+
+        $exist = PengajuanNaikStatusTT::where("date", $request->tanggal)->where("id_personal", $request->id_personal)->first();
+        if(!$exist){
+            $new = new PengajuanNaikStatusTT();
+            $new->date = $request->tanggal;
+            $new->id_personal = $request->id_personal;
+            $new->created_by = Auth::user()->id;
+            $new->updated_by = Auth::user()->id;
+
+            if($new->save()){
+                return response()->json('Input Succeeded', 201);
+            } else {
+                return response()->json('An error has occurred', 400);
+            }
+        }
+
+        return response()->json(null, 204);
     }
 }

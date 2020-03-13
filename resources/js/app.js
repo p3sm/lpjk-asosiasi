@@ -17,4 +17,5 @@ require('./components/Personal');
 require('./components/PermohonanSka');
 require('./components/PermohonanSkt');
 require('./components/PengajuanNaikStatusSKA');
+require('./components/PengajuanNaikStatusSKT');
 require('./components/Profile');
