@@ -93,6 +93,8 @@ class PersonalController extends Controller
             ];
         }
 
+        $this->cloneBiodata($obj->result[0]);
+
     	return response()->json($result, $obj->response > 0 ? 200 : 400);
     }
 
@@ -280,6 +282,36 @@ class PersonalController extends Controller
         $data->save();
     }
 
+    public function cloneBiodata($result)
+    {
+        $data = Personal::find($result->id_personal);
+        
+        if(!$data){
+            $data = new Personal();
+            $data->ID_Personal = $result->id_personal;
+            $data->No_KTP = $result->id_personal;
+            $data->created_by = Auth::user()->id;
+            $data->Nama = $result->Nama;
+            $data->nama_tanpa_gelar = $result->nama_tanpa_gelar;
+            $data->Alamat1 = $result->Alamat1;
+            $data->Kodepos = $result->Kodepos;
+            $data->ID_Kabupaten_Alamat = $result->ID_Kabupaten_Alamat;
+            $data->Tgl_Lahir = $result->Tgl_Lahir;
+            $data->jenis_kelamin = $result->jenis_kelamin;
+            $data->Tempat_Lahir = $result->Tempat_Lahir;
+            $data->ID_Kabupaten_Lahir = $result->ID_Kabupaten_Lahir;
+            $data->ID_Propinsi = $result->ID_Propinsi;
+            $data->npwp = $result->npwp;
+            $data->email = $result->email;
+            $data->no_hp = $result->no_hp;
+            $data->ID_Negara = $result->ID_Negara;
+            $data->Tenaga_Kerja = $result->Tenaga_Kerja;
+            $data->updated_by = Auth::user()->id;
+
+            $data->save();
+        }
+    }
+
     public function apiGetPendidikan(Request $request, $id_personal)
     {
         $key = ApiKey::first();
@@ -310,6 +342,8 @@ class PersonalController extends Controller
         $result->message = $obj->message;
         $result->status = $obj->response;
         $result->data = $obj->result;
+
+        $this->clonePendidikan($obj->result);
 
     	return response()->json($result, $obj->response > 0 ? 200 : 400);
     }
@@ -507,6 +541,32 @@ class PersonalController extends Controller
         $data->save();
     }
 
+    public function clonePendidikan($result)
+    {
+        foreach($result as $pendidikan){
+            $data = PersonalPendidikan::find($pendidikan->ID_Personal_Pendidikan);
+            
+            if(!$data){
+                $data = new PersonalPendidikan();
+                $data->ID_Personal_Pendidikan = $pendidikan->ID_Personal_Pendidikan;
+                $data->ID_Personal = $pendidikan->ID_Personal;
+                $data->created_by = Auth::user()->id;
+                $data->Nama_Sekolah = $pendidikan->Nama_Sekolah;
+                $data->Alamat1 = $pendidikan->Alamat1;
+                $data->ID_Propinsi = $pendidikan->ID_Propinsi;
+                $data->ID_Kabupaten = $pendidikan->ID_Kabupaten;
+                $data->ID_Countries = $pendidikan->ID_Countries;
+                $data->Tahun = $pendidikan->Tahun;
+                $data->Jenjang = $pendidikan->Jenjang;
+                $data->Jurusan = $pendidikan->Jurusan;
+                $data->No_Ijazah = $pendidikan->No_Ijazah;
+                $data->updated_by = Auth::user()->id;
+        
+                $data->save();
+            }
+        }
+    }
+
     public function apiGetKursus(Request $request)
     {
         $key = ApiKey::first();
@@ -537,6 +597,8 @@ class PersonalController extends Controller
         $result->message = $obj->message;
         $result->status = $obj->response;
         $result->data = $obj->result;
+
+        $this->cloneKursus($obj->result);
 
     	return response()->json($result, $obj->response > 0 ? 200 : 400);
     }
@@ -715,6 +777,31 @@ class PersonalController extends Controller
         $data->save();
     }
 
+    public function cloneKursus($result)
+    {
+        foreach($result as $kursus){
+            $data = PersonalKursus::find($kursus->ID_Personal_Kursus);
+            
+            if(!$data){
+                $data = new PersonalKursus();
+                $data->ID_Personal_Kursus = $kursus->ID_Personal_Kursus;
+                $data->ID_Personal = $kursus->ID_Personal;
+                $data->created_by = Auth::user()->id;
+                $data->Nama_Kursus = $kursus->Nama_Kursus;
+                $data->Nama_Penyelenggara_Kursus = $kursus->Nama_Penyelenggara_Kursus;
+                $data->Alamat1 = $kursus->Alamat1;
+                $data->ID_Propinsi = $kursus->ID_Propinsi;
+                $data->ID_Kabupaten = $kursus->ID_Kabupaten;
+                $data->ID_Countries = $kursus->ID_Countries;
+                $data->Tahun = $kursus->Tahun;
+                $data->No_Sertifikat = $kursus->No_Sertifikat;
+                $data->updated_by = Auth::user()->id;
+        
+                $data->save();
+            }
+        }
+    }
+
     public function apiGetOrganisasi(Request $request)
     {
         $key = ApiKey::first();
@@ -745,6 +832,8 @@ class PersonalController extends Controller
         $result->message = $obj->message;
         $result->status = $obj->response;
         $result->data = $obj->result;
+
+        $this->cloneOrganisasi($obj->result);
 
     	return response()->json($result, $obj->response > 0 ? 200 : 400);
     }
@@ -923,6 +1012,30 @@ class PersonalController extends Controller
         $data->save();
     }
 
+    public function cloneOrganisasi($result)
+    {
+        foreach($result as $org){
+            $data = PersonalOrganisasi::find($org->ID_Personal_Pengalaman);
+            
+            if(!$data){
+                $data = new PersonalOrganisasi();
+                $data->ID_Personal_Pengalaman = $org->ID_Personal_Pengalaman;
+                $data->ID_Personal = $org->ID_Personal;
+                $data->created_by = Auth::user()->id;
+                $data->Nama_Badan_Usaha = $org->Nama_Badan_Usaha;
+                $data->Alamat = $org->Alamat;
+                $data->Jenis_BU = $org->Jenis_BU;
+                $data->Jabatan = $org->Jabatan;
+                $data->Tgl_Mulai = $org->Tgl_Mulai;
+                $data->Tgl_Selesai = $org->Tgl_Selesai;
+                $data->Role_Pekerjaan = $org->Role_Pekerjaan;
+                $data->updated_by = Auth::user()->id;
+        
+                $data->save();
+            }
+        }
+    }
+
     public function apiGetProyek(Request $request)
     {
         $key = ApiKey::first();
@@ -953,6 +1066,8 @@ class PersonalController extends Controller
         $result->message = $obj->message;
         $result->status = $obj->response;
         $result->data = $obj->result;
+
+        $this->cloneProyek($obj->result);
 
     	return response()->json($result, $obj->response > 0 ? 200 : 400);
     }
@@ -1126,6 +1241,29 @@ class PersonalController extends Controller
         $data->save();
     }
 
+    public function cloneProyek($result)
+    {
+        foreach($result as $proyek){
+            $data = PersonalProyek::find($proyek->id_personal_proyek);
+            
+            if(!$data){
+                $data = new PersonalProyek();
+                $data->id_personal_proyek = $proyek->id_personal_proyek;
+                $data->id_personal = $proyek->id_personal;
+                $data->created_by = Auth::user()->id;
+                $data->Proyek = $proyek->Proyek;
+                $data->Lokasi = $proyek->Lokasi;
+                $data->Tgl_Mulai = $proyek->Tgl_Mulai;
+                $data->Tgl_Selesai = $proyek->Tgl_Selesai;
+                $data->Jabatan = $proyek->Jabatan;
+                $data->Nilai = $proyek->Nilai;
+                $data->updated_by = Auth::user()->id;
+        
+                $data->save();
+            }
+        }
+    }
+
     public function apiGetKualifikasiTA(Request $request)
     {
         $key = ApiKey::first();
@@ -1157,6 +1295,8 @@ class PersonalController extends Controller
         $result->status = $obj->response;
         $result->data = $obj->result;
 
+        $this->cloneRegTA($obj->result);
+
     	return response()->json($result, $obj->response > 0 ? 200 : 400);
     }
 
@@ -1185,6 +1325,8 @@ class PersonalController extends Controller
         $response = curl_exec($curl);
 
         $obj = json_decode($response);
+
+        $this->cloneRegTA($obj->result);
 
         try {
             $filtered_result = [];
@@ -1360,6 +1502,31 @@ class PersonalController extends Controller
         $data->save();
     }
 
+    public function cloneRegTA($result)
+    {
+        foreach($result as $ta){
+            $data = PersonalRegTA::find($ta->ID_Registrasi_TK_Ahli);
+            
+            if(!$data){
+                $data = new PersonalRegTA();
+                $data->ID_Registrasi_TK_Ahli = $ta->ID_Registrasi_TK_Ahli;
+                $data->ID_Personal = $ta->ID_Personal;
+                $data->created_by = Auth::user()->id;
+                $data->ID_Sub_Bidang = $ta->ID_Sub_Bidang;
+                $data->ID_Kualifikasi = $ta->ID_Kualifikasi;
+                $data->ID_Asosiasi_Profesi = $ta->ID_Asosiasi_Profesi;
+                $data->No_Reg_Asosiasi = $ta->No_Reg_Asosiasi;
+                $data->id_unit_sertifikasi = $ta->id_unit_sertifikasi;
+                $data->id_permohonan = $ta->id_permohonan;
+                $data->Tgl_Registrasi = $ta->Tgl_Registrasi;
+                $data->ID_Propinsi_reg = $ta->ID_Propinsi_reg;
+                $data->updated_by = Auth::user()->id;
+        
+                $data->save();
+            }
+        }
+    }
+
     public function apiPengajuanNaikStatus(Request $request)
     {
         $regta = PersonalRegTA::find($request->permohonan_id);
@@ -1417,6 +1584,8 @@ class PersonalController extends Controller
         $result->status = $obj->response;
         $result->data = $obj->result;
 
+        $this->cloneRegTT($obj->result);
+
     	return response()->json($result, $obj->response > 0 ? 200 : 400);
     }
 
@@ -1445,6 +1614,8 @@ class PersonalController extends Controller
         $response = curl_exec($curl);
 
         $obj = json_decode($response);
+
+        $this->cloneRegTT($obj->result);
 
         try {
             $filtered_result = [];
@@ -1613,6 +1784,30 @@ class PersonalController extends Controller
         }
 
         $data->save();
+    }
+
+    public function cloneRegTT($result)
+    {
+        foreach($result as $tt){
+            $data = PersonalRegTT::find($tt->ID_Registrasi_TK_Trampil);
+            
+            if(!$data){
+                $data = new PersonalRegTT();
+                $data->ID_Registrasi_TK_Trampil = $tt->ID_Registrasi_TK_Trampil;
+                $data->ID_Personal = $tt->ID_Personal;
+                $data->created_by = Auth::user()->id;
+                $data->ID_Sub_Bidang = $tt->ID_Sub_Bidang;
+                $data->ID_Kualifikasi = $tt->ID_Kualifikasi;
+                $data->ID_Asosiasi_Profesi = $tt->ID_Asosiasi_Profesi;
+                $data->id_unit_sertifikasi = $tt->id_unit_sertifikasi;
+                $data->id_permohonan = $tt->id_permohonan;
+                $data->Tgl_Registrasi = $tt->Tgl_Registrasi;
+                $data->ID_propinsi_reg = $tt->ID_propinsi_reg;
+                $data->updated_by = Auth::user()->id;
+        
+                $data->save();
+            }
+        }
     }
 
     public function apiPengajuanNaikStatusTT(Request $request)
