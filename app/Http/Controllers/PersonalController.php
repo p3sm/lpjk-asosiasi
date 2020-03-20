@@ -1535,11 +1535,21 @@ class PersonalController extends Controller
         $regta->diajukan_at = Carbon::now();
         $regta->save();
 
-        $exist = PengajuanNaikStatus::where("date", $request->tanggal)->where("id_personal", $request->id_personal)->first();
+        $exist = PengajuanNaikStatus::where("date", $request->tanggal)
+                                    ->where("id_personal", $request->id_personal)
+                                    ->where("sub_bidang", $regta->ID_Sub_Bidang)
+                                    ->where("asosiasi", $regta->ID_Asosiasi_Profesi)->first();
         if(!$exist){
             $new = new PengajuanNaikStatus();
             $new->date = $request->tanggal;
             $new->id_personal = $request->id_personal;
+            $new->nama = $regta->personal->Nama;
+            $new->sub_bidang = $regta->ID_Sub_Bidang;
+            $new->kualifikasi = $regta->ID_Kualifikasi;
+            $new->asosiasi = $regta->ID_Asosiasi_Profesi;
+            $new->ustk = $regta->id_unit_sertifikasi;
+            $new->ttd_verifikator = "ttd_2.png";
+            $new->ttd_database = "ttd_1.png";
             $new->created_by = Auth::user()->id;
             $new->updated_by = Auth::user()->id;
 
@@ -1818,11 +1828,21 @@ class PersonalController extends Controller
         $regta->diajukan_at = Carbon::now();
         $regta->save();
 
-        $exist = PengajuanNaikStatusTT::where("date", $request->tanggal)->where("id_personal", $request->id_personal)->first();
+        $exist = PengajuanNaikStatusTT::where("date", $request->tanggal)
+                                        ->where("id_personal", $request->id_personal)
+                                        ->where("sub_bidang", $regta->ID_Sub_Bidang)
+                                        ->where("asosiasi", $regta->ID_Asosiasi_Profesi)->first();
         if(!$exist){
             $new = new PengajuanNaikStatusTT();
             $new->date = $request->tanggal;
             $new->id_personal = $request->id_personal;
+            $new->nama = $regta->personal->Nama;
+            $new->sub_bidang = $regta->ID_Sub_Bidang;
+            $new->kualifikasi = $regta->ID_Kualifikasi;
+            $new->asosiasi = $regta->ID_Asosiasi_Profesi;
+            $new->ustk = $regta->id_unit_sertifikasi;
+            $new->ttd_verifikator = "ttd_2.png";
+            $new->ttd_database = "ttd_1.png";
             $new->created_by = Auth::user()->id;
             $new->updated_by = Auth::user()->id;
 
