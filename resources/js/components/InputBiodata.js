@@ -24,7 +24,7 @@ export default class InputBiodata extends Component {
       tempat_lahir: this.props.data.Tempat_Lahir,
       email: this.props.data.email,
       npwp: this.props.data.npwp,
-      tgl_lahir: this.props.data.Tgl_Lahir,
+      tgl_lahir: this.props.data.Tgl_Lahir ? Moment(this.props.data.Tgl_Lahir, "YYYY-MM-DD").format("DD-MM-YYYY") : "",
       telepon: this.props.data.no_hp,
       jenis_kelamin: this.props.data.jenis_kelamin,
       negara: this.props.data.ID_Negara ? this.props.data.ID_Negara : "ID",
@@ -191,7 +191,7 @@ export default class InputBiodata extends Component {
                   </Form.Group>
                   <Form.Group>
                     <Form.Label>Tanggal Lahir</Form.Label>
-                    <Datetime closeOnSelect={true} inputProps={{ placeholder: 'contoh: 01-01-1990'}} value={Moment(this.state.tgl_lahir, "YYYY-MM-DD").format("DD-MM-YYYY")} dateFormat="DD-MM-YYYY" onChange={(e) => {
+                    <Datetime closeOnSelect={true} inputProps={{ placeholder: 'contoh: 01-01-1990'}} value={this.state.tgl_lahir} dateFormat="DD-MM-YYYY" onChange={(e) => {
                       try {
                         this.setState({tgl_lahir: e.format("DD-MM-YYYY")})
                       } catch (err) {
