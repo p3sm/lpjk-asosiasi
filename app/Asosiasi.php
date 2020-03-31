@@ -11,4 +11,17 @@ class Asosiasi extends Model
   protected $primaryKey = 'id_asosiasi';
 
   protected $casts = ['id_asosiasi' => 'string'];
+    
+  public function sign()
+  {
+    return $this->hasMany('App\AsosiasiSign', 'asosiasi_id');
+  }
+
+  public function verifikatorSign() {
+    return $this->sign()->where('type', "verifikator");
+  }
+
+  public function databaseSign() {
+    return $this->sign()->where('type', "database");
+  }
 }

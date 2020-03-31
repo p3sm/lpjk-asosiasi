@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\ApiKey;
 use App\User;
+use App\Asosiasi;
 use App\Personal;
 use App\PersonalKursus;
 use App\PersonalOrganisasi;
@@ -1540,6 +1541,16 @@ class PersonalController extends Controller
                                     ->where("sub_bidang", $regta->ID_Sub_Bidang)
                                     ->where("asosiasi", $regta->ID_Asosiasi_Profesi)->first();
         if(!$exist){
+            
+            $asosiasi = Asosiasi::find(Auth::user()->asosiasi->asosiasi_id);
+            $verifikatorSigns = $asosiasi->verifikatorSign;
+            $databaseSigns = $asosiasi->databaseSign;
+
+            $userVerifikatorName = $asosiasi->user_verifikator;
+            $userDatabaseName = $asosiasi->user_database;
+            $verifikatorSign = $verifikatorSigns[array_rand($verifikatorSigns->toArray())]->path;
+            $databaseSign = $databaseSigns[array_rand($databaseSigns->toArray())]->path;
+
             $new = new PengajuanNaikStatus();
             $new->date = $request->tanggal;
             $new->id_personal = $request->id_personal;
@@ -1548,8 +1559,10 @@ class PersonalController extends Controller
             $new->kualifikasi = $regta->ID_Kualifikasi;
             $new->asosiasi = $regta->ID_Asosiasi_Profesi;
             $new->ustk = $regta->id_unit_sertifikasi;
-            $new->ttd_verifikator = "ttd_2.png";
-            $new->ttd_database = "ttd_1.png";
+            $new->user_verifikator = $userVerifikatorName;
+            $new->user_database = $userDatabaseName;
+            $new->ttd_verifikator = $verifikatorSign;
+            $new->ttd_database = $databaseSign;
             $new->created_by = Auth::user()->id;
             $new->updated_by = Auth::user()->id;
 
@@ -1833,6 +1846,16 @@ class PersonalController extends Controller
                                         ->where("sub_bidang", $regta->ID_Sub_Bidang)
                                         ->where("asosiasi", $regta->ID_Asosiasi_Profesi)->first();
         if(!$exist){
+            
+            $asosiasi = Asosiasi::find(Auth::user()->asosiasi->asosiasi_id);
+            $verifikatorSigns = $asosiasi->verifikatorSign;
+            $databaseSigns = $asosiasi->databaseSign;
+
+            $userVerifikatorName = $asosiasi->user_verifikator;
+            $userDatabaseName = $asosiasi->user_database;
+            $verifikatorSign = $verifikatorSigns[array_rand($verifikatorSigns->toArray())]->path;
+            $databaseSign = $databaseSigns[array_rand($databaseSigns->toArray())]->path;
+
             $new = new PengajuanNaikStatusTT();
             $new->date = $request->tanggal;
             $new->id_personal = $request->id_personal;
@@ -1841,8 +1864,10 @@ class PersonalController extends Controller
             $new->kualifikasi = $regta->ID_Kualifikasi;
             $new->asosiasi = $regta->ID_Asosiasi_Profesi;
             $new->ustk = $regta->id_unit_sertifikasi;
-            $new->ttd_verifikator = "ttd_2.png";
-            $new->ttd_database = "ttd_1.png";
+            $new->user_verifikator = $userVerifikatorName;
+            $new->user_database = $userDatabaseName;
+            $new->ttd_verifikator = $verifikatorSign;
+            $new->ttd_database = $databaseSign;
             $new->created_by = Auth::user()->id;
             $new->updated_by = Auth::user()->id;
 
