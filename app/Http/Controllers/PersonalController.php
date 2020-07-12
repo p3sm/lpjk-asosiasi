@@ -42,7 +42,7 @@ class PersonalController extends Controller
 
     public function apiGetBiodata(Request $request)
     {
-        $key = ApiKey::first();
+        $key = ApiKey::where('provinsi_id', Auth::user()->asosiasi->provinsi_id)->first();
 
         $postData = [
             "id_personal" => $request->id_personal,
@@ -54,7 +54,7 @@ class PersonalController extends Controller
         $header[] = "Token:" . $key->token;
         $header[] = "Content-Type:multipart/form-data";
         curl_setopt_array($curl, array(
-            CURLOPT_URL            => env("LPJK_ENDPOINT") . "Service/Biodata/Get",
+            CURLOPT_URL            => config("app.lpjk_endpoint") . "Service/Biodata/Get",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_CUSTOMREQUEST  => "POST",
             CURLOPT_POSTFIELDS     => $postData,
@@ -81,7 +81,7 @@ class PersonalController extends Controller
         $result = new \stdClass();
         $result->message = $obj->message;
         $result->status = $obj->response;
-        $result->data = $obj->response > 0 ? $obj->result[0] : [];
+        $result->data = isset($obj->result) ? $obj->result[0] : [];
 
         $local = Personal::find($request->id_personal);
 
@@ -94,7 +94,8 @@ class PersonalController extends Controller
             ];
         }
 
-        $this->cloneBiodata($obj->result[0]);
+        if(isset($obj->result))
+            $this->cloneBiodata($obj->result[0]);
 
     	return response()->json($result, $obj->response > 0 ? 200 : 400);
     }
@@ -133,7 +134,7 @@ class PersonalController extends Controller
         $header[] = "Token:" . $key->token;
         $header[] = "Content-Type:multipart/form-data";
         curl_setopt_array($curl, array(
-        CURLOPT_URL => env("LPJK_ENDPOINT") . "Service/Biodata/Tambah",
+        CURLOPT_URL => config("app.lpjk_endpoint") . "Service/Biodata/Tambah",
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_CUSTOMREQUEST => "POST",
         CURLOPT_POSTFIELDS => $postData,
@@ -196,7 +197,7 @@ class PersonalController extends Controller
         $header[] = "Token:" . $key->token;
         $header[] = "Content-Type:multipart/form-data";
         curl_setopt_array($curl, array(
-        CURLOPT_URL => env("LPJK_ENDPOINT") . "Service/Biodata/Ubah",
+        CURLOPT_URL => config("app.lpjk_endpoint") . "Service/Biodata/Ubah",
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_CUSTOMREQUEST => "POST",
         CURLOPT_POSTFIELDS => $postData,
@@ -327,7 +328,7 @@ class PersonalController extends Controller
         $header[] = "Token:" . $key->token;
         $header[] = "Content-Type:multipart/form-data";
         curl_setopt_array($curl, array(
-            CURLOPT_URL            => env("LPJK_ENDPOINT") . "Service/Pendidikan/Get",
+            CURLOPT_URL            => config("app.lpjk_endpoint") . "Service/Pendidikan/Get",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_CUSTOMREQUEST  => "POST",
             CURLOPT_POSTFIELDS     => $postData,
@@ -373,7 +374,7 @@ class PersonalController extends Controller
         $header[] = "Token:" . $key->token;
         $header[] = "Content-Type:multipart/form-data";
         curl_setopt_array($curl, array(
-        CURLOPT_URL => env("LPJK_ENDPOINT") . "Service/Pendidikan/Tambah",
+        CURLOPT_URL => config("app.lpjk_endpoint") . "Service/Pendidikan/Tambah",
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_CUSTOMREQUEST => "POST",
         CURLOPT_POSTFIELDS => $postData,
@@ -427,7 +428,7 @@ class PersonalController extends Controller
         $header[] = "Token:" . $key->token;
         $header[] = "Content-Type:multipart/form-data";
         curl_setopt_array($curl, array(
-        CURLOPT_URL => env("LPJK_ENDPOINT") . "Service/Pendidikan/Ubah",
+        CURLOPT_URL => config("app.lpjk_endpoint") . "Service/Pendidikan/Ubah",
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_CUSTOMREQUEST => "POST",
         CURLOPT_POSTFIELDS => $postData,
@@ -471,7 +472,7 @@ class PersonalController extends Controller
         $header[] = "Token:" . $key->token;
         $header[] = "Content-Type:multipart/form-data";
         curl_setopt_array($curl, array(
-        CURLOPT_URL => env("LPJK_ENDPOINT") . "Service/Pendidikan/Hapus",
+        CURLOPT_URL => config("app.lpjk_endpoint") . "Service/Pendidikan/Hapus",
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_CUSTOMREQUEST => "POST",
         CURLOPT_POSTFIELDS => $postData,
@@ -582,7 +583,7 @@ class PersonalController extends Controller
         $header[] = "Token:" . $key->token;
         $header[] = "Content-Type:multipart/form-data";
         curl_setopt_array($curl, array(
-            CURLOPT_URL            => env("LPJK_ENDPOINT") . "Service/Kursus/Get",
+            CURLOPT_URL            => config("app.lpjk_endpoint") . "Service/Kursus/Get",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_CUSTOMREQUEST  => "POST",
             CURLOPT_POSTFIELDS     => $postData,
@@ -625,7 +626,7 @@ class PersonalController extends Controller
         $header[] = "Token:" . $key->token;
         $header[] = "Content-Type:multipart/form-data";
         curl_setopt_array($curl, array(
-        CURLOPT_URL => env("LPJK_ENDPOINT") . "Service/Kursus/Tambah",
+        CURLOPT_URL => config("app.lpjk_endpoint") . "Service/Kursus/Tambah",
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_CUSTOMREQUEST => "POST",
         CURLOPT_POSTFIELDS => $postData,
@@ -676,7 +677,7 @@ class PersonalController extends Controller
         $header[] = "Token:" . $key->token;
         $header[] = "Content-Type:multipart/form-data";
         curl_setopt_array($curl, array(
-        CURLOPT_URL => env("LPJK_ENDPOINT") . "Service/Kursus/Ubah",
+        CURLOPT_URL => config("app.lpjk_endpoint") . "Service/Kursus/Ubah",
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_CUSTOMREQUEST => "POST",
         CURLOPT_POSTFIELDS => $postData,
@@ -720,7 +721,7 @@ class PersonalController extends Controller
         $header[] = "Token:" . $key->token;
         $header[] = "Content-Type:multipart/form-data";
         curl_setopt_array($curl, array(
-        CURLOPT_URL => env("LPJK_ENDPOINT") . "Service/Kursus/Hapus",
+        CURLOPT_URL => config("app.lpjk_endpoint") . "Service/Kursus/Hapus",
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_CUSTOMREQUEST => "POST",
         CURLOPT_POSTFIELDS => $postData,
@@ -817,7 +818,7 @@ class PersonalController extends Controller
         $header[] = "Token:" . $key->token;
         $header[] = "Content-Type:multipart/form-data";
         curl_setopt_array($curl, array(
-            CURLOPT_URL            => env("LPJK_ENDPOINT") . "Service/Organisasi/Get",
+            CURLOPT_URL            => config("app.lpjk_endpoint") . "Service/Organisasi/Get",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_CUSTOMREQUEST  => "POST",
             CURLOPT_POSTFIELDS     => $postData,
@@ -860,7 +861,7 @@ class PersonalController extends Controller
         $header[] = "Token:" . $key->token;
         $header[] = "Content-Type:multipart/form-data";
         curl_setopt_array($curl, array(
-        CURLOPT_URL => env("LPJK_ENDPOINT") . "Service/Organisasi/Tambah",
+        CURLOPT_URL => config("app.lpjk_endpoint") . "Service/Organisasi/Tambah",
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_CUSTOMREQUEST => "POST",
         CURLOPT_POSTFIELDS => $postData,
@@ -911,7 +912,7 @@ class PersonalController extends Controller
         $header[] = "Token:" . $key->token;
         $header[] = "Content-Type:multipart/form-data";
         curl_setopt_array($curl, array(
-        CURLOPT_URL => env("LPJK_ENDPOINT") . "Service/Organisasi/Ubah",
+        CURLOPT_URL => config("app.lpjk_endpoint") . "Service/Organisasi/Ubah",
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_CUSTOMREQUEST => "POST",
         CURLOPT_POSTFIELDS => $postData,
@@ -955,7 +956,7 @@ class PersonalController extends Controller
         $header[] = "Token:" . $key->token;
         $header[] = "Content-Type:multipart/form-data";
         curl_setopt_array($curl, array(
-        CURLOPT_URL => env("LPJK_ENDPOINT") . "Service/Organisasi/Hapus",
+        CURLOPT_URL => config("app.lpjk_endpoint") . "Service/Organisasi/Hapus",
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_CUSTOMREQUEST => "POST",
         CURLOPT_POSTFIELDS => $postData,
@@ -1051,7 +1052,7 @@ class PersonalController extends Controller
         $header[] = "Token:" . $key->token;
         $header[] = "Content-Type:multipart/form-data";
         curl_setopt_array($curl, array(
-            CURLOPT_URL            => env("LPJK_ENDPOINT") . "Service/Proyek/Get",
+            CURLOPT_URL            => config("app.lpjk_endpoint") . "Service/Proyek/Get",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_CUSTOMREQUEST  => "POST",
             CURLOPT_POSTFIELDS     => $postData,
@@ -1092,7 +1093,7 @@ class PersonalController extends Controller
         $header[] = "Token:" . $key->token;
         $header[] = "Content-Type:multipart/form-data";
         curl_setopt_array($curl, array(
-        CURLOPT_URL => env("LPJK_ENDPOINT") . "Service/Proyek/Tambah",
+        CURLOPT_URL => config("app.lpjk_endpoint") . "Service/Proyek/Tambah",
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_CUSTOMREQUEST => "POST",
         CURLOPT_POSTFIELDS => $postData,
@@ -1141,7 +1142,7 @@ class PersonalController extends Controller
         $header[] = "Token:" . $key->token;
         $header[] = "Content-Type:multipart/form-data";
         curl_setopt_array($curl, array(
-        CURLOPT_URL => env("LPJK_ENDPOINT") . "Service/Proyek/Ubah",
+        CURLOPT_URL => config("app.lpjk_endpoint") . "Service/Proyek/Ubah",
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_CUSTOMREQUEST => "POST",
         CURLOPT_POSTFIELDS => $postData,
@@ -1185,7 +1186,7 @@ class PersonalController extends Controller
         $header[] = "Token:" . $key->token;
         $header[] = "Content-Type:multipart/form-data";
         curl_setopt_array($curl, array(
-        CURLOPT_URL => env("LPJK_ENDPOINT") . "Service/Proyek/Hapus",
+        CURLOPT_URL => config("app.lpjk_endpoint") . "Service/Proyek/Hapus",
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_CUSTOMREQUEST => "POST",
         CURLOPT_POSTFIELDS => $postData,
@@ -1279,7 +1280,7 @@ class PersonalController extends Controller
         $header[] = "Token:" . $key->token;
         $header[] = "Content-Type:multipart/form-data";
         curl_setopt_array($curl, array(
-            CURLOPT_URL            => env("LPJK_ENDPOINT") . "Service/Klasifikasi/Get-TA",
+            CURLOPT_URL            => config("app.lpjk_endpoint") . "Service/Klasifikasi/Get-TA",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_CUSTOMREQUEST  => "POST",
             CURLOPT_POSTFIELDS     => $postData,
@@ -1315,7 +1316,7 @@ class PersonalController extends Controller
         $header[] = "Token:" . $key->token;
         $header[] = "Content-Type:multipart/form-data";
         curl_setopt_array($curl, array(
-            CURLOPT_URL            => env("LPJK_ENDPOINT") . "Service/Klasifikasi/Get-TA",
+            CURLOPT_URL            => config("app.lpjk_endpoint") . "Service/Klasifikasi/Get-TA",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_CUSTOMREQUEST  => "POST",
             CURLOPT_POSTFIELDS     => $postData,
@@ -1383,7 +1384,7 @@ class PersonalController extends Controller
         $header[] = "Token:" . $key->token;
         $header[] = "Content-Type:multipart/form-data";
         curl_setopt_array($curl, array(
-        CURLOPT_URL => env("LPJK_ENDPOINT") . "Service/Klasifikasi/Tambah-TA",
+        CURLOPT_URL => config("app.lpjk_endpoint") . "Service/Klasifikasi/Tambah-TA",
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_CUSTOMREQUEST => "POST",
         CURLOPT_POSTFIELDS => $postData,
@@ -1428,7 +1429,7 @@ class PersonalController extends Controller
         $header[] = "Token:" . $key->token;
         $header[] = "Content-Type:multipart/form-data";
         curl_setopt_array($curl, array(
-        CURLOPT_URL => env("LPJK_ENDPOINT") . "Service/Klasifikasi/Hapus-TA",
+        CURLOPT_URL => config("app.lpjk_endpoint") . "Service/Klasifikasi/Hapus-TA",
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_CUSTOMREQUEST => "POST",
         CURLOPT_POSTFIELDS => $postData,
@@ -1590,7 +1591,7 @@ class PersonalController extends Controller
         $header[] = "Token:" . $key->token;
         $header[] = "Content-Type:multipart/form-data";
         curl_setopt_array($curl, array(
-            CURLOPT_URL            => env("LPJK_ENDPOINT") . "Service/Klasifikasi/Get-TT",
+            CURLOPT_URL            => config("app.lpjk_endpoint") . "Service/Klasifikasi/Get-TT",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_CUSTOMREQUEST  => "POST",
             CURLOPT_POSTFIELDS     => $postData,
@@ -1626,7 +1627,7 @@ class PersonalController extends Controller
         $header[] = "Token:" . $key->token;
         $header[] = "Content-Type:multipart/form-data";
         curl_setopt_array($curl, array(
-            CURLOPT_URL            => env("LPJK_ENDPOINT") . "Service/Klasifikasi/Get-TT",
+            CURLOPT_URL            => config("app.lpjk_endpoint") . "Service/Klasifikasi/Get-TT",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_CUSTOMREQUEST  => "POST",
             CURLOPT_POSTFIELDS     => $postData,
@@ -1694,7 +1695,7 @@ class PersonalController extends Controller
         $header[] = "Token:" . $key->token;
         $header[] = "Content-Type:multipart/form-data";
         curl_setopt_array($curl, array(
-        CURLOPT_URL => env("LPJK_ENDPOINT") . "Service/Klasifikasi/Tambah-TT",
+        CURLOPT_URL => config("app.lpjk_endpoint") . "Service/Klasifikasi/Tambah-TT",
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_CUSTOMREQUEST => "POST",
         CURLOPT_POSTFIELDS => $postData,
@@ -1739,7 +1740,7 @@ class PersonalController extends Controller
         $header[] = "Token:" . $key->token;
         $header[] = "Content-Type:multipart/form-data";
         curl_setopt_array($curl, array(
-        CURLOPT_URL => env("LPJK_ENDPOINT") . "Service/Klasifikasi/Hapus-TT",
+        CURLOPT_URL => config("app.lpjk_endpoint") . "Service/Klasifikasi/Hapus-TT",
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_CUSTOMREQUEST => "POST",
         CURLOPT_POSTFIELDS => $postData,

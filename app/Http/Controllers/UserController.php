@@ -11,6 +11,7 @@ use App\UserAsosiasi;
 use App\Role;
 use App\Asosiasi;
 use App\Provinsi;
+use Carbon\Carbon;
 
 class UserController extends Controller
 {
@@ -19,20 +20,40 @@ class UserController extends Controller
 	}
 
     public function index(){
-        $data["user"] = User::where("is_active", ">=", 0)->get();
+        $user = User::with(['asosiasi'])->where("is_active", ">=", 0)->where("is_deleted", 0);
+
+        if(Auth::user()->id != 1){
+            $user = $user->where('id', '!=', 1)->whereHas('asosiasi', function ($query){
+                return $query->where('provinsi_id', Auth::user()->asosiasi->provinsi_id);
+            });
+        }
+
+         $data["user"] = $user->get();
     	return view('user/index')->with($data);
     }
 
     public function create(){
-        $data["roles"] = Role::all()->sortBy("name");
+        if(Auth::user()->id == 1)
+          $data["roles"] = Role::all()->sortBy("name");
+        else
+          $data["roles"] = Role::where("created_by", Auth::user()->id)->orWhere("id", Auth::user()->role_id)->get()->sortBy("name");
+
         $data["asosiasi"] = Asosiasi::all()->sortBy("nama");
-        $data["provinsi"] = Provinsi::all()->sortBy("nama");
+        if(Auth::user()->id == 1)
+            $data["provinsi"] = Provinsi::all()->sortBy("nama");
+        else
+            $data["provinsi"] = Provinsi::where("id_provinsi", Auth::user()->asosiasi->provinsi_id)->get()->sortBy("nama");
 
         return view('user/create')->with($data);
     }
 
     public function store(Request $request)
     {
+        $role = Role::findOrFail($request->get('role_id'));
+        if($request->get('role_id') != Auth::user()->role_id && Auth::user()->id != $role->created_by){
+          return redirect('/users')->with('error', 'Pembuatan data tidak diizinkan');
+        }
+
         $find = User::where("username", $request->get('username'))->first();
 
         if($find){
@@ -45,12 +66,13 @@ class UserController extends Controller
         $user->name      = $request->get('name');
         $user->role_id   = $request->get('role_id');
         $user->is_active = $request->get('is_active') ? 1 : 0;
+        $user->created_by  = Auth::user()->id;
 
         if($user->save()){
             $uAsosiasi = new UserAsosiasi();
             $uAsosiasi->user_id = $user->id;
             $uAsosiasi->asosiasi_id = $request->get('asosiasi_id');
-            $uAsosiasi->provinsi_id = $request->get('provinsi_id');
+            $uAsosiasi->provinsi_id = Auth::user()->id == 1 ? $request->get('provinsi_id') : Auth::user()->asosiasi->provinsi_id;
             $uAsosiasi->save();
         }
 
@@ -65,15 +87,32 @@ class UserController extends Controller
     public function edit($id)
     {
         $data["user"] = User::findOrFail($id);
-        $data["roles"] = Role::all()->sortBy("name");
+
+        if(Auth::user()->id == 1)
+          $data["roles"] = Role::all()->sortBy("name");
+        else
+          $data["roles"] = Role::where("created_by", Auth::user()->id)->orWhere("id", Auth::user()->role_id)->get()->sortBy("name");
+
         $data["asosiasi"] = Asosiasi::all()->sortBy("nama");
-        $data["provinsi"] = Provinsi::all()->sortBy("nama");
+        if(Auth::user()->id == 1)
+            $data["provinsi"] = Provinsi::all()->sortBy("nama");
+        else
+            $data["provinsi"] = Provinsi::where("id_provinsi", Auth::user()->asosiasi->provinsi_id)->get()->sortBy("nama");
 
         return view('user/edit')->with($data);
     }
 
     public function update(Request $request, $id)
     {
+        $role = Role::findOrFail($request->get('role_id'));
+        if($request->get('role_id') != Auth::user()->role_id && Auth::user()->id != $role->created_by){
+          return redirect('/users')->with('error', 'Perubahan data tidak diizinkan');
+        }
+
+        if(Auth::user()->id != $id && $id == 1){
+            return redirect('/users')->with('error', 'Proses update tidak diizinkan');
+        }
+
         $user = User::findOrFail($id);
         $user->username  = $request->get('username');
 
@@ -84,11 +123,13 @@ class UserController extends Controller
         $user->name      = $request->get('name');
         $user->role_id   = $request->get('role_id');
         $user->is_active = $request->get('is_active') ? 1 : 0;
+        $user->updated_by  = Auth::user()->id;
+        
 
         if($user->save()){
             $uAsosiasi = UserAsosiasi::where("user_id", $user->id)->first();
             $uAsosiasi->asosiasi_id = $request->get('asosiasi_id');
-            $uAsosiasi->provinsi_id = $request->get('provinsi_id');
+            $uAsosiasi->provinsi_id = Auth::user()->id == 1 ? $request->get('provinsi_id') : Auth::user()->asosiasi->provinsi_id;
             $uAsosiasi->save();
             return redirect('/users')->with('success', 'User berhasil diupdate');
         }
@@ -97,8 +138,15 @@ class UserController extends Controller
 
     public function destroy($id)
     {
-        $item = User::findOrFail($id);
-        $item->delete();
+        if(Auth::user()->id == $id || $id == 1){
+            return response()->json(['status'=>'akun tidak boleh dihapus']);
+        }
+
+        $user = User::findOrFail($id);
+        $user->is_deleted = 1;
+        $user->deleted_by  = Auth::user()->id;
+        $user->deleted_at  = Carbon::now();
+        $user->save();
 
         return response()->json(['status'=>'berhasil hapus']);
     }

@@ -42,7 +42,7 @@ class PermohonanSKTController extends Controller
     //     $header[] = "Token:" . $key->token;
     //     $header[] = "Content-Type:multipart/form-data";
     //     curl_setopt_array($curl, array(
-    //         CURLOPT_URL            => env("LPJK_ENDPOINT") . "Service/Biodata/Get",
+    //         CURLOPT_URL            => config("app.lpjk_endpoint") . "Service/Biodata/Get",
     //         CURLOPT_RETURNTRANSFER => true,
     //         CURLOPT_CUSTOMREQUEST  => "POST",
     //         CURLOPT_POSTFIELDS     => $postData,
@@ -108,7 +108,7 @@ class PermohonanSKTController extends Controller
     //     $header[] = "Token:" . $key->token;
     //     $header[] = "Content-Type:multipart/form-data";
     //     curl_setopt_array($curl, array(
-    //     CURLOPT_URL => env("LPJK_ENDPOINT") . "Service/Biodata/Tambah",
+    //     CURLOPT_URL => config("app.lpjk_endpoint") . "Service/Biodata/Tambah",
     //     CURLOPT_RETURNTRANSFER => true,
     //     CURLOPT_CUSTOMREQUEST => "POST",
     //     CURLOPT_POSTFIELDS => $postData,
@@ -170,7 +170,7 @@ class PermohonanSKTController extends Controller
     //     $header[] = "Token:" . $key->token;
     //     $header[] = "Content-Type:multipart/form-data";
     //     curl_setopt_array($curl, array(
-    //     CURLOPT_URL => env("LPJK_ENDPOINT") . "Service/Biodata/Ubah",
+    //     CURLOPT_URL => config("app.lpjk_endpoint") . "Service/Biodata/Ubah",
     //     CURLOPT_RETURNTRANSFER => true,
     //     CURLOPT_CUSTOMREQUEST => "POST",
     //     CURLOPT_POSTFIELDS => $postData,
@@ -212,7 +212,7 @@ class PermohonanSKTController extends Controller
     //     $header[] = "Token:" . $key->token;
     //     $header[] = "Content-Type:multipart/form-data";
     //     curl_setopt_array($curl, array(
-    //         CURLOPT_URL            => env("LPJK_ENDPOINT") . "Service/Pendidikan/Get",
+    //         CURLOPT_URL            => config("app.lpjk_endpoint") . "Service/Pendidikan/Get",
     //         CURLOPT_RETURNTRANSFER => true,
     //         CURLOPT_CUSTOMREQUEST  => "POST",
     //         CURLOPT_POSTFIELDS     => $postData,
@@ -256,7 +256,7 @@ class PermohonanSKTController extends Controller
     //     $header[] = "Token:" . $key->token;
     //     $header[] = "Content-Type:multipart/form-data";
     //     curl_setopt_array($curl, array(
-    //     CURLOPT_URL => env("LPJK_ENDPOINT") . "Service/Pendidikan/Tambah",
+    //     CURLOPT_URL => config("app.lpjk_endpoint") . "Service/Pendidikan/Tambah",
     //     CURLOPT_RETURNTRANSFER => true,
     //     CURLOPT_CUSTOMREQUEST => "POST",
     //     CURLOPT_POSTFIELDS => $postData,
@@ -298,7 +298,7 @@ class PermohonanSKTController extends Controller
     //     $header[] = "Token:" . $key->token;
     //     $header[] = "Content-Type:multipart/form-data";
     //     curl_setopt_array($curl, array(
-    //         CURLOPT_URL            => env("LPJK_ENDPOINT") . "Service/Kursus/Get",
+    //         CURLOPT_URL            => config("app.lpjk_endpoint") . "Service/Kursus/Get",
     //         CURLOPT_RETURNTRANSFER => true,
     //         CURLOPT_CUSTOMREQUEST  => "POST",
     //         CURLOPT_POSTFIELDS     => $postData,
@@ -339,7 +339,7 @@ class PermohonanSKTController extends Controller
     //     $header[] = "Token:" . $key->token;
     //     $header[] = "Content-Type:multipart/form-data";
     //     curl_setopt_array($curl, array(
-    //     CURLOPT_URL => env("LPJK_ENDPOINT") . "Service/Kursus/Tambah",
+    //     CURLOPT_URL => config("app.lpjk_endpoint") . "Service/Kursus/Tambah",
     //     CURLOPT_RETURNTRANSFER => true,
     //     CURLOPT_CUSTOMREQUEST => "POST",
     //     CURLOPT_POSTFIELDS => $postData,
@@ -381,7 +381,7 @@ class PermohonanSKTController extends Controller
     //     $header[] = "Token:" . $key->token;
     //     $header[] = "Content-Type:multipart/form-data";
     //     curl_setopt_array($curl, array(
-    //         CURLOPT_URL            => env("LPJK_ENDPOINT") . "Service/Organisasi/Get",
+    //         CURLOPT_URL            => config("app.lpjk_endpoint") . "Service/Organisasi/Get",
     //         CURLOPT_RETURNTRANSFER => true,
     //         CURLOPT_CUSTOMREQUEST  => "POST",
     //         CURLOPT_POSTFIELDS     => $postData,
@@ -422,7 +422,7 @@ class PermohonanSKTController extends Controller
     //     $header[] = "Token:" . $key->token;
     //     $header[] = "Content-Type:multipart/form-data";
     //     curl_setopt_array($curl, array(
-    //     CURLOPT_URL => env("LPJK_ENDPOINT") . "Service/Organisasi/Tambah",
+    //     CURLOPT_URL => config("app.lpjk_endpoint") . "Service/Organisasi/Tambah",
     //     CURLOPT_RETURNTRANSFER => true,
     //     CURLOPT_CUSTOMREQUEST => "POST",
     //     CURLOPT_POSTFIELDS => $postData,
@@ -464,7 +464,7 @@ class PermohonanSKTController extends Controller
     //     $header[] = "Token:" . $key->token;
     //     $header[] = "Content-Type:multipart/form-data";
     //     curl_setopt_array($curl, array(
-    //         CURLOPT_URL            => env("LPJK_ENDPOINT") . "Service/Proyek/Get",
+    //         CURLOPT_URL            => config("app.lpjk_endpoint") . "Service/Proyek/Get",
     //         CURLOPT_RETURNTRANSFER => true,
     //         CURLOPT_CUSTOMREQUEST  => "POST",
     //         CURLOPT_POSTFIELDS     => $postData,
@@ -503,7 +503,7 @@ class PermohonanSKTController extends Controller
     //     $header[] = "Token:" . $key->token;
     //     $header[] = "Content-Type:multipart/form-data";
     //     curl_setopt_array($curl, array(
-    //     CURLOPT_URL => env("LPJK_ENDPOINT") . "Service/Proyek/Tambah",
+    //     CURLOPT_URL => config("app.lpjk_endpoint") . "Service/Proyek/Tambah",
     //     CURLOPT_RETURNTRANSFER => true,
     //     CURLOPT_CUSTOMREQUEST => "POST",
     //     CURLOPT_POSTFIELDS => $postData,
@@ -545,7 +545,7 @@ class PermohonanSKTController extends Controller
     //     $header[] = "Token:" . $key->token;
     //     $header[] = "Content-Type:multipart/form-data";
     //     curl_setopt_array($curl, array(
-    //         CURLOPT_URL            => env("LPJK_ENDPOINT") . "Service/Klasifikasi/Get-TA",
+    //         CURLOPT_URL            => config("app.lpjk_endpoint") . "Service/Klasifikasi/Get-TA",
     //         CURLOPT_RETURNTRANSFER => true,
     //         CURLOPT_CUSTOMREQUEST  => "POST",
     //         CURLOPT_POSTFIELDS     => $postData,
@@ -592,7 +592,7 @@ class PermohonanSKTController extends Controller
     //     $header[] = "Token:" . $key->token;
     //     $header[] = "Content-Type:multipart/form-data";
     //     curl_setopt_array($curl, array(
-    //     CURLOPT_URL => env("LPJK_ENDPOINT") . "Service/Klasifikasi/Tambah-TA",
+    //     CURLOPT_URL => config("app.lpjk_endpoint") . "Service/Klasifikasi/Tambah-TA",
     //     CURLOPT_RETURNTRANSFER => true,
     //     CURLOPT_CUSTOMREQUEST => "POST",
     //     CURLOPT_POSTFIELDS => $postData,
@@ -634,7 +634,7 @@ class PermohonanSKTController extends Controller
     //     $header[] = "Token:" . $key->token;
     //     $header[] = "Content-Type:multipart/form-data";
     //     curl_setopt_array($curl, array(
-    //         CURLOPT_URL            => env("LPJK_ENDPOINT") . "Service/Klasifikasi/Get-TT",
+    //         CURLOPT_URL            => config("app.lpjk_endpoint") . "Service/Klasifikasi/Get-TT",
     //         CURLOPT_RETURNTRANSFER => true,
     //         CURLOPT_CUSTOMREQUEST  => "POST",
     //         CURLOPT_POSTFIELDS     => $postData,
