@@ -1547,8 +1547,8 @@ class PersonalController extends Controller
             $verifikatorSigns = $asosiasi->verifikatorSign->where("provinsi_id", Auth::user()->asosiasi->provinsi_id);
             $databaseSigns = $asosiasi->databaseSign->where("provinsi_id", Auth::user()->asosiasi->provinsi_id);
 
-            $userVerifikatorName = $asosiasi->where("provinsi_id", Auth::user()->asosiasi->provinsi_id)->user_verifikator;
-            $userDatabaseName = $asosiasi->where("provinsi_id", Auth::user()->asosiasi->provinsi_id)->user_database;
+            $userVerifikatorName = $asosiasi->detail->where("provinsi_id", Auth::user()->asosiasi->provinsi_id)->user_verifikator;
+            $userDatabaseName = $asosiasi->detail->where("provinsi_id", Auth::user()->asosiasi->provinsi_id)->user_database;
             $verifikatorSign = $verifikatorSigns[array_rand($verifikatorSigns->toArray())]->path;
             $databaseSign = $databaseSigns[array_rand($databaseSigns->toArray())]->path;
 
@@ -1852,8 +1852,8 @@ class PersonalController extends Controller
             $verifikatorSigns = $asosiasi->verifikatorSign->where("provinsi_id", Auth::user()->asosiasi->provinsi_id);
             $databaseSigns = $asosiasi->databaseSign->where("provinsi_id", Auth::user()->asosiasi->provinsi_id);
 
-            $userVerifikatorName = $asosiasi->where("provinsi_id", Auth::user()->asosiasi->provinsi_id)->user_verifikator;
-            $userDatabaseName = $asosiasi->where("provinsi_id", Auth::user()->asosiasi->provinsi_id)->user_database;
+            $userVerifikatorName = $asosiasi->detail->where("provinsi_id", Auth::user()->asosiasi->provinsi_id)->user_verifikator;
+            $userDatabaseName = $asosiasi->detail->where("provinsi_id", Auth::user()->asosiasi->provinsi_id)->user_database;
             $verifikatorSign = $verifikatorSigns[array_rand($verifikatorSigns->toArray())]->path;
             $databaseSign = $databaseSigns[array_rand($databaseSigns->toArray())]->path;
 
