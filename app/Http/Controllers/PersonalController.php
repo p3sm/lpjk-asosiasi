@@ -1544,11 +1544,11 @@ class PersonalController extends Controller
         if(!$exist){
             
             $asosiasi = Asosiasi::find(Auth::user()->asosiasi->asosiasi_id);
-            $verifikatorSigns = $asosiasi->verifikatorSign;
-            $databaseSigns = $asosiasi->databaseSign;
+            $verifikatorSigns = $asosiasi->verifikatorSign->where("provinsi_id", Auth::user()->asosiasi->provinsi_id);
+            $databaseSigns = $asosiasi->databaseSign->where("provinsi_id", Auth::user()->asosiasi->provinsi_id);
 
-            $userVerifikatorName = $asosiasi->user_verifikator;
-            $userDatabaseName = $asosiasi->user_database;
+            $userVerifikatorName = $asosiasi->where("provinsi_id", Auth::user()->asosiasi->provinsi_id)->user_verifikator;
+            $userDatabaseName = $asosiasi->where("provinsi_id", Auth::user()->asosiasi->provinsi_id)->user_database;
             $verifikatorSign = $verifikatorSigns[array_rand($verifikatorSigns->toArray())]->path;
             $databaseSign = $databaseSigns[array_rand($databaseSigns->toArray())]->path;
 
@@ -1849,11 +1849,11 @@ class PersonalController extends Controller
         if(!$exist){
             
             $asosiasi = Asosiasi::find(Auth::user()->asosiasi->asosiasi_id);
-            $verifikatorSigns = $asosiasi->verifikatorSign;
-            $databaseSigns = $asosiasi->databaseSign;
+            $verifikatorSigns = $asosiasi->verifikatorSign->where("provinsi_id", Auth::user()->asosiasi->provinsi_id);
+            $databaseSigns = $asosiasi->databaseSign->where("provinsi_id", Auth::user()->asosiasi->provinsi_id);
 
-            $userVerifikatorName = $asosiasi->user_verifikator;
-            $userDatabaseName = $asosiasi->user_database;
+            $userVerifikatorName = $asosiasi->where("provinsi_id", Auth::user()->asosiasi->provinsi_id)->user_verifikator;
+            $userDatabaseName = $asosiasi->where("provinsi_id", Auth::user()->asosiasi->provinsi_id)->user_database;
             $verifikatorSign = $verifikatorSigns[array_rand($verifikatorSigns->toArray())]->path;
             $databaseSign = $databaseSigns[array_rand($databaseSigns->toArray())]->path;
 
