@@ -127,7 +127,7 @@ class PersonalController extends Controller
             "url_pdf_daftar_riwayat_hidup"            => $request->file("file_cv") ? curl_file_create($request->file("file_cv")->path()) : ""
             ];
 
-        $key = ApiKey::first();
+        $key = ApiKey::where('provinsi_id', Auth::user()->asosiasi->provinsi_id)->first();
 
         $curl = curl_init();
         $header[] = "X-Api-Key:" . $key->lpjk_key;
@@ -190,7 +190,7 @@ class PersonalController extends Controller
             "url_pdf_daftar_riwayat_hidup"            => $request->file("file_cv") ? curl_file_create($request->file("file_cv")->path()) : ""
             ];
 
-        $key = ApiKey::first();
+        $key = ApiKey::where('provinsi_id', Auth::user()->asosiasi->provinsi_id)->first();
 
         $curl = curl_init();
         $header[] = "X-Api-Key:" . $key->lpjk_key;
@@ -316,7 +316,7 @@ class PersonalController extends Controller
 
     public function apiGetPendidikan(Request $request, $id_personal)
     {
-        $key = ApiKey::first();
+        $key = ApiKey::where('provinsi_id', Auth::user()->asosiasi->provinsi_id)->first();
 
         $postData = [
             "id_personal" => $id_personal,
@@ -367,7 +367,7 @@ class PersonalController extends Controller
             "url_pdf_data_pendidikan"                    => $request->file("file_data_pendidikan") ? curl_file_create($request->file("file_data_pendidikan")->path()) : "",
             "url_pdf_data_surat_keterangan_dari_sekolah" => $request->file("file_keterangan_sekolah") ? curl_file_create($request->file("file_keterangan_sekolah")->path()) : "",
         ];
-        $key = ApiKey::first();
+        $key = ApiKey::where('provinsi_id', Auth::user()->asosiasi->provinsi_id)->first();
 
         $curl = curl_init();
         $header[] = "X-Api-Key:" . $key->lpjk_key;
@@ -421,7 +421,7 @@ class PersonalController extends Controller
             "url_pdf_data_pendidikan"                    => $request->file("file_data_pendidikan") ? curl_file_create($request->file("file_data_pendidikan")->path()) : "",
             "url_pdf_data_surat_keterangan_dari_sekolah" => $request->file("file_keterangan_sekolah") ? curl_file_create($request->file("file_keterangan_sekolah")->path()) : "",
         ];
-        $key = ApiKey::first();
+        $key = ApiKey::where('provinsi_id', Auth::user()->asosiasi->provinsi_id)->first();
 
         $curl = curl_init();
         $header[] = "X-Api-Key:" . $key->lpjk_key;
@@ -465,7 +465,7 @@ class PersonalController extends Controller
             "id_personal_pendidikan" => $request->id_personal_pendidikan,
           ];
 
-        $key = ApiKey::first();
+        $key = ApiKey::where('provinsi_id', Auth::user()->asosiasi->provinsi_id)->first();
 
         $curl = curl_init();
         $header[] = "X-Api-Key:" . $key->lpjk_key;
@@ -571,7 +571,7 @@ class PersonalController extends Controller
 
     public function apiGetKursus(Request $request)
     {
-        $key = ApiKey::first();
+        $key = ApiKey::where('provinsi_id', Auth::user()->asosiasi->provinsi_id)->first();
 
         $postData = [
             "id_personal" => $request->id_personal,
@@ -619,7 +619,7 @@ class PersonalController extends Controller
             "no_sertifikat" => $request->no_sertifikat,
             "url_pdf_persyaratan_kursus" => $request->file("file_persyaratan") ? curl_file_create($request->file("file_persyaratan")->path()) : "",
         ];
-        $key = ApiKey::first();
+        $key = ApiKey::where('provinsi_id', Auth::user()->asosiasi->provinsi_id)->first();
 
         $curl = curl_init();
         $header[] = "X-Api-Key:" . $key->lpjk_key;
@@ -670,7 +670,7 @@ class PersonalController extends Controller
             "no_sertifikat" => $request->no_sertifikat,
             "url_pdf_persyaratan_kursus" => $request->file("file_persyaratan") ? curl_file_create($request->file("file_persyaratan")->path()) : "",
         ];
-        $key = ApiKey::first();
+        $key = ApiKey::where('provinsi_id', Auth::user()->asosiasi->provinsi_id)->first();
 
         $curl = curl_init();
         $header[] = "X-Api-Key:" . $key->lpjk_key;
@@ -714,7 +714,7 @@ class PersonalController extends Controller
             "ID_Personal_Kursus" => $request->id_personal_kursus,
           ];
 
-        $key = ApiKey::first();
+        $key = ApiKey::where('provinsi_id', Auth::user()->asosiasi->provinsi_id)->first();
 
         $curl = curl_init();
         $header[] = "X-Api-Key:" . $key->lpjk_key;
@@ -806,7 +806,7 @@ class PersonalController extends Controller
 
     public function apiGetOrganisasi(Request $request)
     {
-        $key = ApiKey::first();
+        $key = ApiKey::where('provinsi_id', Auth::user()->asosiasi->provinsi_id)->first();
 
         $postData = [
             "id_personal" => $request->id_personal,
@@ -854,7 +854,7 @@ class PersonalController extends Controller
             "role_pekerjaan" => $request->role_pekerjaan,
             "url_pdf_persyaratan_pengalaman_organisasi" => $request->file("file_pengalaman") ? curl_file_create($request->file("file_pengalaman")->path()) : "",
         ];
-        $key = ApiKey::first();
+        $key = ApiKey::where('provinsi_id', Auth::user()->asosiasi->provinsi_id)->first();
 
         $curl = curl_init();
         $header[] = "X-Api-Key:" . $key->lpjk_key;
@@ -905,7 +905,7 @@ class PersonalController extends Controller
             "role_pekerjaan" => $request->role_pekerjaan,
             "url_pdf_persyaratan_pengalaman_organisasi" => $request->file("file_pengalaman") ? curl_file_create($request->file("file_pengalaman")->path()) : "",
         ];
-        $key = ApiKey::first();
+        $key = ApiKey::where('provinsi_id', Auth::user()->asosiasi->provinsi_id)->first();
 
         $curl = curl_init();
         $header[] = "X-Api-Key:" . $key->lpjk_key;
@@ -949,7 +949,7 @@ class PersonalController extends Controller
             "ID_Personal_Pengalaman" => $request->id_personal_pengalaman,
           ];
 
-        $key = ApiKey::first();
+        $key = ApiKey::where('provinsi_id', Auth::user()->asosiasi->provinsi_id)->first();
 
         $curl = curl_init();
         $header[] = "X-Api-Key:" . $key->lpjk_key;
@@ -1040,7 +1040,7 @@ class PersonalController extends Controller
 
     public function apiGetProyek(Request $request)
     {
-        $key = ApiKey::first();
+        $key = ApiKey::where('provinsi_id', Auth::user()->asosiasi->provinsi_id)->first();
 
         $postData = [
             "id_personal" => $request->id_personal,
@@ -1086,7 +1086,7 @@ class PersonalController extends Controller
             "nilai_proyek" => $request->nilai_proyek,
             "url_pdf_persyaratan_pengalaman_proyek" => $request->file("file_pengalaman") ? curl_file_create($request->file("file_pengalaman")->path()) : "",
         ];
-        $key = ApiKey::first();
+        $key = ApiKey::where('provinsi_id', Auth::user()->asosiasi->provinsi_id)->first();
 
         $curl = curl_init();
         $header[] = "X-Api-Key:" . $key->lpjk_key;
@@ -1135,7 +1135,7 @@ class PersonalController extends Controller
             "nilai_proyek" => $request->nilai_proyek,
             "url_pdf_persyaratan_pengalaman_proyek" => $request->file("file_pengalaman") ? curl_file_create($request->file("file_pengalaman")->path()) : "",
         ];
-        $key = ApiKey::first();
+        $key = ApiKey::where('provinsi_id', Auth::user()->asosiasi->provinsi_id)->first();
 
         $curl = curl_init();
         $header[] = "X-Api-Key:" . $key->lpjk_key;
@@ -1179,7 +1179,7 @@ class PersonalController extends Controller
             "id_personal_proyek" => $request->id_personal_proyek,
           ];
 
-        $key = ApiKey::first();
+        $key = ApiKey::where('provinsi_id', Auth::user()->asosiasi->provinsi_id)->first();
 
         $curl = curl_init();
         $header[] = "X-Api-Key:" . $key->lpjk_key;
@@ -1268,7 +1268,7 @@ class PersonalController extends Controller
 
     public function apiGetKualifikasiTA(Request $request)
     {
-        $key = ApiKey::first();
+        $key = ApiKey::where('provinsi_id', Auth::user()->asosiasi->provinsi_id)->first();
 
         $postData = [
             "ID_Personal" => $request->id_personal
@@ -1304,7 +1304,7 @@ class PersonalController extends Controller
 
     public function apiGetKualifikasiTAStatus99(Request $request)
     {
-        $key = ApiKey::first();
+        $key = ApiKey::where('provinsi_id', Auth::user()->asosiasi->provinsi_id)->first();
 
         $postData = [
             "ID_Personal" => $request->id_personal
@@ -1377,7 +1377,7 @@ class PersonalController extends Controller
             "url_pdf_penilaian_mandiri_f19"     => $request->file("file_penilaian_mandiri") ? curl_file_create($request->file("file_penilaian_mandiri")->path()) : "",
           ];
 
-        $key = ApiKey::first();
+        $key = ApiKey::where('provinsi_id', Auth::user()->asosiasi->provinsi_id)->first();
 
         $curl = curl_init();
         $header[] = "X-Api-Key:" . $key->lpjk_key;
@@ -1422,7 +1422,7 @@ class PersonalController extends Controller
             "ID_Registrasi_TK_Ahli" => $request->ID_Registrasi_TK_Ahli,
           ];
 
-        $key = ApiKey::first();
+        $key = ApiKey::where('provinsi_id', Auth::user()->asosiasi->provinsi_id)->first();
 
         $curl = curl_init();
         $header[] = "X-Api-Key:" . $key->lpjk_key;
@@ -1579,7 +1579,7 @@ class PersonalController extends Controller
 
     public function apiGetKualifikasiTT(Request $request)
     {
-        $key = ApiKey::first();
+        $key = ApiKey::where('provinsi_id', Auth::user()->asosiasi->provinsi_id)->first();
 
         $postData = [
             "ID_Personal" => $request->id_personal,
@@ -1615,7 +1615,7 @@ class PersonalController extends Controller
 
     public function apiGetKualifikasiTTStatus99(Request $request)
     {
-        $key = ApiKey::first();
+        $key = ApiKey::where('provinsi_id', Auth::user()->asosiasi->provinsi_id)->first();
 
         $postData = [
             "ID_Personal" => $request->id_personal
@@ -1688,7 +1688,7 @@ class PersonalController extends Controller
             "url_pdf_surat_permohonan"          => $request->file("file_surat_permohonan") ? curl_file_create($request->file("file_surat_permohonan")->path()) : "",
           ];
 
-        $key = ApiKey::first();
+        $key = ApiKey::where('provinsi_id', Auth::user()->asosiasi->provinsi_id)->first();
 
         $curl = curl_init();
         $header[] = "X-Api-Key:" . $key->lpjk_key;
@@ -1733,7 +1733,7 @@ class PersonalController extends Controller
             "ID_Registrasi_TK_Trampil" => $request->ID_Registrasi_TK_Trampil,
           ];
 
-        $key = ApiKey::first();
+        $key = ApiKey::where('provinsi_id', Auth::user()->asosiasi->provinsi_id)->first();
 
         $curl = curl_init();
         $header[] = "X-Api-Key:" . $key->lpjk_key;

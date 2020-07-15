@@ -30,7 +30,7 @@ class PermohonanSKTController extends Controller
 
     // public function apiGetBiodata(Request $request)
     // {
-    //     $key = ApiKey::first();
+    //     $key = ApiKey::where('provinsi_id', Auth::user()->asosiasi->provinsi_id)->first();
 
     //     $postData = [
     //         "id_personal" => $request->id_personal,
@@ -101,7 +101,7 @@ class PermohonanSKTController extends Controller
     //         "url_pdf_daftar_riwayat_hidup"            => curl_file_create($request->file("file_cv")->path())
     //         ];
 
-    //     $key = ApiKey::first();
+    //     $key = ApiKey::where('provinsi_id', Auth::user()->asosiasi->provinsi_id)->first();
 
     //     $curl = curl_init();
     //     $header[] = "X-Api-Key:" . $key->lpjk_key;
@@ -163,7 +163,7 @@ class PermohonanSKTController extends Controller
     //         "url_pdf_daftar_riwayat_hidup"            => curl_file_create($request->file("file_cv")->path())
     //         ];
 
-    //     $key = ApiKey::first();
+    //     $key = ApiKey::where('provinsi_id', Auth::user()->asosiasi->provinsi_id)->first();
 
     //     $curl = curl_init();
     //     $header[] = "X-Api-Key:" . $key->lpjk_key;
@@ -200,7 +200,7 @@ class PermohonanSKTController extends Controller
 
     // public function apiGetPendidikan(Request $request, $id_personal)
     // {
-    //     $key = ApiKey::first();
+    //     $key = ApiKey::where('provinsi_id', Auth::user()->asosiasi->provinsi_id)->first();
 
     //     $postData = [
     //         "id_personal" => $id_personal,
@@ -249,7 +249,7 @@ class PermohonanSKTController extends Controller
     //         "url_pdf_data_pendidikan"                    => curl_file_create($request->file("file_data_pendidikan")->path()),
     //         "url_pdf_data_surat_keterangan_dari_sekolah" => curl_file_create($request->file("file_keterangan_sekolah")->path()),
     //     ];
-    //     $key = ApiKey::first();
+    //     $key = ApiKey::where('provinsi_id', Auth::user()->asosiasi->provinsi_id)->first();
 
     //     $curl = curl_init();
     //     $header[] = "X-Api-Key:" . $key->lpjk_key;
@@ -286,7 +286,7 @@ class PermohonanSKTController extends Controller
 
     // public function apiGetKursus(Request $request)
     // {
-    //     $key = ApiKey::first();
+    //     $key = ApiKey::where('provinsi_id', Auth::user()->asosiasi->provinsi_id)->first();
 
     //     $postData = [
     //         "id_personal" => $request->id_personal,
@@ -332,7 +332,7 @@ class PermohonanSKTController extends Controller
     //         "no_sertifikat" => $request->no_sertifikat,
     //         "url_pdf_persyaratan_kursus" => curl_file_create($request->file("file_persyaratan")->path()),
     //     ];
-    //     $key = ApiKey::first();
+    //     $key = ApiKey::where('provinsi_id', Auth::user()->asosiasi->provinsi_id)->first();
 
     //     $curl = curl_init();
     //     $header[] = "X-Api-Key:" . $key->lpjk_key;
@@ -369,7 +369,7 @@ class PermohonanSKTController extends Controller
 
     // public function apiGetOrganisasi(Request $request)
     // {
-    //     $key = ApiKey::first();
+    //     $key = ApiKey::where('provinsi_id', Auth::user()->asosiasi->provinsi_id)->first();
 
     //     $postData = [
     //         "id_personal" => $request->id_personal,
@@ -415,7 +415,7 @@ class PermohonanSKTController extends Controller
     //         "role_pekerjaan" => $request->role_pekerjaan,
     //         "url_pdf_persyaratan_pengalaman_organisasi" => curl_file_create($request->file("file_pengalaman")->path()),
     //     ];
-    //     $key = ApiKey::first();
+    //     $key = ApiKey::where('provinsi_id', Auth::user()->asosiasi->provinsi_id)->first();
 
     //     $curl = curl_init();
     //     $header[] = "X-Api-Key:" . $key->lpjk_key;
@@ -452,7 +452,7 @@ class PermohonanSKTController extends Controller
 
     // public function apiGetProyek(Request $request)
     // {
-    //     $key = ApiKey::first();
+    //     $key = ApiKey::where('provinsi_id', Auth::user()->asosiasi->provinsi_id)->first();
 
     //     $postData = [
     //         "id_personal" => $request->id_personal,
@@ -496,7 +496,7 @@ class PermohonanSKTController extends Controller
     //         "nilai_proyek" => $request->nilai_proyek,
     //         "url_pdf_persyaratan_pengalaman_proyek" => curl_file_create($request->file("file_pengalaman")->path()),
     //     ];
-    //     $key = ApiKey::first();
+    //     $key = ApiKey::where('provinsi_id', Auth::user()->asosiasi->provinsi_id)->first();
 
     //     $curl = curl_init();
     //     $header[] = "X-Api-Key:" . $key->lpjk_key;
@@ -533,7 +533,7 @@ class PermohonanSKTController extends Controller
 
     // public function apiGetKualifikasiTA(Request $request)
     // {
-    //     $key = ApiKey::first();
+    //     $key = ApiKey::where('provinsi_id', Auth::user()->asosiasi->provinsi_id)->first();
 
     //     $postData = [
     //         "id_personal" => $request->id_personal,
@@ -585,7 +585,7 @@ class PermohonanSKTController extends Controller
     //         "url_pdf_penilaian_mandiri_f19"     => curl_file_create($request->file("file_penilaian_mandiri")->path()),
     //       ];
 
-    //     $key = ApiKey::first();
+    //     $key = ApiKey::where('provinsi_id', Auth::user()->asosiasi->provinsi_id)->first();
 
     //     $curl = curl_init();
     //     $header[] = "X-Api-Key:" . $key->lpjk_key;
@@ -622,7 +622,7 @@ class PermohonanSKTController extends Controller
 
     // public function apiGetKualifikasiTT(Request $request)
     // {
-    //     $key = ApiKey::first();
+    //     $key = ApiKey::where('provinsi_id', Auth::user()->asosiasi->provinsi_id)->first();
 
     //     $postData = [
     //         "id_personal" => $request->id_personal,
