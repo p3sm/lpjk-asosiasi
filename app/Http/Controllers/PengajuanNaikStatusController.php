@@ -31,7 +31,7 @@ class PengajuanNaikStatusController extends Controller
         $databaseSigns = $asosiasi->databaseSign->where("provinsi_id", Auth::user()->asosiasi->provinsi_id);
         // $verifikatorSign = $verifikatorSigns[array_rand($verifikatorSigns->toArray())]->path;
 
-        dd($verifikatorSigns);
+        dd([$asosiasi, $asosiasi->verifikatorSign, $verifikatorSigns]);
 
         return view('pengajuan_status/indexSKA');
     }
