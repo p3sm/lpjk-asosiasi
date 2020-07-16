@@ -29,7 +29,7 @@ class PengajuanNaikStatusController extends Controller
         $asosiasi = Asosiasi::find(Auth::user()->asosiasi->asosiasi_id);
         $verifikatorSigns = $asosiasi->verifikatorSign->where("provinsi_id", Auth::user()->asosiasi->provinsi_id);
         $databaseSigns = $asosiasi->databaseSign->where("provinsi_id", Auth::user()->asosiasi->provinsi_id);
-        $verifikatorSign = $verifikatorSigns[array_rand($verifikatorSigns->toArray())]->path;
+        // $verifikatorSign = $verifikatorSigns[array_rand($verifikatorSigns->toArray())]->path;
 
         dd($verifikatorSigns);
 
