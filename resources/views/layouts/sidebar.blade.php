@@ -8,7 +8,7 @@
           </li>
           <li class="nav-item">
               <a class="nav-link" href="/permohonan_ska">
-                  <i class="nav-icon icon-user"></i> Permohonan SKA
+                  <i class="nav-icon icon-user"></i> Permohonan SKAA
               </a>
           </li>
           <li class="nav-item">
