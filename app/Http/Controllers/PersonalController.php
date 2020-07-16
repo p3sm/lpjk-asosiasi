@@ -1532,6 +1532,11 @@ class PersonalController extends Controller
     public function apiPengajuanNaikStatus(Request $request)
     {
         $regta = PersonalRegTA::find($request->permohonan_id);
+
+        if(Auth::user()->asosiasi->asosiasi_id != $regta->ID_Asosiasi_Profesi){
+            return response()->json('Maaf Anda tidak dapat mengajukan data Asosiasi lain', 400);
+        }
+
         $regta->diajukan = 1;
         $regta->diajukan_by = Auth::user()->id;
         $regta->diajukan_at = Carbon::now();
@@ -1837,6 +1842,11 @@ class PersonalController extends Controller
     public function apiPengajuanNaikStatusTT(Request $request)
     {
         $regta = PersonalRegTT::find($request->permohonan_id);
+
+        if(Auth::user()->asosiasi->asosiasi_id != $regta->ID_Asosiasi_Profesi){
+            return response()->json('Maaf Anda tidak dapat mengajukan data Asosiasi lain', 400);
+        }
+
         $regta->diajukan = 1;
         $regta->diajukan_by = Auth::user()->id;
         $regta->diajukan_at = Carbon::now();
