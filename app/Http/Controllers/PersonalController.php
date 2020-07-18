@@ -293,25 +293,26 @@ class PersonalController extends Controller
             $data->ID_Personal = $result->id_personal;
             $data->No_KTP = $result->id_personal;
             $data->created_by = Auth::user()->id;
-            $data->Nama = $result->Nama;
-            $data->nama_tanpa_gelar = $result->nama_tanpa_gelar;
-            $data->Alamat1 = $result->Alamat1;
-            $data->Kodepos = $result->Kodepos;
-            $data->ID_Kabupaten_Alamat = $result->ID_Kabupaten_Alamat;
-            $data->Tgl_Lahir = $result->Tgl_Lahir;
-            $data->jenis_kelamin = $result->jenis_kelamin;
-            $data->Tempat_Lahir = $result->Tempat_Lahir;
-            $data->ID_Kabupaten_Lahir = $result->ID_Kabupaten_Lahir;
-            $data->ID_Propinsi = $result->ID_Propinsi;
-            $data->npwp = $result->npwp;
-            $data->email = $result->email;
-            $data->no_hp = $result->no_hp;
-            $data->ID_Negara = $result->ID_Negara;
-            $data->Tenaga_Kerja = $result->Tenaga_Kerja;
-            $data->updated_by = Auth::user()->id;
-
-            $data->save();
         }
+
+        $data->Nama = $result->Nama;
+        $data->nama_tanpa_gelar = $result->nama_tanpa_gelar;
+        $data->Alamat1 = $result->Alamat1;
+        $data->Kodepos = $result->Kodepos;
+        $data->ID_Kabupaten_Alamat = $result->ID_Kabupaten_Alamat;
+        $data->Tgl_Lahir = $result->Tgl_Lahir;
+        $data->jenis_kelamin = $result->jenis_kelamin;
+        $data->Tempat_Lahir = $result->Tempat_Lahir;
+        $data->ID_Kabupaten_Lahir = $result->ID_Kabupaten_Lahir;
+        $data->ID_Propinsi = $result->ID_Propinsi;
+        $data->npwp = $result->npwp;
+        $data->email = $result->email;
+        $data->no_hp = $result->no_hp;
+        $data->ID_Negara = $result->ID_Negara;
+        $data->Tenaga_Kerja = $result->Tenaga_Kerja;
+        $data->updated_by = Auth::user()->id;
+
+        $data->save();
     }
 
     public function apiGetPendidikan(Request $request, $id_personal)
@@ -1477,6 +1478,7 @@ class PersonalController extends Controller
         $data->id_permohonan = $request->id_permohonan;
         $data->Tgl_Registrasi = $request->tgl_registrasi;
         $data->ID_Propinsi_reg = $user->asosiasi->provinsi_id;
+        $data->status_terbaru = $request->status_terbaru;
         $data->updated_by = Auth::user()->id;
         
         $vva = $request->file("file_berita_acara_vva") ? $request->file_berita_acara_vva->store('vva') : null;
@@ -1509,11 +1511,13 @@ class PersonalController extends Controller
         foreach($result as $ta){
             $data = PersonalRegTA::find($ta->ID_Registrasi_TK_Ahli);
             
-            if(!$data){
-                $data = new PersonalRegTA();
-                $data->ID_Registrasi_TK_Ahli = $ta->ID_Registrasi_TK_Ahli;
-                $data->ID_Personal = $ta->ID_Personal;
-                $data->created_by = Auth::user()->id;
+            // if(!$data){
+            //     $data = new PersonalRegTA();
+            //     $data->ID_Registrasi_TK_Ahli = $ta->ID_Registrasi_TK_Ahli;
+            //     $data->ID_Personal = $ta->ID_Personal;
+            //     $data->created_by = Auth::user()->id;
+
+            if($data){
                 $data->ID_Sub_Bidang = $ta->ID_Sub_Bidang;
                 $data->ID_Kualifikasi = $ta->ID_Kualifikasi;
                 $data->ID_Asosiasi_Profesi = $ta->ID_Asosiasi_Profesi;
@@ -1522,6 +1526,7 @@ class PersonalController extends Controller
                 $data->id_permohonan = $ta->id_permohonan;
                 $data->Tgl_Registrasi = $ta->Tgl_Registrasi;
                 $data->ID_Propinsi_reg = $ta->ID_Propinsi_reg;
+                $data->status_terbaru = $ta->status_terbaru;
                 $data->updated_by = Auth::user()->id;
         
                 $data->save();
@@ -1793,6 +1798,7 @@ class PersonalController extends Controller
         $data->id_permohonan = $request->id_permohonan;
         $data->Tgl_Registrasi = $request->tgl_registrasi;
         $data->ID_propinsi_reg = $user->asosiasi->provinsi_id;
+        $data->status_terbaru = $request->status_terbaru;
         $data->updated_by = Auth::user()->id;
         
         $vva = $request->file("file_berita_acara_vva") ? $request->file_berita_acara_vva->store('vva') : null;
@@ -1820,11 +1826,13 @@ class PersonalController extends Controller
         foreach($result as $tt){
             $data = PersonalRegTT::find($tt->ID_Registrasi_TK_Trampil);
             
+            // if(!$data){
+            //     $data = new PersonalRegTT();
+            //     $data->ID_Registrasi_TK_Trampil = $tt->ID_Registrasi_TK_Trampil;
+            //     $data->ID_Personal = $tt->ID_Personal;
+            //     $data->created_by = Auth::user()->id;
+
             if(!$data){
-                $data = new PersonalRegTT();
-                $data->ID_Registrasi_TK_Trampil = $tt->ID_Registrasi_TK_Trampil;
-                $data->ID_Personal = $tt->ID_Personal;
-                $data->created_by = Auth::user()->id;
                 $data->ID_Sub_Bidang = $tt->ID_Sub_Bidang;
                 $data->ID_Kualifikasi = $tt->ID_Kualifikasi;
                 $data->ID_Asosiasi_Profesi = $tt->ID_Asosiasi_Profesi;
@@ -1832,6 +1840,7 @@ class PersonalController extends Controller
                 $data->id_permohonan = $tt->id_permohonan;
                 $data->Tgl_Registrasi = $tt->Tgl_Registrasi;
                 $data->ID_propinsi_reg = $tt->ID_propinsi_reg;
+                $data->status_terbaru = $tt->status_terbaru;
                 $data->updated_by = Auth::user()->id;
         
                 $data->save();
