@@ -10,7 +10,7 @@ import MSelectUstk from "./MSelectUstk";
 import axios from "axios";
 import Alert from "react-s-alert";
 import SweetAlert from "react-bootstrap-sweetalert";
-import swal from "@sweetalert/with-react";
+import swal from "sweetalert";
 
 // import { Container } from './styles';
 
