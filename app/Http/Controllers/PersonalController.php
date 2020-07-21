@@ -1542,6 +1542,10 @@ class PersonalController extends Controller
             return response()->json('Maaf Anda tidak dapat mengajukan data Asosiasi lain', 400);
         }
 
+        if(Auth::user()->asosiasi->provinsi_id != $regta->ID_Propinsi_reg){
+            return response()->json('Maaf Anda tidak dapat mengajukan data provinsi lain', 400);
+        }
+
         $regta->diajukan = 1;
         $regta->diajukan_by = Auth::user()->id;
         $regta->diajukan_at = Carbon::now();
@@ -1854,6 +1858,10 @@ class PersonalController extends Controller
 
         if(Auth::user()->asosiasi->asosiasi_id != $regta->ID_Asosiasi_Profesi){
             return response()->json('Maaf Anda tidak dapat mengajukan data Asosiasi lain', 400);
+        }
+
+        if(Auth::user()->asosiasi->provinsi_id != $regta->ID_propinsi_reg){
+            return response()->json('Maaf Anda tidak dapat mengajukan data provinsi lain', 400);
         }
 
         $regta->diajukan = 1;

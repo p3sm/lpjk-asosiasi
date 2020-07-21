@@ -62,13 +62,13 @@ export default class components extends Component {
                 //   Alert.success(response.data.message);
             })
             .catch(err => {
-                console.log(err);
+                console.log(err.response);
 
                 submiting[this.state.submit_index] = false;
                 this.setState({ submiting: submiting });
 
                 swal({
-                    text: err,
+                    text: err.response.data,
                     icon: "error"
                 });
             });
