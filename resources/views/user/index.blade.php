@@ -28,6 +28,11 @@
               {{ session()->get('success') }}  
             </div><br />
             @endif
+            @if(session()->get('error'))
+            <div class="alert alert-danger">
+              {{ session()->get('error') }}  
+            </div><br />
+            @endif
             {{--  sub menu  --}}
             <div style="margin-bottom: 20px">
                  <a href="{{url('users/create')}}" class="btn btn-primary"><span>Add new</span></a>

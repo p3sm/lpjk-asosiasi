@@ -42,7 +42,7 @@ class PersonalController extends Controller
 
     public function apiGetBiodata(Request $request)
     {
-        $key = ApiKey::first();
+        $key = ApiKey::where('provinsi_id', Auth::user()->asosiasi->provinsi_id)->first();
 
         $postData = [
             "id_personal" => $request->id_personal,
@@ -54,7 +54,7 @@ class PersonalController extends Controller
         $header[] = "Token:" . $key->token;
         $header[] = "Content-Type:multipart/form-data";
         curl_setopt_array($curl, array(
-            CURLOPT_URL            => env("LPJK_ENDPOINT") . "Service/Biodata/Get",
+            CURLOPT_URL            => config("app.lpjk_endpoint") . "Service/Biodata/Get",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_CUSTOMREQUEST  => "POST",
             CURLOPT_POSTFIELDS     => $postData,
@@ -81,7 +81,7 @@ class PersonalController extends Controller
         $result = new \stdClass();
         $result->message = $obj->message;
         $result->status = $obj->response;
-        $result->data = $obj->response > 0 ? $obj->result[0] : [];
+        $result->data = isset($obj->result) ? $obj->result[0] : [];
 
         $local = Personal::find($request->id_personal);
 
@@ -94,7 +94,8 @@ class PersonalController extends Controller
             ];
         }
 
-        $this->cloneBiodata($obj->result[0]);
+        if(isset($obj->result))
+            $this->cloneBiodata($obj->result[0]);
 
     	return response()->json($result, $obj->response > 0 ? 200 : 400);
     }
@@ -126,14 +127,14 @@ class PersonalController extends Controller
             "url_pdf_daftar_riwayat_hidup"            => $request->file("file_cv") ? curl_file_create($request->file("file_cv")->path()) : ""
             ];
 
-        $key = ApiKey::first();
+        $key = ApiKey::where('provinsi_id', Auth::user()->asosiasi->provinsi_id)->first();
 
         $curl = curl_init();
         $header[] = "X-Api-Key:" . $key->lpjk_key;
         $header[] = "Token:" . $key->token;
         $header[] = "Content-Type:multipart/form-data";
         curl_setopt_array($curl, array(
-        CURLOPT_URL => env("LPJK_ENDPOINT") . "Service/Biodata/Tambah",
+        CURLOPT_URL => config("app.lpjk_endpoint") . "Service/Biodata/Tambah",
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_CUSTOMREQUEST => "POST",
         CURLOPT_POSTFIELDS => $postData,
@@ -189,14 +190,14 @@ class PersonalController extends Controller
             "url_pdf_daftar_riwayat_hidup"            => $request->file("file_cv") ? curl_file_create($request->file("file_cv")->path()) : ""
             ];
 
-        $key = ApiKey::first();
+        $key = ApiKey::where('provinsi_id', Auth::user()->asosiasi->provinsi_id)->first();
 
         $curl = curl_init();
         $header[] = "X-Api-Key:" . $key->lpjk_key;
         $header[] = "Token:" . $key->token;
         $header[] = "Content-Type:multipart/form-data";
         curl_setopt_array($curl, array(
-        CURLOPT_URL => env("LPJK_ENDPOINT") . "Service/Biodata/Ubah",
+        CURLOPT_URL => config("app.lpjk_endpoint") . "Service/Biodata/Ubah",
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_CUSTOMREQUEST => "POST",
         CURLOPT_POSTFIELDS => $postData,
@@ -292,30 +293,31 @@ class PersonalController extends Controller
             $data->ID_Personal = $result->id_personal;
             $data->No_KTP = $result->id_personal;
             $data->created_by = Auth::user()->id;
-            $data->Nama = $result->Nama;
-            $data->nama_tanpa_gelar = $result->nama_tanpa_gelar;
-            $data->Alamat1 = $result->Alamat1;
-            $data->Kodepos = $result->Kodepos;
-            $data->ID_Kabupaten_Alamat = $result->ID_Kabupaten_Alamat;
-            $data->Tgl_Lahir = $result->Tgl_Lahir;
-            $data->jenis_kelamin = $result->jenis_kelamin;
-            $data->Tempat_Lahir = $result->Tempat_Lahir;
-            $data->ID_Kabupaten_Lahir = $result->ID_Kabupaten_Lahir;
-            $data->ID_Propinsi = $result->ID_Propinsi;
-            $data->npwp = $result->npwp;
-            $data->email = $result->email;
-            $data->no_hp = $result->no_hp;
-            $data->ID_Negara = $result->ID_Negara;
-            $data->Tenaga_Kerja = $result->Tenaga_Kerja;
-            $data->updated_by = Auth::user()->id;
-
-            $data->save();
         }
+
+        $data->Nama = $result->Nama;
+        $data->nama_tanpa_gelar = $result->nama_tanpa_gelar;
+        $data->Alamat1 = $result->Alamat1;
+        $data->Kodepos = $result->Kodepos;
+        $data->ID_Kabupaten_Alamat = $result->ID_Kabupaten_Alamat;
+        $data->Tgl_Lahir = $result->Tgl_Lahir;
+        $data->jenis_kelamin = $result->jenis_kelamin;
+        $data->Tempat_Lahir = $result->Tempat_Lahir;
+        $data->ID_Kabupaten_Lahir = $result->ID_Kabupaten_Lahir;
+        $data->ID_Propinsi = $result->ID_Propinsi;
+        $data->npwp = $result->npwp;
+        $data->email = $result->email;
+        $data->no_hp = $result->no_hp;
+        $data->ID_Negara = $result->ID_Negara;
+        $data->Tenaga_Kerja = $result->Tenaga_Kerja;
+        $data->updated_by = Auth::user()->id;
+
+        $data->save();
     }
 
     public function apiGetPendidikan(Request $request, $id_personal)
     {
-        $key = ApiKey::first();
+        $key = ApiKey::where('provinsi_id', Auth::user()->asosiasi->provinsi_id)->first();
 
         $postData = [
             "id_personal" => $id_personal,
@@ -327,7 +329,7 @@ class PersonalController extends Controller
         $header[] = "Token:" . $key->token;
         $header[] = "Content-Type:multipart/form-data";
         curl_setopt_array($curl, array(
-            CURLOPT_URL            => env("LPJK_ENDPOINT") . "Service/Pendidikan/Get",
+            CURLOPT_URL            => config("app.lpjk_endpoint") . "Service/Pendidikan/Get",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_CUSTOMREQUEST  => "POST",
             CURLOPT_POSTFIELDS     => $postData,
@@ -366,14 +368,14 @@ class PersonalController extends Controller
             "url_pdf_data_pendidikan"                    => $request->file("file_data_pendidikan") ? curl_file_create($request->file("file_data_pendidikan")->path()) : "",
             "url_pdf_data_surat_keterangan_dari_sekolah" => $request->file("file_keterangan_sekolah") ? curl_file_create($request->file("file_keterangan_sekolah")->path()) : "",
         ];
-        $key = ApiKey::first();
+        $key = ApiKey::where('provinsi_id', Auth::user()->asosiasi->provinsi_id)->first();
 
         $curl = curl_init();
         $header[] = "X-Api-Key:" . $key->lpjk_key;
         $header[] = "Token:" . $key->token;
         $header[] = "Content-Type:multipart/form-data";
         curl_setopt_array($curl, array(
-        CURLOPT_URL => env("LPJK_ENDPOINT") . "Service/Pendidikan/Tambah",
+        CURLOPT_URL => config("app.lpjk_endpoint") . "Service/Pendidikan/Tambah",
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_CUSTOMREQUEST => "POST",
         CURLOPT_POSTFIELDS => $postData,
@@ -420,14 +422,14 @@ class PersonalController extends Controller
             "url_pdf_data_pendidikan"                    => $request->file("file_data_pendidikan") ? curl_file_create($request->file("file_data_pendidikan")->path()) : "",
             "url_pdf_data_surat_keterangan_dari_sekolah" => $request->file("file_keterangan_sekolah") ? curl_file_create($request->file("file_keterangan_sekolah")->path()) : "",
         ];
-        $key = ApiKey::first();
+        $key = ApiKey::where('provinsi_id', Auth::user()->asosiasi->provinsi_id)->first();
 
         $curl = curl_init();
         $header[] = "X-Api-Key:" . $key->lpjk_key;
         $header[] = "Token:" . $key->token;
         $header[] = "Content-Type:multipart/form-data";
         curl_setopt_array($curl, array(
-        CURLOPT_URL => env("LPJK_ENDPOINT") . "Service/Pendidikan/Ubah",
+        CURLOPT_URL => config("app.lpjk_endpoint") . "Service/Pendidikan/Ubah",
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_CUSTOMREQUEST => "POST",
         CURLOPT_POSTFIELDS => $postData,
@@ -464,14 +466,14 @@ class PersonalController extends Controller
             "id_personal_pendidikan" => $request->id_personal_pendidikan,
           ];
 
-        $key = ApiKey::first();
+        $key = ApiKey::where('provinsi_id', Auth::user()->asosiasi->provinsi_id)->first();
 
         $curl = curl_init();
         $header[] = "X-Api-Key:" . $key->lpjk_key;
         $header[] = "Token:" . $key->token;
         $header[] = "Content-Type:multipart/form-data";
         curl_setopt_array($curl, array(
-        CURLOPT_URL => env("LPJK_ENDPOINT") . "Service/Pendidikan/Hapus",
+        CURLOPT_URL => config("app.lpjk_endpoint") . "Service/Pendidikan/Hapus",
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_CUSTOMREQUEST => "POST",
         CURLOPT_POSTFIELDS => $postData,
@@ -570,7 +572,7 @@ class PersonalController extends Controller
 
     public function apiGetKursus(Request $request)
     {
-        $key = ApiKey::first();
+        $key = ApiKey::where('provinsi_id', Auth::user()->asosiasi->provinsi_id)->first();
 
         $postData = [
             "id_personal" => $request->id_personal,
@@ -582,7 +584,7 @@ class PersonalController extends Controller
         $header[] = "Token:" . $key->token;
         $header[] = "Content-Type:multipart/form-data";
         curl_setopt_array($curl, array(
-            CURLOPT_URL            => env("LPJK_ENDPOINT") . "Service/Kursus/Get",
+            CURLOPT_URL            => config("app.lpjk_endpoint") . "Service/Kursus/Get",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_CUSTOMREQUEST  => "POST",
             CURLOPT_POSTFIELDS     => $postData,
@@ -618,14 +620,14 @@ class PersonalController extends Controller
             "no_sertifikat" => $request->no_sertifikat,
             "url_pdf_persyaratan_kursus" => $request->file("file_persyaratan") ? curl_file_create($request->file("file_persyaratan")->path()) : "",
         ];
-        $key = ApiKey::first();
+        $key = ApiKey::where('provinsi_id', Auth::user()->asosiasi->provinsi_id)->first();
 
         $curl = curl_init();
         $header[] = "X-Api-Key:" . $key->lpjk_key;
         $header[] = "Token:" . $key->token;
         $header[] = "Content-Type:multipart/form-data";
         curl_setopt_array($curl, array(
-        CURLOPT_URL => env("LPJK_ENDPOINT") . "Service/Kursus/Tambah",
+        CURLOPT_URL => config("app.lpjk_endpoint") . "Service/Kursus/Tambah",
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_CUSTOMREQUEST => "POST",
         CURLOPT_POSTFIELDS => $postData,
@@ -669,14 +671,14 @@ class PersonalController extends Controller
             "no_sertifikat" => $request->no_sertifikat,
             "url_pdf_persyaratan_kursus" => $request->file("file_persyaratan") ? curl_file_create($request->file("file_persyaratan")->path()) : "",
         ];
-        $key = ApiKey::first();
+        $key = ApiKey::where('provinsi_id', Auth::user()->asosiasi->provinsi_id)->first();
 
         $curl = curl_init();
         $header[] = "X-Api-Key:" . $key->lpjk_key;
         $header[] = "Token:" . $key->token;
         $header[] = "Content-Type:multipart/form-data";
         curl_setopt_array($curl, array(
-        CURLOPT_URL => env("LPJK_ENDPOINT") . "Service/Kursus/Ubah",
+        CURLOPT_URL => config("app.lpjk_endpoint") . "Service/Kursus/Ubah",
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_CUSTOMREQUEST => "POST",
         CURLOPT_POSTFIELDS => $postData,
@@ -713,14 +715,14 @@ class PersonalController extends Controller
             "ID_Personal_Kursus" => $request->id_personal_kursus,
           ];
 
-        $key = ApiKey::first();
+        $key = ApiKey::where('provinsi_id', Auth::user()->asosiasi->provinsi_id)->first();
 
         $curl = curl_init();
         $header[] = "X-Api-Key:" . $key->lpjk_key;
         $header[] = "Token:" . $key->token;
         $header[] = "Content-Type:multipart/form-data";
         curl_setopt_array($curl, array(
-        CURLOPT_URL => env("LPJK_ENDPOINT") . "Service/Kursus/Hapus",
+        CURLOPT_URL => config("app.lpjk_endpoint") . "Service/Kursus/Hapus",
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_CUSTOMREQUEST => "POST",
         CURLOPT_POSTFIELDS => $postData,
@@ -805,7 +807,7 @@ class PersonalController extends Controller
 
     public function apiGetOrganisasi(Request $request)
     {
-        $key = ApiKey::first();
+        $key = ApiKey::where('provinsi_id', Auth::user()->asosiasi->provinsi_id)->first();
 
         $postData = [
             "id_personal" => $request->id_personal,
@@ -817,7 +819,7 @@ class PersonalController extends Controller
         $header[] = "Token:" . $key->token;
         $header[] = "Content-Type:multipart/form-data";
         curl_setopt_array($curl, array(
-            CURLOPT_URL            => env("LPJK_ENDPOINT") . "Service/Organisasi/Get",
+            CURLOPT_URL            => config("app.lpjk_endpoint") . "Service/Organisasi/Get",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_CUSTOMREQUEST  => "POST",
             CURLOPT_POSTFIELDS     => $postData,
@@ -853,14 +855,14 @@ class PersonalController extends Controller
             "role_pekerjaan" => $request->role_pekerjaan,
             "url_pdf_persyaratan_pengalaman_organisasi" => $request->file("file_pengalaman") ? curl_file_create($request->file("file_pengalaman")->path()) : "",
         ];
-        $key = ApiKey::first();
+        $key = ApiKey::where('provinsi_id', Auth::user()->asosiasi->provinsi_id)->first();
 
         $curl = curl_init();
         $header[] = "X-Api-Key:" . $key->lpjk_key;
         $header[] = "Token:" . $key->token;
         $header[] = "Content-Type:multipart/form-data";
         curl_setopt_array($curl, array(
-        CURLOPT_URL => env("LPJK_ENDPOINT") . "Service/Organisasi/Tambah",
+        CURLOPT_URL => config("app.lpjk_endpoint") . "Service/Organisasi/Tambah",
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_CUSTOMREQUEST => "POST",
         CURLOPT_POSTFIELDS => $postData,
@@ -904,14 +906,14 @@ class PersonalController extends Controller
             "role_pekerjaan" => $request->role_pekerjaan,
             "url_pdf_persyaratan_pengalaman_organisasi" => $request->file("file_pengalaman") ? curl_file_create($request->file("file_pengalaman")->path()) : "",
         ];
-        $key = ApiKey::first();
+        $key = ApiKey::where('provinsi_id', Auth::user()->asosiasi->provinsi_id)->first();
 
         $curl = curl_init();
         $header[] = "X-Api-Key:" . $key->lpjk_key;
         $header[] = "Token:" . $key->token;
         $header[] = "Content-Type:multipart/form-data";
         curl_setopt_array($curl, array(
-        CURLOPT_URL => env("LPJK_ENDPOINT") . "Service/Organisasi/Ubah",
+        CURLOPT_URL => config("app.lpjk_endpoint") . "Service/Organisasi/Ubah",
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_CUSTOMREQUEST => "POST",
         CURLOPT_POSTFIELDS => $postData,
@@ -948,14 +950,14 @@ class PersonalController extends Controller
             "ID_Personal_Pengalaman" => $request->id_personal_pengalaman,
           ];
 
-        $key = ApiKey::first();
+        $key = ApiKey::where('provinsi_id', Auth::user()->asosiasi->provinsi_id)->first();
 
         $curl = curl_init();
         $header[] = "X-Api-Key:" . $key->lpjk_key;
         $header[] = "Token:" . $key->token;
         $header[] = "Content-Type:multipart/form-data";
         curl_setopt_array($curl, array(
-        CURLOPT_URL => env("LPJK_ENDPOINT") . "Service/Organisasi/Hapus",
+        CURLOPT_URL => config("app.lpjk_endpoint") . "Service/Organisasi/Hapus",
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_CUSTOMREQUEST => "POST",
         CURLOPT_POSTFIELDS => $postData,
@@ -1039,7 +1041,7 @@ class PersonalController extends Controller
 
     public function apiGetProyek(Request $request)
     {
-        $key = ApiKey::first();
+        $key = ApiKey::where('provinsi_id', Auth::user()->asosiasi->provinsi_id)->first();
 
         $postData = [
             "id_personal" => $request->id_personal,
@@ -1051,7 +1053,7 @@ class PersonalController extends Controller
         $header[] = "Token:" . $key->token;
         $header[] = "Content-Type:multipart/form-data";
         curl_setopt_array($curl, array(
-            CURLOPT_URL            => env("LPJK_ENDPOINT") . "Service/Proyek/Get",
+            CURLOPT_URL            => config("app.lpjk_endpoint") . "Service/Proyek/Get",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_CUSTOMREQUEST  => "POST",
             CURLOPT_POSTFIELDS     => $postData,
@@ -1085,14 +1087,14 @@ class PersonalController extends Controller
             "nilai_proyek" => $request->nilai_proyek,
             "url_pdf_persyaratan_pengalaman_proyek" => $request->file("file_pengalaman") ? curl_file_create($request->file("file_pengalaman")->path()) : "",
         ];
-        $key = ApiKey::first();
+        $key = ApiKey::where('provinsi_id', Auth::user()->asosiasi->provinsi_id)->first();
 
         $curl = curl_init();
         $header[] = "X-Api-Key:" . $key->lpjk_key;
         $header[] = "Token:" . $key->token;
         $header[] = "Content-Type:multipart/form-data";
         curl_setopt_array($curl, array(
-        CURLOPT_URL => env("LPJK_ENDPOINT") . "Service/Proyek/Tambah",
+        CURLOPT_URL => config("app.lpjk_endpoint") . "Service/Proyek/Tambah",
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_CUSTOMREQUEST => "POST",
         CURLOPT_POSTFIELDS => $postData,
@@ -1134,14 +1136,14 @@ class PersonalController extends Controller
             "nilai_proyek" => $request->nilai_proyek,
             "url_pdf_persyaratan_pengalaman_proyek" => $request->file("file_pengalaman") ? curl_file_create($request->file("file_pengalaman")->path()) : "",
         ];
-        $key = ApiKey::first();
+        $key = ApiKey::where('provinsi_id', Auth::user()->asosiasi->provinsi_id)->first();
 
         $curl = curl_init();
         $header[] = "X-Api-Key:" . $key->lpjk_key;
         $header[] = "Token:" . $key->token;
         $header[] = "Content-Type:multipart/form-data";
         curl_setopt_array($curl, array(
-        CURLOPT_URL => env("LPJK_ENDPOINT") . "Service/Proyek/Ubah",
+        CURLOPT_URL => config("app.lpjk_endpoint") . "Service/Proyek/Ubah",
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_CUSTOMREQUEST => "POST",
         CURLOPT_POSTFIELDS => $postData,
@@ -1178,14 +1180,14 @@ class PersonalController extends Controller
             "id_personal_proyek" => $request->id_personal_proyek,
           ];
 
-        $key = ApiKey::first();
+        $key = ApiKey::where('provinsi_id', Auth::user()->asosiasi->provinsi_id)->first();
 
         $curl = curl_init();
         $header[] = "X-Api-Key:" . $key->lpjk_key;
         $header[] = "Token:" . $key->token;
         $header[] = "Content-Type:multipart/form-data";
         curl_setopt_array($curl, array(
-        CURLOPT_URL => env("LPJK_ENDPOINT") . "Service/Proyek/Hapus",
+        CURLOPT_URL => config("app.lpjk_endpoint") . "Service/Proyek/Hapus",
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_CUSTOMREQUEST => "POST",
         CURLOPT_POSTFIELDS => $postData,
@@ -1267,7 +1269,7 @@ class PersonalController extends Controller
 
     public function apiGetKualifikasiTA(Request $request)
     {
-        $key = ApiKey::first();
+        $key = ApiKey::where('provinsi_id', Auth::user()->asosiasi->provinsi_id)->first();
 
         $postData = [
             "ID_Personal" => $request->id_personal
@@ -1279,7 +1281,7 @@ class PersonalController extends Controller
         $header[] = "Token:" . $key->token;
         $header[] = "Content-Type:multipart/form-data";
         curl_setopt_array($curl, array(
-            CURLOPT_URL            => env("LPJK_ENDPOINT") . "Service/Klasifikasi/Get-TA",
+            CURLOPT_URL            => config("app.lpjk_endpoint") . "Service/Klasifikasi/Get-TA",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_CUSTOMREQUEST  => "POST",
             CURLOPT_POSTFIELDS     => $postData,
@@ -1303,7 +1305,7 @@ class PersonalController extends Controller
 
     public function apiGetKualifikasiTAStatus99(Request $request)
     {
-        $key = ApiKey::first();
+        $key = ApiKey::where('provinsi_id', Auth::user()->asosiasi->provinsi_id)->first();
 
         $postData = [
             "ID_Personal" => $request->id_personal
@@ -1315,7 +1317,7 @@ class PersonalController extends Controller
         $header[] = "Token:" . $key->token;
         $header[] = "Content-Type:multipart/form-data";
         curl_setopt_array($curl, array(
-            CURLOPT_URL            => env("LPJK_ENDPOINT") . "Service/Klasifikasi/Get-TA",
+            CURLOPT_URL            => config("app.lpjk_endpoint") . "Service/Klasifikasi/Get-TA",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_CUSTOMREQUEST  => "POST",
             CURLOPT_POSTFIELDS     => $postData,
@@ -1376,14 +1378,14 @@ class PersonalController extends Controller
             "url_pdf_penilaian_mandiri_f19"     => $request->file("file_penilaian_mandiri") ? curl_file_create($request->file("file_penilaian_mandiri")->path()) : "",
           ];
 
-        $key = ApiKey::first();
+        $key = ApiKey::where('provinsi_id', Auth::user()->asosiasi->provinsi_id)->first();
 
         $curl = curl_init();
         $header[] = "X-Api-Key:" . $key->lpjk_key;
         $header[] = "Token:" . $key->token;
         $header[] = "Content-Type:multipart/form-data";
         curl_setopt_array($curl, array(
-        CURLOPT_URL => env("LPJK_ENDPOINT") . "Service/Klasifikasi/Tambah-TA",
+        CURLOPT_URL => config("app.lpjk_endpoint") . "Service/Klasifikasi/Tambah-TA",
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_CUSTOMREQUEST => "POST",
         CURLOPT_POSTFIELDS => $postData,
@@ -1421,14 +1423,14 @@ class PersonalController extends Controller
             "ID_Registrasi_TK_Ahli" => $request->ID_Registrasi_TK_Ahli,
           ];
 
-        $key = ApiKey::first();
+        $key = ApiKey::where('provinsi_id', Auth::user()->asosiasi->provinsi_id)->first();
 
         $curl = curl_init();
         $header[] = "X-Api-Key:" . $key->lpjk_key;
         $header[] = "Token:" . $key->token;
         $header[] = "Content-Type:multipart/form-data";
         curl_setopt_array($curl, array(
-        CURLOPT_URL => env("LPJK_ENDPOINT") . "Service/Klasifikasi/Hapus-TA",
+        CURLOPT_URL => config("app.lpjk_endpoint") . "Service/Klasifikasi/Hapus-TA",
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_CUSTOMREQUEST => "POST",
         CURLOPT_POSTFIELDS => $postData,
@@ -1476,6 +1478,7 @@ class PersonalController extends Controller
         $data->id_permohonan = $request->id_permohonan;
         $data->Tgl_Registrasi = $request->tgl_registrasi;
         $data->ID_Propinsi_reg = $user->asosiasi->provinsi_id;
+        $data->status_terbaru = $request->status_terbaru;
         $data->updated_by = Auth::user()->id;
         
         $vva = $request->file("file_berita_acara_vva") ? $request->file_berita_acara_vva->store('vva') : null;
@@ -1508,11 +1511,13 @@ class PersonalController extends Controller
         foreach($result as $ta){
             $data = PersonalRegTA::find($ta->ID_Registrasi_TK_Ahli);
             
-            if(!$data){
-                $data = new PersonalRegTA();
-                $data->ID_Registrasi_TK_Ahli = $ta->ID_Registrasi_TK_Ahli;
-                $data->ID_Personal = $ta->ID_Personal;
-                $data->created_by = Auth::user()->id;
+            // if(!$data){
+            //     $data = new PersonalRegTA();
+            //     $data->ID_Registrasi_TK_Ahli = $ta->ID_Registrasi_TK_Ahli;
+            //     $data->ID_Personal = $ta->ID_Personal;
+            //     $data->created_by = Auth::user()->id;
+
+            if($data){
                 $data->ID_Sub_Bidang = $ta->ID_Sub_Bidang;
                 $data->ID_Kualifikasi = $ta->ID_Kualifikasi;
                 $data->ID_Asosiasi_Profesi = $ta->ID_Asosiasi_Profesi;
@@ -1521,6 +1526,7 @@ class PersonalController extends Controller
                 $data->id_permohonan = $ta->id_permohonan;
                 $data->Tgl_Registrasi = $ta->Tgl_Registrasi;
                 $data->ID_Propinsi_reg = $ta->ID_Propinsi_reg;
+                $data->status_terbaru = $ta->status_terbaru;
                 $data->updated_by = Auth::user()->id;
         
                 $data->save();
@@ -1531,6 +1537,15 @@ class PersonalController extends Controller
     public function apiPengajuanNaikStatus(Request $request)
     {
         $regta = PersonalRegTA::find($request->permohonan_id);
+
+        if(Auth::user()->asosiasi->asosiasi_id != $regta->ID_Asosiasi_Profesi){
+            return response()->json('Maaf Anda tidak dapat mengajukan data Asosiasi lain', 400);
+        }
+
+        if(Auth::user()->asosiasi->provinsi_id != $regta->ID_Propinsi_reg){
+            return response()->json('Maaf Anda tidak dapat mengajukan data provinsi lain', 400);
+        }
+
         $regta->diajukan = 1;
         $regta->diajukan_by = Auth::user()->id;
         $regta->diajukan_at = Carbon::now();
@@ -1543,11 +1558,11 @@ class PersonalController extends Controller
         if(!$exist){
             
             $asosiasi = Asosiasi::find(Auth::user()->asosiasi->asosiasi_id);
-            $verifikatorSigns = $asosiasi->verifikatorSign;
-            $databaseSigns = $asosiasi->databaseSign;
+            $verifikatorSigns = $asosiasi->verifikatorSign->where("provinsi_id", Auth::user()->asosiasi->provinsi_id);
+            $databaseSigns = $asosiasi->databaseSign->where("provinsi_id", Auth::user()->asosiasi->provinsi_id);
 
-            $userVerifikatorName = $asosiasi->user_verifikator;
-            $userDatabaseName = $asosiasi->user_database;
+            $userVerifikatorName = $asosiasi->detail->where("provinsi_id", Auth::user()->asosiasi->provinsi_id)->first()->user_verifikator;
+            $userDatabaseName = $asosiasi->detail->where("provinsi_id", Auth::user()->asosiasi->provinsi_id)->first()->user_database;
             $verifikatorSign = $verifikatorSigns[array_rand($verifikatorSigns->toArray())]->path;
             $databaseSign = $databaseSigns[array_rand($databaseSigns->toArray())]->path;
 
@@ -1578,7 +1593,7 @@ class PersonalController extends Controller
 
     public function apiGetKualifikasiTT(Request $request)
     {
-        $key = ApiKey::first();
+        $key = ApiKey::where('provinsi_id', Auth::user()->asosiasi->provinsi_id)->first();
 
         $postData = [
             "ID_Personal" => $request->id_personal,
@@ -1590,7 +1605,7 @@ class PersonalController extends Controller
         $header[] = "Token:" . $key->token;
         $header[] = "Content-Type:multipart/form-data";
         curl_setopt_array($curl, array(
-            CURLOPT_URL            => env("LPJK_ENDPOINT") . "Service/Klasifikasi/Get-TT",
+            CURLOPT_URL            => config("app.lpjk_endpoint") . "Service/Klasifikasi/Get-TT",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_CUSTOMREQUEST  => "POST",
             CURLOPT_POSTFIELDS     => $postData,
@@ -1614,7 +1629,7 @@ class PersonalController extends Controller
 
     public function apiGetKualifikasiTTStatus99(Request $request)
     {
-        $key = ApiKey::first();
+        $key = ApiKey::where('provinsi_id', Auth::user()->asosiasi->provinsi_id)->first();
 
         $postData = [
             "ID_Personal" => $request->id_personal
@@ -1626,7 +1641,7 @@ class PersonalController extends Controller
         $header[] = "Token:" . $key->token;
         $header[] = "Content-Type:multipart/form-data";
         curl_setopt_array($curl, array(
-            CURLOPT_URL            => env("LPJK_ENDPOINT") . "Service/Klasifikasi/Get-TT",
+            CURLOPT_URL            => config("app.lpjk_endpoint") . "Service/Klasifikasi/Get-TT",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_CUSTOMREQUEST  => "POST",
             CURLOPT_POSTFIELDS     => $postData,
@@ -1687,14 +1702,14 @@ class PersonalController extends Controller
             "url_pdf_surat_permohonan"          => $request->file("file_surat_permohonan") ? curl_file_create($request->file("file_surat_permohonan")->path()) : "",
           ];
 
-        $key = ApiKey::first();
+        $key = ApiKey::where('provinsi_id', Auth::user()->asosiasi->provinsi_id)->first();
 
         $curl = curl_init();
         $header[] = "X-Api-Key:" . $key->lpjk_key;
         $header[] = "Token:" . $key->token;
         $header[] = "Content-Type:multipart/form-data";
         curl_setopt_array($curl, array(
-        CURLOPT_URL => env("LPJK_ENDPOINT") . "Service/Klasifikasi/Tambah-TT",
+        CURLOPT_URL => config("app.lpjk_endpoint") . "Service/Klasifikasi/Tambah-TT",
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_CUSTOMREQUEST => "POST",
         CURLOPT_POSTFIELDS => $postData,
@@ -1732,14 +1747,14 @@ class PersonalController extends Controller
             "ID_Registrasi_TK_Trampil" => $request->ID_Registrasi_TK_Trampil,
           ];
 
-        $key = ApiKey::first();
+        $key = ApiKey::where('provinsi_id', Auth::user()->asosiasi->provinsi_id)->first();
 
         $curl = curl_init();
         $header[] = "X-Api-Key:" . $key->lpjk_key;
         $header[] = "Token:" . $key->token;
         $header[] = "Content-Type:multipart/form-data";
         curl_setopt_array($curl, array(
-        CURLOPT_URL => env("LPJK_ENDPOINT") . "Service/Klasifikasi/Hapus-TT",
+        CURLOPT_URL => config("app.lpjk_endpoint") . "Service/Klasifikasi/Hapus-TT",
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_CUSTOMREQUEST => "POST",
         CURLOPT_POSTFIELDS => $postData,
@@ -1787,6 +1802,7 @@ class PersonalController extends Controller
         $data->id_permohonan = $request->id_permohonan;
         $data->Tgl_Registrasi = $request->tgl_registrasi;
         $data->ID_propinsi_reg = $user->asosiasi->provinsi_id;
+        $data->status_terbaru = $request->status_terbaru;
         $data->updated_by = Auth::user()->id;
         
         $vva = $request->file("file_berita_acara_vva") ? $request->file_berita_acara_vva->store('vva') : null;
@@ -1814,11 +1830,13 @@ class PersonalController extends Controller
         foreach($result as $tt){
             $data = PersonalRegTT::find($tt->ID_Registrasi_TK_Trampil);
             
-            if(!$data){
-                $data = new PersonalRegTT();
-                $data->ID_Registrasi_TK_Trampil = $tt->ID_Registrasi_TK_Trampil;
-                $data->ID_Personal = $tt->ID_Personal;
-                $data->created_by = Auth::user()->id;
+            // if(!$data){
+            //     $data = new PersonalRegTT();
+            //     $data->ID_Registrasi_TK_Trampil = $tt->ID_Registrasi_TK_Trampil;
+            //     $data->ID_Personal = $tt->ID_Personal;
+            //     $data->created_by = Auth::user()->id;
+
+            if($data){
                 $data->ID_Sub_Bidang = $tt->ID_Sub_Bidang;
                 $data->ID_Kualifikasi = $tt->ID_Kualifikasi;
                 $data->ID_Asosiasi_Profesi = $tt->ID_Asosiasi_Profesi;
@@ -1826,6 +1844,7 @@ class PersonalController extends Controller
                 $data->id_permohonan = $tt->id_permohonan;
                 $data->Tgl_Registrasi = $tt->Tgl_Registrasi;
                 $data->ID_propinsi_reg = $tt->ID_propinsi_reg;
+                $data->status_terbaru = $tt->status_terbaru;
                 $data->updated_by = Auth::user()->id;
         
                 $data->save();
@@ -1836,6 +1855,15 @@ class PersonalController extends Controller
     public function apiPengajuanNaikStatusTT(Request $request)
     {
         $regta = PersonalRegTT::find($request->permohonan_id);
+
+        if(Auth::user()->asosiasi->asosiasi_id != $regta->ID_Asosiasi_Profesi){
+            return response()->json('Maaf Anda tidak dapat mengajukan data Asosiasi lain', 400);
+        }
+
+        if(Auth::user()->asosiasi->provinsi_id != $regta->ID_propinsi_reg){
+            return response()->json('Maaf Anda tidak dapat mengajukan data provinsi lain', 400);
+        }
+
         $regta->diajukan = 1;
         $regta->diajukan_by = Auth::user()->id;
         $regta->diajukan_at = Carbon::now();
@@ -1848,11 +1876,11 @@ class PersonalController extends Controller
         if(!$exist){
             
             $asosiasi = Asosiasi::find(Auth::user()->asosiasi->asosiasi_id);
-            $verifikatorSigns = $asosiasi->verifikatorSign;
-            $databaseSigns = $asosiasi->databaseSign;
+            $verifikatorSigns = $asosiasi->verifikatorSign->where("provinsi_id", Auth::user()->asosiasi->provinsi_id);
+            $databaseSigns = $asosiasi->databaseSign->where("provinsi_id", Auth::user()->asosiasi->provinsi_id);
 
-            $userVerifikatorName = $asosiasi->user_verifikator;
-            $userDatabaseName = $asosiasi->user_database;
+            $userVerifikatorName = $asosiasi->detail->where("provinsi_id", Auth::user()->asosiasi->provinsi_id)->first()->user_verifikator;
+            $userDatabaseName = $asosiasi->detail->where("provinsi_id", Auth::user()->asosiasi->provinsi_id)->first()->user_database;
             $verifikatorSign = $verifikatorSigns[array_rand($verifikatorSigns->toArray())]->path;
             $databaseSign = $databaseSigns[array_rand($databaseSigns->toArray())]->path;
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Routing\Controller as BaseController;
 
 use App\ApiKey;
@@ -15,7 +16,7 @@ class Controller extends BaseController
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
     public function refreshToken(){
-        $key = ApiKey::first();
+        $key = ApiKey::where('provinsi_id', Auth::user()->asosiasi->provinsi_id)->first();
 
         $postData = [
             "X-Api-Key" => $key->lpjk_key,
@@ -25,7 +26,7 @@ class Controller extends BaseController
         $curl = curl_init();
         $header[] = "Content-Type:multipart/form-data";
         curl_setopt_array($curl, array(
-            CURLOPT_URL            => env("LPJK_ENDPOINT") . "AktivasiToken",
+            CURLOPT_URL            => config("app.lpjk_endpoint") . "AktivasiToken",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_CUSTOMREQUEST  => "POST",
             CURLOPT_POSTFIELDS     => $postData,

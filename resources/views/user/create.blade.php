@@ -66,9 +66,7 @@
                   <select class="form-control" name="provinsi_id">
 										<option value="">-- pilih provinsi --</option>
 										@foreach ($provinsi as $prov)
-											@if($prov->id_provinsi == "04")
-												<option value="{{$prov->id_provinsi}}" {{$prov->id_provinsi == "04" ? "selected" : ""}}>{{$prov->nama}}</option>
-											@endif
+											<option value="{{$prov->id_provinsi}}">{{$prov->nama}}</option>
                     @endforeach
                   </select>
                 </div>

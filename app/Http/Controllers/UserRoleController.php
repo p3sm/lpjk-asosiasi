@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\Role;
 use App\Permission;
@@ -13,7 +14,11 @@ use App\RolePermission;
 class UserRoleController extends Controller
 {
   public function index(){
-    $data["role"] = Role::all();
+    if(Auth::user()->id == 1)
+      $data["role"] = Role::all();
+    else
+      $data["role"] = Role::where("created_by", Auth::user()->id)->orWhere("id", Auth::user()->role_id)->get();
+
     $data["permission"] = Permission::all();
 
     return view('role/index')->with($data);
@@ -29,6 +34,7 @@ class UserRoleController extends Controller
   {
     $role = new Role();
     $role->name  = $request->get('name');
+    $role->created_by  = Auth::user()->id;
 
     if($role->save()){
       $this->generatePermission($role->id, $request->get('permission'));
@@ -45,6 +51,11 @@ class UserRoleController extends Controller
   public function edit($id)
   {
       $role = Role::findOrFail($id);
+
+      if(Auth::id() != 1 && Auth::user()->id != $role->created_by){
+        return redirect('/user_role')->with('error', 'aksi tidak diizinkan');
+      }
+
       $permission = Permission::all();
       $role_permission = $role->permission;
 
@@ -58,6 +69,11 @@ class UserRoleController extends Controller
   public function update(Request $request, $id)
   {
       $role = Role::findOrFail($id);
+
+      if(Auth::id() != 1 && Auth::user()->id != $role->created_by){
+        return redirect('/user_role')->with('error', 'Perubahan data tidak diizinkan');
+      }
+
       $role->name  = $request->get('name');
 
       if($role->save()){
@@ -70,6 +86,11 @@ class UserRoleController extends Controller
   public function destroy($id)
   {
       $role = Role::findOrFail($id);
+
+      if(Auth::id() != 1 && Auth::user()->id != $role->created_by){
+        return response()->json(['status'=>'aksi tidak diizinkan']);
+      }
+
       $role->delete();
 
       $this->deletePermission($id);

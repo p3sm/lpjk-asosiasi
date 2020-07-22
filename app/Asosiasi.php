@@ -12,6 +12,11 @@ class Asosiasi extends Model
 
   protected $casts = ['id_asosiasi' => 'string'];
     
+  public function detail()
+  {
+    return $this->hasMany('App\AsosiasiDetail', 'asosiasi_id');
+  }
+    
   public function sign()
   {
     return $this->hasMany('App\AsosiasiSign', 'asosiasi_id');
