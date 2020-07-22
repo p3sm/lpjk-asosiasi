@@ -1836,7 +1836,7 @@ class PersonalController extends Controller
             //     $data->ID_Personal = $tt->ID_Personal;
             //     $data->created_by = Auth::user()->id;
 
-            if(!$data){
+            if($data){
                 $data->ID_Sub_Bidang = $tt->ID_Sub_Bidang;
                 $data->ID_Kualifikasi = $tt->ID_Kualifikasi;
                 $data->ID_Asosiasi_Profesi = $tt->ID_Asosiasi_Profesi;
