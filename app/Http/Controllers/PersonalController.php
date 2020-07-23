@@ -1511,26 +1511,27 @@ class PersonalController extends Controller
         foreach($result as $ta){
             $data = PersonalRegTA::find($ta->ID_Registrasi_TK_Ahli);
             
-            // if(!$data){
-            //     $data = new PersonalRegTA();
-            //     $data->ID_Registrasi_TK_Ahli = $ta->ID_Registrasi_TK_Ahli;
-            //     $data->ID_Personal = $ta->ID_Personal;
-            //     $data->created_by = Auth::user()->id;
-
-            if($data){
-                $data->ID_Sub_Bidang = $ta->ID_Sub_Bidang;
-                $data->ID_Kualifikasi = $ta->ID_Kualifikasi;
-                $data->ID_Asosiasi_Profesi = $ta->ID_Asosiasi_Profesi;
-                $data->No_Reg_Asosiasi = $ta->No_Reg_Asosiasi;
-                $data->id_unit_sertifikasi = $ta->id_unit_sertifikasi;
-                $data->id_permohonan = $ta->id_permohonan;
-                $data->Tgl_Registrasi = $ta->Tgl_Registrasi;
-                $data->ID_Propinsi_reg = $ta->ID_Propinsi_reg;
-                $data->status_terbaru = $ta->status_terbaru;
-                $data->updated_by = Auth::user()->id;
-        
-                $data->save();
+            if(!$data){
+                $data = new PersonalRegTA();
+                $data->ID_Registrasi_TK_Ahli = $ta->ID_Registrasi_TK_Ahli;
+                $data->ID_Personal = $ta->ID_Personal;
+                $data->created_by = Auth::user()->id;
             }
+
+            // if($data){
+            $data->ID_Sub_Bidang = $ta->ID_Sub_Bidang;
+            $data->ID_Kualifikasi = $ta->ID_Kualifikasi;
+            $data->ID_Asosiasi_Profesi = $ta->ID_Asosiasi_Profesi;
+            $data->No_Reg_Asosiasi = $ta->No_Reg_Asosiasi;
+            $data->id_unit_sertifikasi = $ta->id_unit_sertifikasi;
+            $data->id_permohonan = $ta->id_permohonan;
+            $data->Tgl_Registrasi = $ta->Tgl_Registrasi;
+            $data->ID_Propinsi_reg = $ta->ID_Propinsi_reg;
+            $data->status_terbaru = $ta->status_terbaru;
+            $data->updated_by = Auth::user()->id;
+    
+            $data->save();
+            // }
         }
     }
 
@@ -1830,13 +1831,14 @@ class PersonalController extends Controller
         foreach($result as $tt){
             $data = PersonalRegTT::find($tt->ID_Registrasi_TK_Trampil);
             
-            // if(!$data){
-            //     $data = new PersonalRegTT();
-            //     $data->ID_Registrasi_TK_Trampil = $tt->ID_Registrasi_TK_Trampil;
-            //     $data->ID_Personal = $tt->ID_Personal;
-            //     $data->created_by = Auth::user()->id;
+            if(!$data){
+                $data = new PersonalRegTT();
+                $data->ID_Registrasi_TK_Trampil = $tt->ID_Registrasi_TK_Trampil;
+                $data->ID_Personal = $tt->ID_Personal;
+                $data->created_by = Auth::user()->id;
+            }
 
-            if($data){
+            // if($data){
                 $data->ID_Sub_Bidang = $tt->ID_Sub_Bidang;
                 $data->ID_Kualifikasi = $tt->ID_Kualifikasi;
                 $data->ID_Asosiasi_Profesi = $tt->ID_Asosiasi_Profesi;
@@ -1848,7 +1850,7 @@ class PersonalController extends Controller
                 $data->updated_by = Auth::user()->id;
         
                 $data->save();
-            }
+            // }
         }
     }
 
