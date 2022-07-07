@@ -31,7 +31,7 @@
         "@fancyapps/fancybox": "^3.5.7",
         "@fortawesome/fontawesome-free": "^5.11.2",
         "materialize-css": "^1.0.0-rc.2",
-        "moment": "^2.24.0",
+        "moment": "^2.29.4",
         "perfect-scrollbar": "^1.4.0",
         "react-bootstrap": "^1.0.0-beta.14",
         "react-bootstrap-sweetalert": "^5.1.7",
